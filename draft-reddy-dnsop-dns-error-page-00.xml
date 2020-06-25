@@ -232,14 +232,30 @@
     </section>
 
     <section title="Method to return the URI">
-      <t>TBD: TXT record or a new RRType or SVCB records.</t>
+      <t>TBD: New RRType or SVC parameter key (see
+      https://tools.ietf.org/html/draft-ietf-dnsop-svcb-httpssvc-03).</t>
     </section>
 
     <section title="ERROR Page ">
-      <t>The following section outlines the recommended contents of a error
+      <t>The following text outlines the recommended contents of a error
       page.</t>
 
-      <t>TODO</t>
+      <t><list style="symbols">
+          <t>The exact reason for blocking access to the domain. If the domain
+          is blocked based on threat data, the threat type associated with the
+          blocked domain can be provided to the end user. For example, the
+          reason can indicate the type of malware blocked like spyware and the
+          damage it can do the security and privacy of the end-user. </t>
+
+          <t>The domain name blocked.</t>
+
+          <t>The entity (or organization) blocking the access to the domain
+          and contact details of the IT/InfoSec team to raise a complaint.</t>
+
+          <t>The blocked error page MUST NOT include Ads.</t>
+
+          <t>The blocked error page MUST NOT include dynamic content.</t>
+        </list></t>
     </section>
 
     <section title="Usability considerations">
@@ -280,10 +296,7 @@
 
       <t>The URL providing additional information about the cause of blocking
       access to a domain MUST only serve static content to limit the risk of
-      security threats from dynamic content (e.g., malicious JavaScript). The
-      error page MUST comply with the recommended contents of a error page
-      defined in Section 4. The endpoint can use deep learning techniques to
-      analyze the error page for compliance.</t>
+      security threats from dynamic content (e.g., malicious JavaScript). </t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">

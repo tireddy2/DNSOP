@@ -70,7 +70,7 @@ Table of Contents
    4.  ERROR Page  . . . . . . . . . . . . . . . . . . . . . . . . .   4
    5.  Usability considerations  . . . . . . . . . . . . . . . . . .   5
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
    8.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   6
    9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   6
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .   6
@@ -210,14 +210,14 @@ Internet-Draft        DNS access denied error page             June 2020
 
 3.  Method to return the URI
 
-   TBD: TXT record or a new RRType or SVCB records.
+   TBD: New RRType or SVC parameter key (see
+   https://tools.ietf.org/html/draft-ietf-dnsop-svcb-httpssvc-03).
 
 4.  ERROR Page
 
-   The following section outlines the recommended contents of a error
-   page.
+   The following text outlines the recommended contents of a error page.
 
-   TODO
+
 
 
 
@@ -225,6 +225,21 @@ Reddy, et al.           Expires December 27, 2020               [Page 4]
 
 Internet-Draft        DNS access denied error page             June 2020
 
+
+   o  The exact reason for blocking access to the domain.  If the domain
+      is blocked based on threat data, the threat type associated with
+      the blocked domain can be provided to the end user.  For example,
+      the reason can indicate the type of malware blocked like spyware
+      and the damage it can do the security and privacy of the end-user.
+
+   o  The domain name blocked.
+
+   o  The entity (or organization) blocking the access to the domain and
+      contact details of the IT/InfoSec team to raise a complaint.
+
+   o  The blocked error page MUST NOT include Ads.
+
+   o  The blocked error page MUST NOT include dynamic content.
 
 5.  Usability considerations
 
@@ -259,21 +274,6 @@ Internet-Draft        DNS access denied error page             June 2020
    a DoH/DoT server hosted by a specific organization (e.g., ISP).  This
    information is cryptographically signed to attest its authenticity.
    It is particularly useful when the DoH/DoT server is insecurely
-   discovered and prevents the client from connecting to an attackers
-   DoH/DoT server.
-
-   The URL providing additional information about the cause of blocking
-   access to a domain MUST only serve static content to limit the risk
-   of security threats from dynamic content (e.g., malicious
-   JavaScript).  The error page MUST comply with the recommended
-   contents of a error page defined in Section 4.  The endpoint can use
-   deep learning techniques to analyze the error page for compliance.
-
-7.  IANA Considerations
-
-   This document has no actions for IANA.
-
-
 
 
 
@@ -281,6 +281,18 @@ Reddy, et al.           Expires December 27, 2020               [Page 5]
 
 Internet-Draft        DNS access denied error page             June 2020
 
+
+   discovered and prevents the client from connecting to an attackers
+   DoH/DoT server.
+
+   The URL providing additional information about the cause of blocking
+   access to a domain MUST only serve static content to limit the risk
+   of security threats from dynamic content (e.g., malicious
+   JavaScript).
+
+7.  IANA Considerations
+
+   This document has no actions for IANA.
 
 8.  Acknowledgements
 
@@ -315,18 +327,6 @@ Internet-Draft        DNS access denied error page             June 2020
 
 9.2.  Informative References
 
-   [Chrome-Translate]
-              "Google Translate",
-              <https://chrome.google.com/webstore/detail/google-
-              translate/aapbdbdomjkkjkaonfhkkikfgjllcleb/RK%3D2/
-              RS%3DBBFW_pnWkPY0xPMYsAZI5xOgQEE->.
-
-   [I-D.ietf-dnsop-terminology-ter]
-              Hoffman, P., "Terminology for DNS Transports and
-              Location", draft-ietf-dnsop-terminology-ter-01 (work in
-              progress), February 2020.
-
-
 
 
 
@@ -337,6 +337,17 @@ Reddy, et al.           Expires December 27, 2020               [Page 6]
 
 Internet-Draft        DNS access denied error page             June 2020
 
+
+   [Chrome-Translate]
+              "Google Translate",
+              <https://chrome.google.com/webstore/detail/google-
+              translate/aapbdbdomjkkjkaonfhkkikfgjllcleb/RK%3D2/
+              RS%3DBBFW_pnWkPY0xPMYsAZI5xOgQEE->.
+
+   [I-D.ietf-dnsop-terminology-ter]
+              Hoffman, P., "Terminology for DNS Transports and
+              Location", draft-ietf-dnsop-terminology-ter-01 (work in
+              progress), February 2020.
 
    [I-D.reddy-add-server-policy-selection]
               Reddy.K, T., Wing, D., Richardson, M., and M. Boucadair,
@@ -371,6 +382,18 @@ Authors' Addresses
    Email: neil.cook@noware.co.uk
 
 
+
+
+
+
+
+
+
+Reddy, et al.           Expires December 27, 2020               [Page 7]
+
+Internet-Draft        DNS access denied error page             June 2020
+
+
    Mohamed Boucadair
    Orange
    Rennes  35000
@@ -389,4 +412,37 @@ Authors' Addresses
 
 
 
-Reddy, et al.           Expires December 27, 2020               [Page 7]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Reddy, et al.           Expires December 27, 2020               [Page 8]
