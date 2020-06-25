@@ -243,11 +243,16 @@
     </section>
 
     <section title="Usability considerations">
-      <t>TODO Displaying the error page in a language not known to end user is
-      not going to problem with browsers providing extensions to translate to
-      the language used by the user (see
-      https://chrome.google.com/webstore/detail/google-translate/aapbdbdomjkkjkaonfhkkikfgjllcleb/RK%3D2/RS%3DBBFW_pnWkPY0xPMYsAZI5xOgQEE-).
-      The extension is provided by Google itself.</t>
+      <t>If the error page is displayed in a language not known to the end
+      user, browser extension to translate the language can be used by the
+      user. For example, "Google Translate" extension <xref
+      target="Chrome-Translate"></xref> provided by Google on Chrome can be
+      used by the user to translate the error page. The "Google Translate"
+      extension automatically detects if the language of a page is different
+      from the language the user has selected. If it is in a different
+      language, a banner appears at the top of the page. The user can click on
+      the Translate button in the banner to have all the text on the page
+      appear in the language selected by the user. </t>
     </section>
 
     <section anchor="Security" title="Security Considerations">
@@ -314,10 +319,10 @@
 
       <?rfc include='reference.I-D.ietf-dnsop-terminology-ter'?>
 
-      <reference anchor="Firefox-Policy"
-                 target="https://github.com/mozilla/policy-templates/blob/master/README.md#dnsoverhttps">
+      <reference anchor="Chrome-Translate"
+                 target="https://chrome.google.com/webstore/detail/google-translate/aapbdbdomjkkjkaonfhkkikfgjllcleb/RK%3D2/RS%3DBBFW_pnWkPY0xPMYsAZI5xOgQEE-">
         <front>
-          <title>Policy templates for Firefox</title>
+          <title>Google Translate</title>
 
           <author></author>
 

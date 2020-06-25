@@ -228,13 +228,16 @@ Internet-Draft        DNS access denied error page             June 2020
 
 5.  Usability considerations
 
-   TODO Displaying the error page in a language not known to end user is
-   not going to problem with browsers providing extensions to translate
-   to the language used by the user (see
-   https://chrome.google.com/webstore/detail/google-
-   translate/aapbdbdomjkkjkaonfhkkikfgjllcleb/RK%3D2/
-   RS%3DBBFW_pnWkPY0xPMYsAZI5xOgQEE-).  The extension is provided by
-   Google itself.
+   If the error page is displayed in a language not known to the end
+   user, browser extension to translate the language can be used by the
+   user.  For example, "Google Translate" extension [Chrome-Translate]
+   provided by Google on Chrome can be used by the user to translate the
+   error page.  The "Google Translate" extension automatically detects
+   if the language of a page is different from the language the user has
+   selected.  If it is in a different language, a banner appears at the
+   top of the page.  The user can click on the Translate button in the
+   banner to have all the text on the page appear in the language
+   selected by the user.
 
 6.  Security Considerations
 
@@ -269,9 +272,6 @@ Internet-Draft        DNS access denied error page             June 2020
 7.  IANA Considerations
 
    This document has no actions for IANA.
-
-
-
 
 
 
@@ -315,21 +315,21 @@ Internet-Draft        DNS access denied error page             June 2020
 
 9.2.  Informative References
 
-   [Firefox-Policy]
-              "Policy templates for Firefox",
-              <https://github.com/mozilla/policy-templates/blob/master/
-              README.md#dnsoverhttps>.
+   [Chrome-Translate]
+              "Google Translate",
+              <https://chrome.google.com/webstore/detail/google-
+              translate/aapbdbdomjkkjkaonfhkkikfgjllcleb/RK%3D2/
+              RS%3DBBFW_pnWkPY0xPMYsAZI5xOgQEE->.
 
    [I-D.ietf-dnsop-terminology-ter]
               Hoffman, P., "Terminology for DNS Transports and
               Location", draft-ietf-dnsop-terminology-ter-01 (work in
               progress), February 2020.
 
-   [I-D.reddy-add-server-policy-selection]
-              Reddy.K, T., Wing, D., Richardson, M., and M. Boucadair,
-              "DNS Server Selection: DNS Server Information with
-              Assertion Token", draft-reddy-add-server-policy-
-              selection-03 (work in progress), June 2020.
+
+
+
+
 
 
 
@@ -337,6 +337,12 @@ Reddy, et al.           Expires December 27, 2020               [Page 6]
 
 Internet-Draft        DNS access denied error page             June 2020
 
+
+   [I-D.reddy-add-server-policy-selection]
+              Reddy.K, T., Wing, D., Richardson, M., and M. Boucadair,
+              "DNS Server Selection: DNS Server Information with
+              Assertion Token", draft-reddy-add-server-policy-
+              selection-03 (work in progress), June 2020.
 
    [RFC8499]  Hoffman, P., Sullivan, A., and K. Fujiwara, "DNS
               Terminology", BCP 219, RFC 8499, DOI 10.17487/RFC8499,
@@ -378,12 +384,6 @@ Authors' Addresses
    USA
 
    Email: dwing-ietf@fuggles.com
-
-
-
-
-
-
 
 
 
