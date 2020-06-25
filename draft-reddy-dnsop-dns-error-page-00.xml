@@ -34,7 +34,7 @@
 <rfc category="info" docName="draft-reddy-dnsop-error-page-00"
      ipr="trust200902">
   <front>
-    <title abbrev="DNS access denied error page">DNS Access Denied Error
+    <title abbrev="DNS Access Denied Error Page">DNS Access Denied Error
     page</title>
 
     <author fullname="Tirumaleswar Reddy" initials="T." surname="Reddy">
@@ -171,17 +171,25 @@
           cannot be installed on IoT devices without a device management tool.
           In this case, the browser will encounter HTTPS certificate error
           when the browser is redirected via DNS to a web page hosted to
-          display the block page. An end user therefore does not know why the
-          connection was reset and, consequently, may repeatedly try to
-          unsuccessfully reach the domain. Frustrated, the end user may use
-          insecure interfaces to reach the domain, potentially compromising
-          both security and privacy. Furthermore, certificate errors train
-          users to click through certificate errors, which is poor security
-          practice. To eliminate the need for an end user to click through
-          certificate errors, an end user may install a local root certificate
-          on a host device. Doing so, however, is also poor security practice
-          as it creates a security vulnerability that may be exploited by a
-          man-in-the-middle attack.</t>
+          display the block page. The typical errors are "The security
+          certificate presented by this website was not issued by a trusted
+          certificate authority" (Internet Explorer/Edge", "The site's
+          security certificate is not trusted" (Chrome), "This Connection is
+          Untrusted" (Firefox), &ldquo;Safari can't verify the identity of the
+          website&hellip;&rdquo; (Safari on MacOS)". An end user therefore
+          does not know why the connection was reset and, consequently, may
+          repeatedly try to unsuccessfully reach the domain. Frustrated, the
+          end user may use insecure interfaces to reach the domain,
+          potentially compromising both security and privacy. Furthermore,
+          certificate errors train users to click through certificate errors,
+          which is poor security practice. To eliminate the need for an end
+          user to click through certificate errors, an end user may manually
+          install a local root certificate <xref
+          target="Chrome-Install-Cert"></xref> on a host device . Doing so,
+          however, is also poor security practice as it creates a security
+          vulnerability that may be exploited by a man-in-the-middle attack.
+          When the manually installed local root certificate expires, user has
+          to again manually install the new local root certificate. </t>
 
           <t>The DNS response is forged to provide a NXDOMAIN response to
           cause the DNS lookup to terminate in failure. In this case, an end
@@ -231,9 +239,27 @@
       <t>'DoH/DoT' refers to DNS-over-HTTPS and/or DNS-over-TLS.</t>
     </section>
 
-    <section title="Method to return the URI">
-      <t>TBD: New RRType or SVC parameter key (see
-      https://tools.ietf.org/html/draft-ietf-dnsop-svcb-httpssvc-03).</t>
+    <section title="Method to return the error page URL">
+      <t>The mechanism for providing additional information about the cause of
+      blocking access to a domain is from the HTTPSSVC DNS record <xref
+      target="I-D.ietf-dnsop-svcb-httpssvc"></xref>. This record provides the
+      URL that provides additional information about the cause of blocking
+      access to a domain. In order to convey a error page URL for a "Forged
+      Answer" extended error, a SVCB record MUST contain the "errorurl" (<xref
+      target="IANA"></xref>). The value stored in the parameter is a URL whose
+      scheme MUST be "https". The service parameter key "errorurl" MUST only
+      be processed by the DNS client for a "Forged Answer" extended error code
+      and MUST be ignored for any other type of DNS response. </t>
+
+      <t>The following example shows a record containing a error page URL, as
+      returned by a query for the HTTPSSVC variant of the SVCB record type on
+      "foo.example.com".</t>
+
+      <t><figure align="center" anchor="ex" title="Example 1">
+          <artwork><![CDATA[foo.example.com.  7200  IN HTTPSSVC 1 (
+                              errorurl=https://block.example.net/block-page )
+]]></artwork>
+        </figure></t>
     </section>
 
     <section title="ERROR Page ">
@@ -272,19 +298,21 @@
     </section>
 
     <section anchor="Security" title="Security Considerations">
-      <t>Unless the DNS response that conveys the URL that provides additional
-      information about the cause of blocking access to a domain is sent over
-      DNS-over-HTTPS (DoH) <xref target="RFC8484"></xref> or DNS-over-TLS
-      (DoT) <xref target="RFC7858"></xref>., the response is susceptible to
-      forgery. DNS stub resolver MUST NOT fetch the URL unless DNS messages
-      are exchanged over DoT/DoH. Bad actors can host DNS-over-TLS and
-      DNS-over-HTTPS servers, and claim the servers offer privacy and
-      filtering capability to block malware domains but exactly do the
-      opposite to invade the security and privacy of the end user. This attack
-      can be mitigated if and only if the endpoint selects DoT/DoH servers
-      hosted by well-known organizations (e.g., ISPs, organization for which a
-      user works etc.) or DoT/DoH servers pre-configured in the OS/Browser
-      with filtering capability. The DNS client can learn the filtering
+      <t> Security considerations in <xref
+      target="I-D.ietf-dnsop-extended-error"></xref> need to be taken into
+      consideration. Unless the DNS response that conveys the URL that
+      provides additional information about the cause of blocking access to a
+      domain is sent over DNS-over-HTTPS (DoH) <xref target="RFC8484"></xref>
+      or DNS-over-TLS (DoT) <xref target="RFC7858"></xref>., the response is
+      susceptible to forgery. DNS stub resolver MUST NOT fetch the URL unless
+      DNS messages are exchanged over DoT/DoH. Bad actors can host
+      DNS-over-TLS and DNS-over-HTTPS servers, and claim the servers offer
+      privacy and filtering capability to block malware domains but exactly do
+      the opposite to invade the security and privacy of the end user. This
+      attack can be mitigated if and only if the endpoint selects DoT/DoH
+      servers hosted by well-known organizations (e.g., ISPs, organization for
+      which a user works etc.) or DoT/DoH servers with filtering capability is
+      pre-configured in the OS/Browser. The DNS client can learn the filtering
       capability of the DoH/DoT server using <xref
       target="I-D.reddy-add-server-policy-selection"></xref>. It also
       discusses how a DNS client can authenticate it is connecting to a
@@ -296,11 +324,29 @@
 
       <t>The URL providing additional information about the cause of blocking
       access to a domain MUST only serve static content to limit the risk of
-      security threats from dynamic content (e.g., malicious JavaScript). </t>
+      security threats from dynamic content (e.g., malicious Java Script). The
+      client MUST reject the URL if the scheme is not "https". </t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
-      <t>This document has no actions for IANA.</t>
+      <t></t>
+
+      <section title="Error Page URL DNS Parameter">
+        <t>This parameter indicates the URL that provides additional
+        information about the cause of blocking access to a domain is
+        designated for use with the "Forged answer" extended error code. This
+        is a string encoded as UTF-8 characters. This is a string encoded as
+        UTF-8 characters. <list style="hanging">
+            <t hangText="Name:">errorurl</t>
+
+            <t hangText="SvcParamKey:">TBD</t>
+
+            <t hangText="Meaning:">URL that provides additional information
+            about the cause of blocking access to a domain</t>
+
+            <t hangText="Reference:">This document.</t>
+          </list></t>
+      </section>
     </section>
 
     <section title="Acknowledgements">
@@ -321,6 +367,8 @@
       <?rfc include='reference.RFC.7858'?>
 
       <?rfc include='reference.I-D.ietf-dnsop-extended-error' ?>
+
+      <?rfc include='reference.I-D.ietf-dnsop-svcb-httpssvc' ?>
     </references>
 
     <references title="Informative References">
@@ -336,6 +384,18 @@
                  target="https://chrome.google.com/webstore/detail/google-translate/aapbdbdomjkkjkaonfhkkikfgjllcleb/RK%3D2/RS%3DBBFW_pnWkPY0xPMYsAZI5xOgQEE-">
         <front>
           <title>Google Translate</title>
+
+          <author></author>
+
+          <date day="" month="" year="" />
+        </front>
+      </reference>
+
+      <reference anchor="Chrome-Install-Cert"
+                 target="https://support.securly.com/hc/en-us/articles/206081828-How-to-manually-install-the-Securly-SSL-certificate-in-Chrome">
+        <front>
+          <title>How to manually install the Securly SSL certificate in
+          Chrome</title>
 
           <author></author>
 
