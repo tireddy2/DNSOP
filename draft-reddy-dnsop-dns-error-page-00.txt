@@ -5,12 +5,12 @@
 ADD                                                             T. Reddy
 Internet-Draft                                                    McAfee
 Intended status: Informational                                   N. Cook
-Expires: December 26, 2020                                  Open-Xchange
+Expires: December 27, 2020                                  Open-Xchange
                                                             M. Boucadair
                                                                   Orange
                                                                  D. Wing
                                                                   Citrix
-                                                           June 24, 2020
+                                                           June 25, 2020
 
 
                       DNS Access Denied Error page
@@ -37,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 26, 2020.
+   This Internet-Draft will expire on December 27, 2020.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Reddy, et al.           Expires December 26, 2020               [Page 1]
+Reddy, et al.           Expires December 27, 2020               [Page 1]
 
 Internet-Draft        DNS access denied error page             June 2020
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Reddy, et al.           Expires December 26, 2020               [Page 2]
+Reddy, et al.           Expires December 27, 2020               [Page 2]
 
 Internet-Draft        DNS access denied error page             June 2020
 
@@ -165,7 +165,7 @@ Internet-Draft        DNS access denied error page             June 2020
 
 
 
-Reddy, et al.           Expires December 26, 2020               [Page 3]
+Reddy, et al.           Expires December 27, 2020               [Page 3]
 
 Internet-Draft        DNS access denied error page             June 2020
 
@@ -179,13 +179,17 @@ Internet-Draft        DNS access denied error page             June 2020
       For example, a DNS server may block access domain based on the
       content category like "Adult Content" to enforce parental control,
       "Violence & Terrorism" due to an external requirement imposed by
-      an external entity (e.g., Law Enforcement Agency) etc.  Further,
-      the threat data used to categorize domains may seldom mis-classify
-      domains (e.g., Domains wrongly classified as DGA (Domain
-      generation algorithm) by deep learning technique, domain wrongly
-      classified as phishing due to crowd souring, new domains not
-      categorized by the threat data).  The end user needs to know the
-      contact details of the IT/InfoSec team to raise a complaint.
+      an external entity (e.g., Law Enforcement Agency) etc.  The
+      content categories for domains cannot be standardized because the
+      classification of domains into content categories is vendor
+      specific, typically ranges from 40 to 100 type of categories
+      depending on the vendor and the categories keep evolving.
+      Further, the threat data used to categorize domains may seldom
+      mis-classify domains (e.g., Domains wrongly classified as DGA
+      (Domain generation algorithm) by deep learning technique, domain
+      wrongly classified as phishing due to crowd souring, new domains
+      not categorized by the threat data).  The end user needs to know
+      the contact details of the IT/InfoSec team to raise a complaint.
 
    This document focuses on addressing the above limitations by defining
    an method to return a URL that provides additional information about
@@ -217,11 +221,7 @@ Internet-Draft        DNS access denied error page             June 2020
 
 
 
-
-
-
-
-Reddy, et al.           Expires December 26, 2020               [Page 4]
+Reddy, et al.           Expires December 27, 2020               [Page 4]
 
 Internet-Draft        DNS access denied error page             June 2020
 
@@ -277,7 +277,7 @@ Internet-Draft        DNS access denied error page             June 2020
 
 
 
-Reddy, et al.           Expires December 26, 2020               [Page 5]
+Reddy, et al.           Expires December 27, 2020               [Page 5]
 
 Internet-Draft        DNS access denied error page             June 2020
 
@@ -333,7 +333,7 @@ Internet-Draft        DNS access denied error page             June 2020
 
 
 
-Reddy, et al.           Expires December 26, 2020               [Page 6]
+Reddy, et al.           Expires December 27, 2020               [Page 6]
 
 Internet-Draft        DNS access denied error page             June 2020
 
@@ -389,4 +389,4 @@ Authors' Addresses
 
 
 
-Reddy, et al.           Expires December 26, 2020               [Page 7]
+Reddy, et al.           Expires December 27, 2020               [Page 7]

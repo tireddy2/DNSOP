@@ -120,7 +120,7 @@
       discusses some of the reasons:</t>
 
       <t><list style="symbols">
-          <t> Various network security services are provided by Enterprise
+          <t>Various network security services are provided by Enterprise
           networks to protect endpoints (e.g,. Hosts, IoT devices).
           Network-based security solutions such as firewalls (FW) and
           Intrusion Prevention Systems (IPS) rely on network traffic
@@ -134,11 +134,11 @@
           protect the devices connected to the home network by performing
           DNS-based content filtering. The network security service may for
           example block access to domains to enforce parental control, block
-          access to malware sites etc. </t>
+          access to malware sites etc.</t>
 
-          <t> ISPs typically block access to access to domains is due to an
+          <t>ISPs typically block access to access to domains is due to an
           external requirement imposed by an external entity (e.g., Law
-          Enforcement Agency) by performing DNS-based content filtering. </t>
+          Enforcement Agency) by performing DNS-based content filtering.</t>
         </list></t>
 
       <t>The typical mechanisms to block a DNS query and their limitations are
@@ -181,7 +181,7 @@
           certificate errors, an end user may install a local root certificate
           on a host device. Doing so, however, is also poor security practice
           as it creates a security vulnerability that may be exploited by a
-          man-in-the-middle attack. </t>
+          man-in-the-middle attack.</t>
 
           <t>The DNS response is forged to provide a NXDOMAIN response to
           cause the DNS lookup to terminate in failure. In this case, an end
@@ -200,12 +200,16 @@
           based on the content category like "Adult Content" to enforce
           parental control, "Violence &amp; Terrorism" due to an external
           requirement imposed by an external entity (e.g., Law Enforcement
-          Agency) etc. Further, the threat data used to categorize domains may
+          Agency) etc. The content categories for domains cannot be
+          standardized because the classification of domains into content
+          categories is vendor specific, typically ranges from 40 to 100 type
+          of categories depending on the vendor and the categories keep
+          evolving. Further, the threat data used to categorize domains may
           seldom mis-classify domains (e.g., Domains wrongly classified as DGA
           (Domain generation algorithm) by deep learning technique, domain
           wrongly classified as phishing due to crowd souring, new domains not
           categorized by the threat data). The end user needs to know the
-          contact details of the IT/InfoSec team to raise a complaint. </t>
+          contact details of the IT/InfoSec team to raise a complaint.</t>
         </list></t>
 
       <t>This document focuses on addressing the above limitations by defining
@@ -228,14 +232,14 @@
     </section>
 
     <section title="Method to return the URI">
-      <t>TBD: TXT record or a new RRType or SVCB records. </t>
+      <t>TBD: TXT record or a new RRType or SVCB records.</t>
     </section>
 
     <section title="ERROR Page ">
       <t>The following section outlines the recommended contents of a error
-      page. </t>
+      page.</t>
 
-      <t>TODO </t>
+      <t>TODO</t>
     </section>
 
     <section title="Usability considerations">
@@ -274,7 +278,7 @@
       security threats from dynamic content (e.g., malicious JavaScript). The
       error page MUST comply with the recommended contents of a error page
       defined in Section 4. The endpoint can use deep learning techniques to
-      analyze the error page for compliance. </t>
+      analyze the error page for compliance.</t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
