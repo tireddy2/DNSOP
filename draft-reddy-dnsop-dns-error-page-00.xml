@@ -127,8 +127,14 @@
           inspection to implement perimeter-based security policies. The
           network security services may for example prevent malware download,
           block known malicious URLs, block phishing sites etc. These network
-          security services act on DNS requests originating from
-          endpoints.</t>
+          security services act on DNS requests originating from endpoints.
+          For example, DNS Firewalls, a method of expressing DNS response
+          policy information inside specially constructed DNS zones, known as
+          Response Policy Zones (RPZs) allows DNS servers to modify DNS
+          responses in real time to stop access to malware and phishing
+          domains. Note that some of the commonly known types of malware are
+          viruses, worms, trojans, bots, ransomware, backdoors, spyware, and
+          adware.</t>
 
           <t>Network devices in a home network offer network security to
           protect the devices connected to the home network by performing
@@ -136,7 +142,7 @@
           example block access to domains to enforce parental control, block
           access to malware sites etc.</t>
 
-          <t>ISPs typically block access to access to domains is due to an
+          <t>ISPs typically block access to access to domains due to an
           external requirement imposed by an external entity (e.g., Law
           Enforcement Agency) by performing DNS-based content filtering.</t>
         </list></t>
@@ -148,7 +154,7 @@
           access to the domain (e.g., malware). The extended error code
           "Forged answer" defined in <xref
           target="I-D.ietf-dnsop-extended-error"></xref> can be used by the
-          client to identify the DNS response the forged. When a HTTP(S)
+          client to identify the DNS response is forged. When a HTTP(S)
           enabled domain is blocked, the network security device presents a
           block page instead of the HTTP response from the content provider.
           If a HTTP enabled domain is blocked, the network security device
@@ -161,35 +167,42 @@
           device(s) store a copy of the private key. During the TLS handshake,
           the network security device modifies the certificate provided by the
           server and (re)signs it with the private key from the local root
-          certificate. However, configuring the local root certificate on
-          endpoints is not viable option in several deployments like Home
-          networks, Schools, Small Office/Home Office (SOHO) and Small/ Medium
-          Enterprise (SME). Further, Enterprise networks do not assume that
-          all devices in their network are managed by the IT team or Mobile
-          Device Management (MDM) devices, especially in the quite common BYOD
-          ("Bring Your Own Device") scenario. The local root certificate
-          cannot be installed on IoT devices without a device management tool.
-          In this case, the browser will encounter HTTPS certificate error
-          when the browser is redirected via DNS to a web page hosted to
-          display the block page. The typical errors are "The security
-          certificate presented by this website was not issued by a trusted
-          certificate authority" (Internet Explorer/Edge", "The site's
-          security certificate is not trusted" (Chrome), "This Connection is
-          Untrusted" (Firefox), &ldquo;Safari can't verify the identity of the
-          website&hellip;&rdquo; (Safari on MacOS)". An end user therefore
-          does not know why the connection was reset and, consequently, may
-          repeatedly try to unsuccessfully reach the domain. Frustrated, the
-          end user may use insecure interfaces to reach the domain,
-          potentially compromising both security and privacy. Furthermore,
-          certificate errors train users to click through certificate errors,
-          which is poor security practice. To eliminate the need for an end
-          user to click through certificate errors, an end user may manually
-          install a local root certificate <xref
-          target="Chrome-Install-Cert"></xref> on a host device . Doing so,
-          however, is also poor security practice as it creates a security
-          vulnerability that may be exploited by a man-in-the-middle attack.
-          When the manually installed local root certificate expires, user has
-          to again manually install the new local root certificate. </t>
+          certificate. <list style="symbols">
+              <t>However, configuring the local root certificate on endpoints
+              is not viable option in several deployments like Home networks,
+              Schools, Small Office/Home Office (SOHO) and Small/ Medium
+              Enterprise (SME). </t>
+
+              <t>Enterprise networks do not assume that all devices in their
+              network are managed by the IT team or Mobile Device Management
+              (MDM) devices, especially in the quite common BYOD ("Bring Your
+              Own Device") scenario. The local root certificate cannot be
+              installed on IoT devices without a device management tool. In
+              this case, the browser will encounter HTTPS certificate error
+              when the browser is redirected via DNS to a web page hosted to
+              display the block page. The typical errors are "The security
+              certificate presented by this website was not issued by a
+              trusted certificate authority" (Internet Explorer/Edge"), "The
+              site's security certificate is not trusted" (Chrome), "This
+              Connection is Untrusted" (Firefox), &ldquo;Safari can't verify
+              the identity of the website&hellip;&rdquo; (Safari on MacOS)".
+              </t>
+
+              <t>An end user does not know why the connection was reset and,
+              consequently, may repeatedly try to unsuccessfully reach the
+              domain. Frustrated, the end user may use insecure interfaces to
+              reach the domain, potentially compromising both security and
+              privacy. Furthermore, certificate errors train users to click
+              through certificate errors, which is poor security practice. To
+              eliminate the need for an end user to click through certificate
+              errors, an end user may manually install a local root
+              certificate <xref target="Chrome-Install-Cert"></xref> on a host
+              device . Doing so, however, is also poor security practice as it
+              creates a security vulnerability that may be exploited by a
+              man-in-the-middle attack. When the manually installed local root
+              certificate expires, user has to again manually install the new
+              local root certificate.</t>
+            </list></t>
 
           <t>The DNS response is forged to provide a NXDOMAIN response to
           cause the DNS lookup to terminate in failure. In this case, an end
@@ -210,11 +223,11 @@
           requirement imposed by an external entity (e.g., Law Enforcement
           Agency) etc. The content categories for domains cannot be
           standardized because the classification of domains into content
-          categories is vendor specific, typically ranges from 40 to 100 type
+          categories is vendor specific, typically ranges from 40 to 100 types
           of categories depending on the vendor and the categories keep
           evolving. Further, the threat data used to categorize domains may
           seldom mis-classify domains (e.g., Domains wrongly classified as DGA
-          (Domain generation algorithm) by deep learning technique, domain
+          (Domain generation algorithm) by deep learning techniques, domain
           wrongly classified as phishing due to crowd souring, new domains not
           categorized by the threat data). The end user needs to know the
           contact details of the IT/InfoSec team to raise a complaint.</t>
@@ -245,15 +258,13 @@
       target="I-D.ietf-dnsop-svcb-httpssvc"></xref>. This record provides the
       URL that provides additional information about the cause of blocking
       access to a domain. In order to convey a error page URL for a "Forged
-      Answer" extended error, a SVCB record MUST contain the "errorurl" (<xref
-      target="IANA"></xref>). The value stored in the parameter is a URL whose
-      scheme MUST be "https". The service parameter key "errorurl" MUST only
-      be processed by the DNS client for a "Forged Answer" extended error code
-      and MUST be ignored for any other type of DNS response. </t>
+      Answer" extended error, a HTTPSSVC record MUST contain the "errorurl"
+      (<xref target="IANA"></xref>). The value stored in the parameter is a
+      URL whose scheme MUST be "https". The service parameter key "errorurl"
+      MUST only be processed by the DNS client for a "Forged Answer" extended
+      error code and MUST be ignored for any other type of DNS response.</t>
 
-      <t>The following example shows a record containing a error page URL, as
-      returned by a query for the HTTPSSVC variant of the SVCB record type on
-      "foo.example.com".</t>
+      <t>The following example shows a record containing a error page URL</t>
 
       <t><figure align="center" anchor="ex" title="Example 1">
           <artwork><![CDATA[foo.example.com.  7200  IN HTTPSSVC 1 (
@@ -271,7 +282,7 @@
           is blocked based on threat data, the threat type associated with the
           blocked domain can be provided to the end user. For example, the
           reason can indicate the type of malware blocked like spyware and the
-          damage it can do the security and privacy of the end-user. </t>
+          damage it can do the security and privacy of the user.</t>
 
           <t>The domain name blocked.</t>
 
@@ -286,51 +297,49 @@
 
     <section title="Usability considerations">
       <t>If the error page is displayed in a language not known to the end
-      user, browser extension to translate the language can be used by the
-      user. For example, "Google Translate" extension <xref
+      user, browser extension to translate to user's native language can be
+      used. For example, "Google Translate" extension <xref
       target="Chrome-Translate"></xref> provided by Google on Chrome can be
       used by the user to translate the error page. The "Google Translate"
       extension automatically detects if the language of a page is different
       from the language the user has selected. If it is in a different
       language, a banner appears at the top of the page. The user can click on
       the Translate button in the banner to have all the text on the page
-      appear in the language selected by the user. </t>
+      appear in the language selected by the user.</t>
     </section>
 
     <section anchor="Security" title="Security Considerations">
-      <t> Security considerations in <xref
+      <t>Security considerations in <xref
       target="I-D.ietf-dnsop-extended-error"></xref> need to be taken into
       consideration. Unless the DNS response that conveys the URL that
       provides additional information about the cause of blocking access to a
       domain is sent over DNS-over-HTTPS (DoH) <xref target="RFC8484"></xref>
-      or DNS-over-TLS (DoT) <xref target="RFC7858"></xref>., the response is
-      susceptible to forgery. DNS stub resolver MUST NOT fetch the URL unless
-      DNS messages are exchanged over DoT/DoH. Bad actors can host
+      or DNS-over-TLS (DoT) <xref target="RFC7858"></xref>., the DNS response
+      is susceptible to forgery. DNS stub resolver MUST NOT fetch the URL
+      unless DNS messages are exchanged over DoT/DoH. Bad actors can host
       DNS-over-TLS and DNS-over-HTTPS servers, and claim the servers offer
       privacy and filtering capability to block malware domains but exactly do
       the opposite to invade the security and privacy of the end user. This
       attack can be mitigated if and only if the endpoint selects DoT/DoH
       servers hosted by well-known organizations (e.g., ISPs, organization for
-      which a user works etc.) or DoT/DoH servers with filtering capability is
-      pre-configured in the OS/Browser. The DNS client can learn the filtering
-      capability of the DoH/DoT server using <xref
-      target="I-D.reddy-add-server-policy-selection"></xref>. It also
-      discusses how a DNS client can authenticate it is connecting to a
-      DoH/DoT server hosted by a specific organization (e.g., ISP). This
-      information is cryptographically signed to attest its authenticity. It
-      is particularly useful when the DoH/DoT server is insecurely discovered
-      and prevents the client from connecting to an attackers DoH/DoT
-      server.</t>
+      which a user works etc.) or the user selects DoT/DoH server with
+      filtering capability pre-configured in the OS/Browser. The DNS client
+      can learn the filtering capability of the DoH/DoT server using <xref
+      target="I-D.reddy-add-server-policy-selection"></xref>. <xref
+      target="I-D.reddy-add-server-policy-selection"></xref> also discusses
+      how a DNS client can authenticate it is connecting to a DoH/DoT server
+      hosted by a specific organization (e.g., ISP). This information is
+      cryptographically signed to attest its authenticity. It is particularly
+      useful when the DoH/DoT server is insecurely discovered and prevents the
+      client from connecting to an attackers DoH/DoT server.</t>
 
       <t>The URL providing additional information about the cause of blocking
       access to a domain MUST only serve static content to limit the risk of
       security threats from dynamic content (e.g., malicious Java Script). The
-      client MUST reject the URL if the scheme is not "https". </t>
+      client MUST reject the URL if the scheme is not "https".</t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
-      <t></t>
-
       <section title="Error Page URL DNS Parameter">
         <t>This parameter indicates the URL that provides additional
         information about the cause of blocking access to a domain is
