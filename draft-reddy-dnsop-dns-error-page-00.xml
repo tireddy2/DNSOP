@@ -254,20 +254,22 @@
 
     <section title="Method to return the error page URL">
       <t>The mechanism for providing additional information about the cause of
-      blocking access to a domain is from the HTTPSSVC DNS record <xref
-      target="I-D.ietf-dnsop-svcb-httpssvc"></xref>. This record provides the
-      URL that provides additional information about the cause of blocking
-      access to a domain. In order to convey a error page URL for a "Forged
-      Answer" extended error, a HTTPSSVC record MUST contain the "errorurl"
-      (<xref target="IANA"></xref>). The value stored in the parameter is a
-      URL whose scheme MUST be "https". The service parameter key "errorurl"
-      MUST only be processed by the DNS client for a "Forged Answer" extended
-      error code and MUST be ignored for any other type of DNS response.</t>
+      blocking access to a domain is from the HTTPS DNS record <xref
+      target="I-D.ietf-dnsop-svcb-https"></xref>. This HTTPS record in the
+      "Service Form" provides the URL that gives additional information about
+      the cause of blocking access to a domain. In order to convey a error
+      page URL for a "Forged Answer" extended error, a HTTPS record MUST
+      contain the "errorurl" (<xref target="IANA"></xref>). The service
+      parameter key "errorurl" MUST only be processed by the DNS client for a
+      "Forged Answer" extended error code and MUST be ignored for any other
+      type of DNS response.</t>
 
-      <t>The following example shows a record containing a error page URL</t>
+      <t>The following example shows a record containing a error page URL, the
+      HTTPS record is returned along with the "Forged Answer" extended error
+      code.</t>
 
       <t><figure align="center" anchor="ex" title="Example 1">
-          <artwork><![CDATA[foo.example.com.  7200  IN HTTPSSVC 1 (
+          <artwork><![CDATA[foo.example.com.  7200  IN HTTPS 1 (
                               errorurl=https://block.example.net/block-page )
 ]]></artwork>
         </figure></t>
@@ -314,7 +316,7 @@
       consideration. Unless the DNS response that conveys the URL that
       provides additional information about the cause of blocking access to a
       domain is sent over DNS-over-HTTPS (DoH) <xref target="RFC8484"></xref>
-      or DNS-over-TLS (DoT) <xref target="RFC7858"></xref>., the DNS response
+      or DNS-over-TLS (DoT) <xref target="RFC7858"></xref>, the DNS response
       is susceptible to forgery. DNS stub resolver MUST NOT fetch the URL
       unless DNS messages are exchanged over DoT/DoH. Bad actors can host
       DNS-over-TLS and DNS-over-HTTPS servers, and claim the servers offer
@@ -336,7 +338,9 @@
       <t>The URL providing additional information about the cause of blocking
       access to a domain MUST only serve static content to limit the risk of
       security threats from dynamic content (e.g., malicious Java Script). The
-      client MUST reject the URL if the scheme is not "https".</t>
+      client MUST reject the URL if the scheme is not "https". DNSSEC signing
+      and validation is not possible for the HTTPS record returning the error
+      page URL along with the "Forged Answer" extended error.</t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
@@ -377,7 +381,7 @@
 
       <?rfc include='reference.I-D.ietf-dnsop-extended-error' ?>
 
-      <?rfc include='reference.I-D.ietf-dnsop-svcb-httpssvc' ?>
+      <?rfc include='reference.I-D.ietf-dnsop-svcb-https' ?>
     </references>
 
     <references title="Informative References">

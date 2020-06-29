@@ -5,12 +5,12 @@
 ADD                                                             T. Reddy
 Internet-Draft                                                    McAfee
 Intended status: Informational                                   N. Cook
-Expires: December 30, 2020                                  Open-Xchange
+Expires: December 31, 2020                                  Open-Xchange
                                                             M. Boucadair
                                                                   Orange
                                                                  D. Wing
                                                                   Citrix
-                                                           June 28, 2020
+                                                           June 29, 2020
 
 
                       DNS Access Denied Error page
@@ -37,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 30, 2020.
+   This Internet-Draft will expire on December 31, 2020.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Reddy, et al.           Expires December 30, 2020               [Page 1]
+Reddy, et al.           Expires December 31, 2020               [Page 1]
 
 Internet-Draft        DNS Access Denied Error Page             June 2020
 
@@ -76,7 +76,7 @@ Table of Contents
    9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .   7
      9.2.  Informative References  . . . . . . . . . . . . . . . . .   8
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   8
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   9
 
 1.  Introduction
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Reddy, et al.           Expires December 30, 2020               [Page 2]
+Reddy, et al.           Expires December 31, 2020               [Page 2]
 
 Internet-Draft        DNS Access Denied Error Page             June 2020
 
@@ -165,7 +165,7 @@ Internet-Draft        DNS Access Denied Error Page             June 2020
 
 
 
-Reddy, et al.           Expires December 30, 2020               [Page 3]
+Reddy, et al.           Expires December 31, 2020               [Page 3]
 
 Internet-Draft        DNS Access Denied Error Page             June 2020
 
@@ -221,7 +221,7 @@ Internet-Draft        DNS Access Denied Error Page             June 2020
 
 
 
-Reddy, et al.           Expires December 30, 2020               [Page 4]
+Reddy, et al.           Expires December 31, 2020               [Page 4]
 
 Internet-Draft        DNS Access Denied Error Page             June 2020
 
@@ -242,19 +242,20 @@ Internet-Draft        DNS Access Denied Error Page             June 2020
 3.  Method to return the error page URL
 
    The mechanism for providing additional information about the cause of
-   blocking access to a domain is from the HTTPSSVC DNS record
-   [I-D.ietf-dnsop-svcb-httpssvc].  This record provides the URL that
-   provides additional information about the cause of blocking access to
-   a domain.  In order to convey a error page URL for a "Forged Answer"
-   extended error, a HTTPSSVC record MUST contain the "errorurl"
-   (Section 7).  The value stored in the parameter is a URL whose scheme
-   MUST be "https".  The service parameter key "errorurl" MUST only be
-   processed by the DNS client for a "Forged Answer" extended error code
-   and MUST be ignored for any other type of DNS response.
+   blocking access to a domain is from the HTTPS DNS record
+   [I-D.ietf-dnsop-svcb-https].  This HTTPS record in the "Service Form"
+   provides the URL that gives additional information about the cause of
+   blocking access to a domain.  In order to convey a error page URL for
+   a "Forged Answer" extended error, a HTTPS record MUST contain the
+   "errorurl" (Section 7).  The service parameter key "errorurl" MUST
+   only be processed by the DNS client for a "Forged Answer" extended
+   error code and MUST be ignored for any other type of DNS response.
 
-   The following example shows a record containing a error page URL
+   The following example shows a record containing a error page URL, the
+   HTTPS record is returned along with the "Forged Answer" extended
+   error code.
 
-foo.example.com.  7200  IN HTTPSSVC 1 (
+foo.example.com.  7200  IN HTTPS 1 (
                               errorurl=https://block.example.net/block-page )
 
                             Figure 1: Example 1
@@ -276,8 +277,7 @@ foo.example.com.  7200  IN HTTPSSVC 1 (
 
 
 
-
-Reddy, et al.           Expires December 30, 2020               [Page 5]
+Reddy, et al.           Expires December 31, 2020               [Page 5]
 
 Internet-Draft        DNS Access Denied Error Page             June 2020
 
@@ -305,7 +305,7 @@ Internet-Draft        DNS Access Denied Error Page             June 2020
    taken into consideration.  Unless the DNS response that conveys the
    URL that provides additional information about the cause of blocking
    access to a domain is sent over DNS-over-HTTPS (DoH) [RFC8484] or
-   DNS-over-TLS (DoT) [RFC7858]., the DNS response is susceptible to
+   DNS-over-TLS (DoT) [RFC7858], the DNS response is susceptible to
    forgery.  DNS stub resolver MUST NOT fetch the URL unless DNS
    messages are exchanged over DoT/DoH.  Bad actors can host DNS-over-
    TLS and DNS-over-HTTPS servers, and claim the servers offer privacy
@@ -329,14 +329,17 @@ Internet-Draft        DNS Access Denied Error Page             June 2020
    access to a domain MUST only serve static content to limit the risk
    of security threats from dynamic content (e.g., malicious Java
    Script).  The client MUST reject the URL if the scheme is not
-   "https".
+   "https".  DNSSEC signing and validation is not possible for the HTTPS
 
 
 
-Reddy, et al.           Expires December 30, 2020               [Page 6]
+Reddy, et al.           Expires December 31, 2020               [Page 6]
 
 Internet-Draft        DNS Access Denied Error Page             June 2020
 
+
+   record returning the error page URL along with the "Forged Answer"
+   extended error.
 
 7.  IANA Considerations
 
@@ -370,10 +373,10 @@ Internet-Draft        DNS Access Denied Error Page             June 2020
               Lawrence, "Extended DNS Errors", draft-ietf-dnsop-
               extended-error-16 (work in progress), May 2020.
 
-   [I-D.ietf-dnsop-svcb-httpssvc]
+   [I-D.ietf-dnsop-svcb-https]
               Schwartz, B., Bishop, M., and E. Nygren, "Service binding
               and parameter specification via the DNS (DNS SVCB and
-              HTTPSSVC)", draft-ietf-dnsop-svcb-httpssvc-03 (work in
+              HTTPS RRs)", draft-ietf-dnsop-svcb-https-00 (work in
               progress), June 2020.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
@@ -381,18 +384,20 @@ Internet-Draft        DNS Access Denied Error Page             June 2020
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
+
+
+
+
+
+Reddy, et al.           Expires December 31, 2020               [Page 7]
+
+Internet-Draft        DNS Access Denied Error Page             June 2020
+
+
    [RFC7858]  Hu, Z., Zhu, L., Heidemann, J., Mankin, A., Wessels, D.,
               and P. Hoffman, "Specification for DNS over Transport
               Layer Security (TLS)", RFC 7858, DOI 10.17487/RFC7858, May
               2016, <https://www.rfc-editor.org/info/rfc7858>.
-
-
-
-
-Reddy, et al.           Expires December 30, 2020               [Page 7]
-
-Internet-Draft        DNS Access Denied Error Page             June 2020
-
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
@@ -436,19 +441,16 @@ Internet-Draft        DNS Access Denied Error Page             June 2020
               RFC 8598, DOI 10.17487/RFC8598, May 2019,
               <https://www.rfc-editor.org/info/rfc8598>.
 
-Authors' Addresses
 
 
 
 
-
-
-
-
-Reddy, et al.           Expires December 30, 2020               [Page 8]
+Reddy, et al.           Expires December 31, 2020               [Page 8]
 
 Internet-Draft        DNS Access Denied Error Page             June 2020
 
+
+Authors' Addresses
 
    Tirumaleswar Reddy
    McAfee, Inc.
@@ -499,6 +501,4 @@ Internet-Draft        DNS Access Denied Error Page             June 2020
 
 
 
-
-
-Reddy, et al.           Expires December 30, 2020               [Page 9]
+Reddy, et al.           Expires December 31, 2020               [Page 9]
