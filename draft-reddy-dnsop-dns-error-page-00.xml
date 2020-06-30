@@ -105,30 +105,28 @@
 
     <date />
 
-    <workgroup>ADD</workgroup>
-
-    <abstract>
-      <t>This document defines an method to return a URL that provides
+       <abstract>
+      <t>This document defines a method to return an URL that provides
       additional information about the cause of blocking access to a
-      domain.</t>
+      target domain.</t>
     </abstract>
   </front>
 
   <middle>
     <section anchor="intro" title="Introduction">
-      <t>There are many reasons that a DNS query may be blocked, the following
-      discusses some of the reasons:</t>
+      <t>There are many reasons that a DNS query may be blocked. The following
+      discusses some of these reasons:</t>
 
       <t><list style="symbols">
           <t>Various network security services are provided by Enterprise
-          networks to protect endpoints (e.g,. Hosts, IoT devices).
-          Network-based security solutions such as firewalls (FW) and
+          networks to protect endpoints (e.g., Hosts including IoT devices).
+          Network-based security solutions such as firewalls and
           Intrusion Prevention Systems (IPS) rely on network traffic
           inspection to implement perimeter-based security policies. The
-          network security services may for example prevent malware download,
-          block known malicious URLs, block phishing sites etc. These network
-          security services act on DNS requests originating from endpoints.
-          For example, DNS Firewalls, a method of expressing DNS response
+          network security services may, for example, prevent malware download,
+          block known malicious URLs, block phishing sites, etc. These network
+          security services act on DNS queries originating from endpoints.
+          For example, DNS firewalls, a method of expressing DNS response
           policy information inside specially constructed DNS zones, known as
           Response Policy Zones (RPZs) allows DNS servers to modify DNS
           responses in real time to stop access to malware and phishing
@@ -138,12 +136,12 @@
 
           <t>Network devices in a home network offer network security to
           protect the devices connected to the home network by performing
-          DNS-based content filtering. The network security service may for
-          example block access to domains to enforce parental control, block
-          access to malware sites etc.</t>
+          DNS-based content filtering. The network security service may, for
+          example, block access to specific domains to enforce parental control, block
+          access to malware sites, etc.</t>
 
-          <t>ISPs typically block access to access to domains due to an
-          external requirement imposed by an external entity (e.g., Law
+          <t>ISPs typically block access to some domains due to a
+          requirement imposed by an external entity (e.g., Law
           Enforcement Agency) by performing DNS-based content filtering.</t>
         </list></t>
 
@@ -155,12 +153,12 @@
           "Forged answer" defined in <xref
           target="I-D.ietf-dnsop-extended-error"></xref> can be used by the
           client to identify the DNS response is forged. When a HTTP(S)
-          enabled domain is blocked, the network security device presents a
+          enabled domain name is blocked, the network security device presents a
           block page instead of the HTTP response from the content provider.
-          If a HTTP enabled domain is blocked, the network security device
-          intercepts the HTTP request and returns a block page over HTTP. If a
+          If an HTTP enabled domain name is blocked, the network security device
+          intercepts the HTTP request and returns a block page over HTTP. If an
           HTTPS enabled domain is blocked, the block page is also served over
-          HTTPS. In order to return a block page over HTTPS, MITM is enabled
+          HTTPS. In order to return a block page over HTTPS, man in the middle (MITM) is enabled
           on endpoints by generating a local root certificate and an
           accompanying (local) public/private key pair. The local root
           certificate is installed on the endpoint, and the network security
@@ -170,15 +168,15 @@
           certificate. <list style="symbols">
               <t>However, configuring the local root certificate on endpoints
               is not viable option in several deployments like Home networks,
-              Schools, Small Office/Home Office (SOHO) and Small/ Medium
-              Enterprise (SME). </t>
+              Schools, Small Office/Home Office (SOHO), and Small/ Medium
+              Enterprise (SME). Note that modifying the root certificate has many implications on the overall security protection (see, e.g., https://www.ndss-symposium.org/wp-content/uploads/2017/09/ndss2017_04A-4_Durumeric_paper_0.pdf)</t>
 
-              <t>Enterprise networks do not assume that all devices in their
+              <t>Enterprise networks do not assume that all the devices connected to their
               network are managed by the IT team or Mobile Device Management
               (MDM) devices, especially in the quite common BYOD ("Bring Your
               Own Device") scenario. The local root certificate cannot be
               installed on IoT devices without a device management tool. In
-              this case, the browser will encounter HTTPS certificate error
+              this case, the browser will encounter an HTTPS certificate error
               when the browser is redirected via DNS to a web page hosted to
               display the block page. The typical errors are "The security
               certificate presented by this website was not issued by a
@@ -197,31 +195,24 @@
               eliminate the need for an end user to click through certificate
               errors, an end user may manually install a local root
               certificate <xref target="Chrome-Install-Cert"></xref> on a host
-              device . Doing so, however, is also poor security practice as it
+              device. Doing so, however, is also poor security practice as it
               creates a security vulnerability that may be exploited by a
-              man-in-the-middle attack. When the manually installed local root
-              certificate expires, user has to again manually install the new
+              MITM attack. When the manually installed local root
+              certificate expires, the user has to (again) manually install the new
               local root certificate.</t>
             </list></t>
 
-          <t>The DNS response is forged to provide a NXDOMAIN response to
-          cause the DNS lookup to terminate in failure. In this case, an end
-          user does not know why the domain cannot be reached, and may
-          repeatedly try to unsuccessfully reach the domain. Frustrated, the
-          end user may use insecure interfaces to reach the domain,
-          potentially compromising both security and privacy.</t>
-
-          <t>The extended error codes Blocked, Censored and Filtered defined
+          <t>The extended error codes Blocked, Censored, and Filtered defined
           in <xref target="I-D.ietf-dnsop-extended-error"></xref> can be
           returned by the DNS server to provide additional information about
-          the cause of an DNS error. These extended error codes does not
+          the cause of an DNS error. These extended error codes do not
           suffer from the above limitations but the user still does not know
-          the exact reason or is aware of the exact entity blocking the access
+          the exact reason nor he/she is aware of the exact entity blocking the access
           to the domain. For example, a DNS server may block access domain
           based on the content category like "Adult Content" to enforce
           parental control, "Violence &amp; Terrorism" due to an external
           requirement imposed by an external entity (e.g., Law Enforcement
-          Agency) etc. The content categories for domains cannot be
+          Agency), etc. The content categories for domains cannot be
           standardized because the classification of domains into content
           categories is vendor specific, typically ranges from 40 to 100 types
           of categories depending on the vendor and the categories keep
@@ -234,8 +225,8 @@
         </list></t>
 
       <t>This document focuses on addressing the above limitations by defining
-      an method to return a URL that provides additional information about the
-      cause of blocking access to a domain.</t>
+      a method to return an URL that provides additional information about the
+      cause of blocking access to a domain name.</t>
     </section>
 
     <section anchor="notation" title="Terminology">
@@ -257,14 +248,14 @@
       blocking access to a domain is from the HTTPS DNS record <xref
       target="I-D.ietf-dnsop-svcb-https"></xref>. This HTTPS record in the
       "Service Form" provides the URL that gives additional information about
-      the cause of blocking access to a domain. In order to convey a error
-      page URL for a "Forged Answer" extended error, a HTTPS record MUST
+      the cause of blocking access to a domain. In order to convey an error
+      page URL for a "Forged Answer" extended error, an HTTPS record MUST
       contain the "errorurl" (<xref target="IANA"></xref>). The service
       parameter key "errorurl" MUST only be processed by the DNS client for a
       "Forged Answer" extended error code and MUST be ignored for any other
       type of DNS response.</t>
 
-      <t>The following example shows a record containing a error page URL, the
+      <t>The following example shows a record containing an error page URL, the
       HTTPS record is returned along with the "Forged Answer" extended error
       code.</t>
 
@@ -276,18 +267,20 @@
     </section>
 
     <section title="ERROR Page ">
-      <t>The following text outlines the recommended contents of a error
+      <t>The following text outlines the recommended contents of an error
       page.</t>
 
       <t><list style="symbols">
           <t>The exact reason for blocking access to the domain. If the domain
-          is blocked based on threat data, the threat type associated with the
-          blocked domain can be provided to the end user. For example, the
+          is blocked based on some threat data, the threat type associated with the
+          blocked domain can be provided/displayed to the end user. For example, the
           reason can indicate the type of malware blocked like spyware and the
           damage it can do the security and privacy of the user.</t>
 
           <t>The domain name blocked.</t>
 
+          <t>A pointer to a regulatroy text that mandates this content blocking.</t>
+           
           <t>The entity (or organization) blocking the access to the domain
           and contact details of the IT/InfoSec team to raise a complaint.</t>
 
@@ -297,13 +290,13 @@
         </list></t>
     </section>
 
-    <section title="Usability considerations">
+    <section title="Usability Considerations">
       <t>If the error page is displayed in a language not known to the end
-      user, browser extension to translate to user's native language can be
+      user and assuming Internationalization features failed, browser extensions to translate to user's native language can be
       used. For example, "Google Translate" extension <xref
       target="Chrome-Translate"></xref> provided by Google on Chrome can be
       used by the user to translate the error page. The "Google Translate"
-      extension automatically detects if the language of a page is different
+      extension automatically detects whether the language of a page is different
       from the language the user has selected. If it is in a different
       language, a banner appears at the top of the page. The user can click on
       the Translate button in the banner to have all the text on the page
@@ -317,16 +310,18 @@
       provides additional information about the cause of blocking access to a
       domain is sent over DNS-over-HTTPS (DoH) <xref target="RFC8484"></xref>
       or DNS-over-TLS (DoT) <xref target="RFC7858"></xref>, the DNS response
-      is susceptible to forgery. DNS stub resolver MUST NOT fetch the URL
+      is susceptible to forgery.</t> 
+           
+      <t>DNS stub resolver MUST NOT fetch the URL
       unless DNS messages are exchanged over DoT/DoH. Bad actors can host
-      DNS-over-TLS and DNS-over-HTTPS servers, and claim the servers offer
+      DoT/DoH servers, and claim the servers offer
       privacy and filtering capability to block malware domains but exactly do
       the opposite to invade the security and privacy of the end user. This
       attack can be mitigated if and only if the endpoint selects DoT/DoH
       servers hosted by well-known organizations (e.g., ISPs, organization for
-      which a user works etc.) or the user selects DoT/DoH server with
+      which a user works, etc.) or the user selects DoT/DoH server with
       filtering capability pre-configured in the OS/Browser. The DNS client
-      can learn the filtering capability of the DoH/DoT server using <xref
+      can learn the filtering capability of a DoH/DoT server using <xref
       target="I-D.reddy-add-server-policy-selection"></xref>. <xref
       target="I-D.reddy-add-server-policy-selection"></xref> also discusses
       how a DNS client can authenticate it is connecting to a DoH/DoT server
@@ -375,10 +370,6 @@
 
       <?rfc include='reference.RFC.8174'?>
 
-      <?rfc include='reference.RFC.8484'?>
-
-      <?rfc include='reference.RFC.7858'?>
-
       <?rfc include='reference.I-D.ietf-dnsop-extended-error' ?>
 
       <?rfc include='reference.I-D.ietf-dnsop-svcb-https' ?>
@@ -386,7 +377,9 @@
 
     <references title="Informative References">
       <?rfc include='reference.RFC.8499'?>
+      <?rfc include='reference.RFC.8484'?>
 
+      <?rfc include='reference.RFC.7858'?>
       <?rfc include='reference.RFC.8598'?>
 
       <?rfc include='reference.I-D.reddy-add-server-policy-selection'?>
