@@ -2,15 +2,15 @@
 
 
 
-ADD                                                             T. Reddy
+DNSOP WG                                                        T. Reddy
 Internet-Draft                                                    McAfee
-Intended status: Informational                                   N. Cook
-Expires: December 31, 2020                                  Open-Xchange
+Intended status: Standards Track                                 N. Cook
+Expires: January 1, 2021                                    Open-Xchange
                                                             M. Boucadair
                                                                   Orange
                                                                  D. Wing
                                                                   Citrix
-                                                           June 29, 2020
+                                                           June 30, 2020
 
 
                       DNS Access Denied Error page
@@ -18,8 +18,8 @@ Expires: December 31, 2020                                  Open-Xchange
 
 Abstract
 
-   This document defines an method to return a URL that provides
-   additional information about the cause of blocking access to a
+   This document defines a method to return an URL that provides
+   additional information about the cause of blocking access to a target
    domain.
 
 Status of This Memo
@@ -37,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 31, 2020.
+   This Internet-Draft will expire on January 1, 2021.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Reddy, et al.           Expires December 31, 2020               [Page 1]
+Reddy, et al.            Expires January 1, 2021                [Page 1]
 
 Internet-Draft        DNS Access Denied Error Page             June 2020
 
@@ -68,7 +68,7 @@ Table of Contents
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   5
    3.  Method to return the error page URL . . . . . . . . . . . . .   5
    4.  ERROR Page  . . . . . . . . . . . . . . . . . . . . . . . . .   5
-   5.  Usability considerations  . . . . . . . . . . . . . . . . . .   6
+   5.  Usability Considerations  . . . . . . . . . . . . . . . . . .   6
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
      7.1.  Error Page URL DNS Parameter  . . . . . . . . . . . . . .   7
@@ -80,43 +80,43 @@ Table of Contents
 
 1.  Introduction
 
-   There are many reasons that a DNS query may be blocked, the following
-   discusses some of the reasons:
+   There are many reasons that a DNS query may be blocked.  The
+   following discusses some of these reasons:
 
    o  Various network security services are provided by Enterprise
-      networks to protect endpoints (e.g,. Hosts, IoT devices).
-      Network-based security solutions such as firewalls (FW) and
-      Intrusion Prevention Systems (IPS) rely on network traffic
-      inspection to implement perimeter-based security policies.  The
-      network security services may for example prevent malware
-      download, block known malicious URLs, block phishing sites etc.
-      These network security services act on DNS requests originating
-      from endpoints.  For example, DNS Firewalls, a method of
-      expressing DNS response policy information inside specially
-      constructed DNS zones, known as Response Policy Zones (RPZs)
-      allows DNS servers to modify DNS responses in real time to stop
-      access to malware and phishing domains.  Note that some of the
-      commonly known types of malware are viruses, worms, trojans, bots,
-      ransomware, backdoors, spyware, and adware.
+      networks to protect endpoints (e.g., Hosts including IoT devices).
+      Network-based security solutions such as firewalls and Intrusion
+      Prevention Systems (IPS) rely on network traffic inspection to
+      implement perimeter-based security policies.  The network security
+      services may, for example, prevent malware download, block known
+      malicious URLs, block phishing sites, etc.  These network security
+      services act on DNS queries originating from endpoints.  For
+      example, DNS firewalls, a method of expressing DNS response policy
+      information inside specially constructed DNS zones, known as
+      Response Policy Zones (RPZs) allows DNS servers to modify DNS
+      responses in real time to stop access to malware and phishing
+      domains.  Note that some of the commonly known types of malware
+      are viruses, worms, trojans, bots, ransomware, backdoors, spyware,
+      and adware.
 
    o  Network devices in a home network offer network security to
       protect the devices connected to the home network by performing
-      DNS-based content filtering.  The network security service may for
-      example block access to domains to enforce parental control, block
-      access to malware sites etc.
+      DNS-based content filtering.  The network security service may,
+      for example, block access to specific domains to enforce parental
+      control, block access to malware sites, etc.
 
 
 
 
 
-Reddy, et al.           Expires December 31, 2020               [Page 2]
+Reddy, et al.            Expires January 1, 2021                [Page 2]
 
 Internet-Draft        DNS Access Denied Error Page             June 2020
 
 
-   o  ISPs typically block access to access to domains due to an
-      external requirement imposed by an external entity (e.g., Law
-      Enforcement Agency) by performing DNS-based content filtering.
+   o  ISPs typically block access to some domains due to a requirement
+      imposed by an external entity (e.g., Law Enforcement Agency) by
+      performing DNS-based content filtering.
 
    The typical mechanisms to block a DNS query and their limitations are
    illustrated below:
@@ -126,61 +126,64 @@ Internet-Draft        DNS Access Denied Error Page             June 2020
       access to the domain (e.g., malware).  The extended error code
       "Forged answer" defined in [I-D.ietf-dnsop-extended-error] can be
       used by the client to identify the DNS response is forged.  When a
-      HTTP(S) enabled domain is blocked, the network security device
-      presents a block page instead of the HTTP response from the
-      content provider.  If a HTTP enabled domain is blocked, the
+      HTTP(S) enabled domain name is blocked, the network security
+      device presents a block page instead of the HTTP response from the
+      content provider.  If an HTTP enabled domain name is blocked, the
       network security device intercepts the HTTP request and returns a
-      block page over HTTP.  If a HTTPS enabled domain is blocked, the
+      block page over HTTP.  If an HTTPS enabled domain is blocked, the
       block page is also served over HTTPS.  In order to return a block
-      page over HTTPS, MITM is enabled on endpoints by generating a
-      local root certificate and an accompanying (local) public/private
-      key pair.  The local root certificate is installed on the
-      endpoint, and the network security device(s) store a copy of the
-      private key.  During the TLS handshake, the network security
-      device modifies the certificate provided by the server and
-      (re)signs it with the private key from the local root certificate.
+      page over HTTPS, man in the middle (MITM) is enabled on endpoints
+      by generating a local root certificate and an accompanying (local)
+      public/private key pair.  The local root certificate is installed
+      on the endpoint, and the network security device(s) store a copy
+      of the private key.  During the TLS handshake, the network
+      security device modifies the certificate provided by the server
+      and (re)signs it with the private key from the local root
+      certificate.
 
       *  However, configuring the local root certificate on endpoints is
          not viable option in several deployments like Home networks,
-         Schools, Small Office/Home Office (SOHO) and Small/ Medium
+         Schools, Small Office/Home Office (SOHO), and Small/ Medium
          Enterprise (SME).
 
-      *  Enterprise networks do not assume that all devices in their
-         network are managed by the IT team or Mobile Device Management
-         (MDM) devices, especially in the quite common BYOD ("Bring Your
-         Own Device") scenario.  The local root certificate cannot be
-         installed on IoT devices without a device management tool.  In
-         this case, the browser will encounter HTTPS certificate error
-         when the browser is redirected via DNS to a web page hosted to
-         display the block page.  The typical errors are "The security
-         certificate presented by this website was not issued by a
-         trusted certificate authority" (Internet Explorer/Edge"), "The
-         site's security certificate is not trusted" (Chrome), "This
-         Connection is Untrusted" (Firefox), "Safari can't verify the
-         identity of the website..." (Safari on MacOS)".
-
-      *  An end user does not know why the connection was reset and,
-         consequently, may repeatedly try to unsuccessfully reach the
-         domain.  Frustrated, the end user may use insecure interfaces
+      *  Enterprise networks do not assume that all the devices
+         connected to their network are managed by the IT team or Mobile
+         Device Management (MDM) devices, especially in the quite common
+         BYOD ("Bring Your Own Device") scenario.  The local root
+         certificate cannot be installed on IoT devices without a device
+         management tool.  In this case, the browser will encounter an
+         HTTPS certificate error when the browser is redirected via DNS
+         to a web page hosted to display the block page.  The typical
+         errors are "The security certificate presented by this website
+         was not issued by a trusted certificate authority" (Internet
+         Explorer/Edge"), "The site's security certificate is not
+         trusted" (Chrome), "This Connection is Untrusted" (Firefox),
+         "Safari can't verify the identity of the website..." (Safari on
+         MacOS)".
 
 
 
-Reddy, et al.           Expires December 31, 2020               [Page 3]
+
+
+Reddy, et al.            Expires January 1, 2021                [Page 3]
 
 Internet-Draft        DNS Access Denied Error Page             June 2020
 
 
+      *  An end user does not know why the connection was reset and,
+         consequently, may repeatedly try to unsuccessfully reach the
+         domain.  Frustrated, the end user may use insecure interfaces
          to reach the domain, potentially compromising both security and
          privacy.  Furthermore, certificate errors train users to click
          through certificate errors, which is poor security practice.
          To eliminate the need for an end user to click through
          certificate errors, an end user may manually install a local
-         root certificate [Chrome-Install-Cert] on a host device . Doing
+         root certificate [Chrome-Install-Cert] on a host device.  Doing
          so, however, is also poor security practice as it creates a
-         security vulnerability that may be exploited by a man-in-the-
-         middle attack.  When the manually installed local root
-         certificate expires, user has to again manually install the new
-         local root certificate.
+         security vulnerability that may be exploited by a MITM attack.
+         When the manually installed local root certificate expires, the
+         user has to (again) manually install the new local root
+         certificate.
 
    o  The DNS response is forged to provide a NXDOMAIN response to cause
       the DNS lookup to terminate in failure.  In this case, an end user
@@ -189,18 +192,18 @@ Internet-Draft        DNS Access Denied Error Page             June 2020
       may use insecure interfaces to reach the domain, potentially
       compromising both security and privacy.
 
-   o  The extended error codes Blocked, Censored and Filtered defined in
-      [I-D.ietf-dnsop-extended-error] can be returned by the DNS server
-      to provide additional information about the cause of an DNS error.
-      These extended error codes does not suffer from the above
-      limitations but the user still does not know the exact reason or
-      is aware of the exact entity blocking the access to the domain.
-      For example, a DNS server may block access domain based on the
-      content category like "Adult Content" to enforce parental control,
-      "Violence & Terrorism" due to an external requirement imposed by
-      an external entity (e.g., Law Enforcement Agency) etc.  The
-      content categories for domains cannot be standardized because the
-      classification of domains into content categories is vendor
+   o  The extended error codes Blocked, Censored, and Filtered defined
+      in [I-D.ietf-dnsop-extended-error] can be returned by the DNS
+      server to provide additional information about the cause of an DNS
+      error.  These extended error codes do not suffer from the above
+      limitations but the user still does not know the exact reason nor
+      he/she is aware of the exact entity blocking the access to the
+      domain.  For example, a DNS server may block access domain based
+      on the content category like "Adult Content" to enforce parental
+      control, "Violence & Terrorism" due to an external requirement
+      imposed by an external entity (e.g., Law Enforcement Agency), etc.
+      The content categories for domains cannot be standardized because
+      the classification of domains into content categories is vendor
       specific, typically ranges from 40 to 100 types of categories
       depending on the vendor and the categories keep evolving.
       Further, the threat data used to categorize domains may seldom
@@ -211,17 +214,14 @@ Internet-Draft        DNS Access Denied Error Page             June 2020
       the contact details of the IT/InfoSec team to raise a complaint.
 
    This document focuses on addressing the above limitations by defining
-   an method to return a URL that provides additional information about
-   the cause of blocking access to a domain.
+   a method to return an URL that provides additional information about
+   the cause of blocking access to a domain name.
 
 
 
 
 
-
-
-
-Reddy, et al.           Expires December 31, 2020               [Page 4]
+Reddy, et al.            Expires January 1, 2021                [Page 4]
 
 Internet-Draft        DNS Access Denied Error Page             June 2020
 
@@ -245,14 +245,15 @@ Internet-Draft        DNS Access Denied Error Page             June 2020
    blocking access to a domain is from the HTTPS DNS record
    [I-D.ietf-dnsop-svcb-https].  This HTTPS record in the "Service Form"
    provides the URL that gives additional information about the cause of
-   blocking access to a domain.  In order to convey a error page URL for
-   a "Forged Answer" extended error, a HTTPS record MUST contain the
-   "errorurl" (Section 7).  The service parameter key "errorurl" MUST
-   only be processed by the DNS client for a "Forged Answer" extended
-   error code and MUST be ignored for any other type of DNS response.
+   blocking access to a domain.  In order to convey an error page URL
+   for a "Forged Answer" extended error, an HTTPS record MUST contain
+   the "errorurl" (Section 7).  The service parameter key "errorurl"
+   MUST only be processed by the DNS client for a "Forged Answer"
+   extended error code and MUST be ignored for any other type of DNS
+   response.
 
-   The following example shows a record containing a error page URL, the
-   HTTPS record is returned along with the "Forged Answer" extended
+   The following example shows a record containing an error page URL,
+   the HTTPS record is returned along with the "Forged Answer" extended
    error code.
 
 foo.example.com.  7200  IN HTTPS 1 (
@@ -262,38 +263,44 @@ foo.example.com.  7200  IN HTTPS 1 (
 
 4.  ERROR Page
 
-   The following text outlines the recommended contents of a error page.
+   The following text outlines the recommended contents of an error
+   page.
 
    o  The exact reason for blocking access to the domain.  If the domain
-      is blocked based on threat data, the threat type associated with
-      the blocked domain can be provided to the end user.  For example,
-      the reason can indicate the type of malware blocked like spyware
-      and the damage it can do the security and privacy of the user.
+      is blocked based on some threat data, the threat type associated
+      with the blocked domain can be provided/displayed to the end user.
+      For example, the reason can indicate the type of malware blocked
+      like spyware and the damage it can do the security and privacy of
+      the user.
 
    o  The domain name blocked.
 
-   o  The entity (or organization) blocking the access to the domain and
-      contact details of the IT/InfoSec team to raise a complaint.
 
 
-
-Reddy, et al.           Expires December 31, 2020               [Page 5]
+Reddy, et al.            Expires January 1, 2021                [Page 5]
 
 Internet-Draft        DNS Access Denied Error Page             June 2020
 
+
+   o  A pointer to a regulatroy text that mandates this content
+      blocking.
+
+   o  The entity (or organization) blocking the access to the domain and
+      contact details of the IT/InfoSec team to raise a complaint.
 
    o  The blocked error page MUST NOT include Ads.
 
    o  The blocked error page MUST NOT include dynamic content.
 
-5.  Usability considerations
+5.  Usability Considerations
 
    If the error page is displayed in a language not known to the end
-   user, browser extension to translate to user's native language can be
-   used.  For example, "Google Translate" extension [Chrome-Translate]
-   provided by Google on Chrome can be used by the user to translate the
-   error page.  The "Google Translate" extension automatically detects
-   if the language of a page is different from the language the user has
+   user and assuming Internationalization features failed, browser
+   extensions to translate to user's native language can be used.  For
+   example, "Google Translate" extension [Chrome-Translate] provided by
+   Google on Chrome can be used by the user to translate the error page.
+   The "Google Translate" extension automatically detects whether the
+   language of a page is different from the language the user has
    selected.  If it is in a different language, a banner appears at the
    top of the page.  The user can click on the Translate button in the
    banner to have all the text on the page appear in the language
@@ -306,21 +313,31 @@ Internet-Draft        DNS Access Denied Error Page             June 2020
    URL that provides additional information about the cause of blocking
    access to a domain is sent over DNS-over-HTTPS (DoH) [RFC8484] or
    DNS-over-TLS (DoT) [RFC7858], the DNS response is susceptible to
-   forgery.  DNS stub resolver MUST NOT fetch the URL unless DNS
-   messages are exchanged over DoT/DoH.  Bad actors can host DNS-over-
-   TLS and DNS-over-HTTPS servers, and claim the servers offer privacy
-   and filtering capability to block malware domains but exactly do the
-   opposite to invade the security and privacy of the end user.  This
-   attack can be mitigated if and only if the endpoint selects DoT/DoH
-   servers hosted by well-known organizations (e.g., ISPs, organization
-   for which a user works etc.) or the user selects DoT/DoH server with
-   filtering capability pre-configured in the OS/Browser.  The DNS
-   client can learn the filtering capability of the DoH/DoT server using
+   forgery.
+
+   DNS stub resolver MUST NOT fetch the URL unless DNS messages are
+   exchanged over DoT/DoH.  Bad actors can host DoT/DoH servers, and
+   claim the servers offer privacy and filtering capability to block
+   malware domains but exactly do the opposite to invade the security
+   and privacy of the end user.  This attack can be mitigated if and
+   only if the endpoint selects DoT/DoH servers hosted by well-known
+   organizations (e.g., ISPs, organization for which a user works, etc.)
+   or the user selects DoT/DoH server with filtering capability pre-
+   configured in the OS/Browser.  The DNS client can learn the filtering
+   capability of a DoH/DoT server using
    [I-D.reddy-add-server-policy-selection].
    [I-D.reddy-add-server-policy-selection] also discusses how a DNS
    client can authenticate it is connecting to a DoH/DoT server hosted
    by a specific organization (e.g., ISP).  This information is
    cryptographically signed to attest its authenticity.  It is
+
+
+
+Reddy, et al.            Expires January 1, 2021                [Page 6]
+
+Internet-Draft        DNS Access Denied Error Page             June 2020
+
+
    particularly useful when the DoH/DoT server is insecurely discovered
    and prevents the client from connecting to an attackers DoH/DoT
    server.
@@ -330,14 +347,6 @@ Internet-Draft        DNS Access Denied Error Page             June 2020
    of security threats from dynamic content (e.g., malicious Java
    Script).  The client MUST reject the URL if the scheme is not
    "https".  DNSSEC signing and validation is not possible for the HTTPS
-
-
-
-Reddy, et al.           Expires December 31, 2020               [Page 6]
-
-Internet-Draft        DNS Access Denied Error Page             June 2020
-
-
    record returning the error page URL along with the "Forged Answer"
    extended error.
 
@@ -373,6 +382,18 @@ Internet-Draft        DNS Access Denied Error Page             June 2020
               Lawrence, "Extended DNS Errors", draft-ietf-dnsop-
               extended-error-16 (work in progress), May 2020.
 
+
+
+
+
+
+
+
+Reddy, et al.            Expires January 1, 2021                [Page 7]
+
+Internet-Draft        DNS Access Denied Error Page             June 2020
+
+
    [I-D.ietf-dnsop-svcb-https]
               Schwartz, B., Bishop, M., and E. Nygren, "Service binding
               and parameter specification via the DNS (DNS SVCB and
@@ -384,28 +405,9 @@ Internet-Draft        DNS Access Denied Error Page             June 2020
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
-
-
-
-
-
-Reddy, et al.           Expires December 31, 2020               [Page 7]
-
-Internet-Draft        DNS Access Denied Error Page             June 2020
-
-
-   [RFC7858]  Hu, Z., Zhu, L., Heidemann, J., Mankin, A., Wessels, D.,
-              and P. Hoffman, "Specification for DNS over Transport
-              Layer Security (TLS)", RFC 7858, DOI 10.17487/RFC7858, May
-              2016, <https://www.rfc-editor.org/info/rfc7858>.
-
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
-
-   [RFC8484]  Hoffman, P. and P. McManus, "DNS Queries over HTTPS
-              (DoH)", RFC 8484, DOI 10.17487/RFC8484, October 2018,
-              <https://www.rfc-editor.org/info/rfc8484>.
 
 9.2.  Informative References
 
@@ -432,6 +434,22 @@ Internet-Draft        DNS Access Denied Error Page             June 2020
               Assertion Token", draft-reddy-add-server-policy-
               selection-03 (work in progress), June 2020.
 
+   [RFC7858]  Hu, Z., Zhu, L., Heidemann, J., Mankin, A., Wessels, D.,
+              and P. Hoffman, "Specification for DNS over Transport
+              Layer Security (TLS)", RFC 7858, DOI 10.17487/RFC7858, May
+              2016, <https://www.rfc-editor.org/info/rfc7858>.
+
+   [RFC8484]  Hoffman, P. and P. McManus, "DNS Queries over HTTPS
+              (DoH)", RFC 8484, DOI 10.17487/RFC8484, October 2018,
+              <https://www.rfc-editor.org/info/rfc8484>.
+
+
+
+Reddy, et al.            Expires January 1, 2021                [Page 8]
+
+Internet-Draft        DNS Access Denied Error Page             June 2020
+
+
    [RFC8499]  Hoffman, P., Sullivan, A., and K. Fujiwara, "DNS
               Terminology", BCP 219, RFC 8499, DOI 10.17487/RFC8499,
               January 2019, <https://www.rfc-editor.org/info/rfc8499>.
@@ -440,15 +458,6 @@ Internet-Draft        DNS Access Denied Error Page             June 2020
               Internet Key Exchange Protocol Version 2 (IKEv2)",
               RFC 8598, DOI 10.17487/RFC8598, May 2019,
               <https://www.rfc-editor.org/info/rfc8598>.
-
-
-
-
-
-Reddy, et al.           Expires December 31, 2020               [Page 8]
-
-Internet-Draft        DNS Access Denied Error Page             June 2020
-
 
 Authors' Addresses
 
@@ -492,13 +501,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-Reddy, et al.           Expires December 31, 2020               [Page 9]
+Reddy, et al.            Expires January 1, 2021                [Page 9]
