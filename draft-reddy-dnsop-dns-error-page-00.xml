@@ -270,7 +270,7 @@
 
       <t><figure align="center" anchor="ex" title="Example 1">
           <artwork><![CDATA[foo.example.com.  7200  IN HTTPS 1 (
-                              erroruri=https://block.example.net/block-page{?target-domain) )
+                              erroruri=https://block.example.net/block-page{?target-domain} )
 ]]></artwork>
         </figure></t>
 

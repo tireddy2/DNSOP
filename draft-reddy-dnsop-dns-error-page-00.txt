@@ -257,7 +257,7 @@ Internet-Draft        DNS Access Denied Error Page             July 2020
    error code.
 
 foo.example.com.  7200  IN HTTPS 1 (
-                              erroruri=https://block.example.net/block-page{?target-domain) )
+                              erroruri=https://block.example.net/block-page{?target-domain} )
 
                             Figure 1: Example 1
 
