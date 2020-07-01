@@ -108,7 +108,7 @@
     <workgroup>DNSOP WG</workgroup>
 
     <abstract>
-      <t>This document defines a method to return an URL that provides
+      <t>This document defines a method to return an URI that provides
       additional information about the cause of blocking access to a target
       domain.</t>
     </abstract>
@@ -171,7 +171,7 @@
               <t>However, configuring the local root certificate on endpoints
               is not viable option in several deployments like Home networks,
               Schools, Small Office/Home Office (SOHO), and Small/ Medium
-              Enterprise (SME). </t>
+              Enterprise (SME).</t>
 
               <t>Enterprise networks do not assume that all the devices
               connected to their network are managed by the IT team or Mobile
@@ -234,7 +234,7 @@
         </list></t>
 
       <t>This document focuses on addressing the above limitations by defining
-      a method to return an URL that provides additional information about the
+      a method to return an URI that provides additional information about the
       cause of blocking access to a domain name.</t>
     </section>
 
@@ -256,23 +256,28 @@
       <t>The mechanism for providing additional information about the cause of
       blocking access to a domain is from the HTTPS DNS record <xref
       target="I-D.ietf-dnsop-svcb-https"></xref>. This HTTPS record in the
-      "Service Form" provides the URL that gives additional information about
+      "Service Form" provides the URI that gives additional information about
       the cause of blocking access to a domain. In order to convey an error
-      page URL for a "Forged Answer" extended error, an HTTPS record MUST
-      contain the "errorurl" (<xref target="IANA"></xref>). The service
-      parameter key "errorurl" MUST only be processed by the DNS client for a
+      page URI for a "Forged Answer" extended error, an HTTPS record MUST
+      contain the "erroruri" (<xref target="IANA"></xref>). The service
+      parameter key "erroruri" MUST only be processed by the DNS client for a
       "Forged Answer" extended error code and MUST be ignored for any other
       type of DNS response.</t>
 
-      <t>The following example shows a record containing an error page URL,
+      <t>The following example shows a record containing an error page URI,
       the HTTPS record is returned along with the "Forged Answer" extended
       error code.</t>
 
       <t><figure align="center" anchor="ex" title="Example 1">
           <artwork><![CDATA[foo.example.com.  7200  IN HTTPS 1 (
-                              errorurl=https://block.example.net/block-page )
+                              erroruri=https://block.example.net/block-page{?target-domain) )
 ]]></artwork>
         </figure></t>
+
+      <t>The client encodes the blocked target domain into an GET request, the
+      single variable "target-domain" is defined as the content of domain
+      blocked by the DoH/DoT server, encoded with base64url <xref
+      target="RFC4648"></xref>.</t>
     </section>
 
     <section title="ERROR Page ">
@@ -318,18 +323,18 @@
     <section anchor="Security" title="Security Considerations">
       <t>Security considerations in <xref
       target="I-D.ietf-dnsop-extended-error"></xref> need to be taken into
-      consideration. Unless the DNS response that conveys the URL that
+      consideration. Unless the DNS response that conveys the URI that
       provides additional information about the cause of blocking access to a
       domain is sent over DNS-over-HTTPS (DoH) <xref target="RFC8484"></xref>
       or DNS-over-TLS (DoT) <xref target="RFC7858"></xref>, the DNS response
       is susceptible to forgery.</t>
 
-      <t>DNS stub resolver MUST NOT fetch the URL unless DNS messages are
-      exchanged over DoT/DoH. Bad actors can host DoT/DoH servers, and claim
-      the servers offer privacy and filtering capability to block malware
-      domains but exactly do the opposite to invade the security and privacy
-      of the end user. This attack can be mitigated if and only if the
-      endpoint selects DoT/DoH servers hosted by well-known organizations
+      <t>DNS stub resolver MUST NOT construct and fetch the URL unless DNS
+      messages are exchanged over DoT/DoH. Bad actors can host DoT/DoH
+      servers, and claim the servers offer privacy and filtering capability to
+      block malware domains but exactly do the opposite to invade the security
+      and privacy of the end user. This attack can be mitigated if and only if
+      the endpoint selects DoT/DoH servers hosted by well-known organizations
       (e.g., ISPs, organization for which a user works, etc.) or the user
       selects DoT/DoH server with filtering capability pre-configured in the
       OS/Browser. The DNS client can learn the filtering capability of a
@@ -345,24 +350,24 @@
       <t>The URL providing additional information about the cause of blocking
       access to a domain MUST only serve static content to limit the risk of
       security threats from dynamic content (e.g., malicious Java Script). The
-      client MUST reject the URL if the scheme is not "https". DNSSEC signing
+      client MUST reject the URI if the scheme is not "https". DNSSEC signing
       and validation is not possible for the HTTPS record returning the error
-      page URL along with the "Forged Answer" extended error.</t>
+      page URI along with the "Forged Answer" extended error.</t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
       <section title="Error Page URL DNS Parameter">
-        <t>This parameter indicates the URL that provides additional
+        <t>This parameter indicates the URI that provides additional
         information about the cause of blocking access to a domain is
         designated for use with the "Forged answer" extended error code. This
         is a string encoded as UTF-8 characters. This is a string encoded as
         UTF-8 characters. <list style="hanging">
-            <t hangText="Name:">errorurl</t>
+            <t hangText="Name:">erroruri</t>
 
             <t hangText="SvcParamKey:">TBD</t>
 
-            <t hangText="Meaning:">URL that provides additional information
-            about the cause of blocking access to a domain</t>
+            <t hangText="Meaning:">URI that provides additional information
+            about the cause of blocking access to a domain.</t>
 
             <t hangText="Reference:">This document.</t>
           </list></t>
@@ -381,6 +386,8 @@
       <?rfc include='reference.RFC.2119'?>
 
       <?rfc include='reference.RFC.8174'?>
+
+      <?rfc include='reference.RFC.4648'?>
 
       <?rfc include='reference.I-D.ietf-dnsop-extended-error' ?>
 
