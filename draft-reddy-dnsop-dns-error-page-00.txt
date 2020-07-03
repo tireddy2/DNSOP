@@ -71,7 +71,7 @@ Table of Contents
    4.  ERROR Page  . . . . . . . . . . . . . . . . . . . . . . . . .   6
    5.  Usability Considerations  . . . . . . . . . . . . . . . . . .   6
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
      7.1.  Error Page URL DNS Parameter  . . . . . . . . . . . . . .   8
    8.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   8
    9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   8
@@ -283,9 +283,10 @@ Internet-Draft        DNS Access Denied Error Page             July 2020
 
 
    For example, if the URI template is "https://block.example.net/block-
-   page={target-domain}" and access to the target domain "example.com"
-   is blocked, the DNS server replaces the string "{target-domain}" in
-   the template with the base64url-encoded target domain [RFC4648].
+   page={target-domain}" for the server returning the error page and
+   access to the target domain "example.com" is blocked, the DNS server
+   replaces the string "{target-domain}" in the template with the
+   base64url-encoded target domain [RFC4648].
 
    The agent acting as HTTPS client on the endpoint uses the URL as
    given by the DNS server in a HTTP GET request to retrieve the error
@@ -328,8 +329,7 @@ Internet-Draft        DNS Access Denied Error Page             July 2020
    Translate" extension automatically detects whether the language of a
    page is different from the language the user has selected.  If it is
    in a different language, a banner appears at the top of the page.
-   The user can click on the Translate button in the banner to have all
-   the text on the page appear in the language selected by the user.
+
 
 
 
@@ -337,6 +337,9 @@ Reddy, et al.            Expires January 4, 2021                [Page 6]
 
 Internet-Draft        DNS Access Denied Error Page             July 2020
 
+
+   The user can click on the Translate button in the banner to have all
+   the text on the page appear in the language selected by the user.
 
 6.  Security Considerations
 
@@ -371,18 +374,15 @@ Internet-Draft        DNS Access Denied Error Page             July 2020
    of security threats from dynamic content (e.g., malicious Java
    Script).  Most importantly, to deal with malicious servers, because
    the client knows that it is accessing a error page URL, it can know
-   not to send cookies, credentials, disable JavaScript, auto-enable
-   private browsing mode or load the error page in a container isolated
-   from other web activity, etc.  The client MUST reject the URL if the
-   scheme is not "https".
+   not to send cookies, not to send credentials, disable JavaScript,
+   auto-enable private browsing mode or load the error page in a
+   container isolated from other web activity, etc.  The client MUST
+   reject the URL if the scheme is not "https".
 
    The DoH/DoT session provides transport security for the interaction
    between the DNS client and server, but DNSSEC signing and validation
    is not possible for the HTTPS record returning the error page URL
    along with the "Forged Answer" extended error.
-
-7.  IANA Considerations
-
 
 
 
@@ -393,6 +393,8 @@ Reddy, et al.            Expires January 4, 2021                [Page 7]
 
 Internet-Draft        DNS Access Denied Error Page             July 2020
 
+
+7.  IANA Considerations
 
 7.1.  Error Page URL DNS Parameter
 
@@ -438,8 +440,6 @@ Internet-Draft        DNS Access Denied Error Page             July 2020
    [RFC4648]  Josefsson, S., "The Base16, Base32, and Base64 Data
               Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
               <https://www.rfc-editor.org/info/rfc4648>.
-
-
 
 
 

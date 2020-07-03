@@ -193,7 +193,7 @@
               Device Management (MDM) devices, especially in the quite common
               BYOD ("Bring Your Own Device") scenario. In addition, the local
               root certificate cannot be installed on IoT devices without a
-              device management tool. </t>
+              device management tool.</t>
 
               <t>An end user does not know why the connection was reset and,
               consequently, may repeatedly try to unsuccessfully reach the
@@ -284,8 +284,8 @@
       service parameter key, any other resource records in the answer MUST be
       ignored by clients supporting this specification.</t>
 
-      <t>The following example shows a record containing an error page URL.
-      </t>
+      <t>The following example shows a record containing an error page
+      URL.</t>
 
       <t><figure align="center" anchor="ex" title="Example 1">
           <artwork><![CDATA[foo.example.com.  7200  IN HTTPS 1 (
@@ -294,10 +294,11 @@
         </figure></t>
 
       <t>For example, if the URI template is
-      "https://block.example.net/block-page={target-domain}" and access to the
-      target domain "example.com" is blocked, the DNS server replaces the
-      string "{target-domain}" in the template with the base64url-encoded
-      target domain <xref target="RFC4648"></xref>. </t>
+      "https://block.example.net/block-page={target-domain}" for the server
+      returning the error page and access to the target domain "example.com"
+      is blocked, the DNS server replaces the string "{target-domain}" in the
+      template with the base64url-encoded target domain <xref
+      target="RFC4648"></xref>.</t>
 
       <t>The agent acting as HTTPS client on the endpoint uses the URL as
       given by the DNS server in a HTTP GET request to retrieve the error
@@ -378,15 +379,15 @@
       security threats from dynamic content (e.g., malicious Java Script).
       Most importantly, to deal with malicious servers, because the client
       knows that it is accessing a error page URL, it can know not to send
-      cookies, credentials, disable JavaScript, auto-enable private browsing
-      mode or load the error page in a container isolated from other web
-      activity, etc. The client MUST reject the URL if the scheme is not
-      "https".</t>
+      cookies, not to send credentials, disable JavaScript, auto-enable
+      private browsing mode or load the error page in a container isolated
+      from other web activity, etc. The client MUST reject the URL if the
+      scheme is not "https".</t>
 
       <t>The DoH/DoT session provides transport security for the interaction
       between the DNS client and server, but DNSSEC signing and validation is
       not possible for the HTTPS record returning the error page URL along
-      with the "Forged Answer" extended error. </t>
+      with the "Forged Answer" extended error.</t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
