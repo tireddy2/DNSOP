@@ -110,7 +110,7 @@
     <abstract>
       <t>When a DNS server filters a query the response conveys no detailed
       explanation of why the query was blocked, leading to end-user confusion.
-      This document defines a method to return an URI that explains the reason
+      This document defines a method to return an URL that explains the reason
       the DNS query was filtered.</t>
     </abstract>
   </front>
@@ -128,7 +128,7 @@
           Prevention Systems (IPS) rely on network traffic inspection to
           implement perimeter-based security policies. The network security
           services may, for example, prevent malware download, block known
-          malicious URLs, block phishing sites, etc. These network security
+          malicious domains, block phishing sites, etc. These network security
           services act on DNS queries originating from endpoints. For example,
           DNS firewalls, a method of expressing DNS response policy
           information inside specially constructed DNS zones, known as
@@ -250,7 +250,7 @@
       generated the query has little chance to understand which entity
       filtered the query, how to report a mistake in the filter, or why the
       entity filtered it at all. This document describes a mechanism to
-      provide a URI which, when accessed, provides such information to the
+      provide a URL which, when accessed, provides such information to the
       user.</t>
     </section>
 
@@ -272,9 +272,9 @@
       <t>The mechanism for providing additional information about the cause of
       blocking access to a domain is from the HTTPS DNS record <xref
       target="I-D.ietf-dnsop-svcb-https"></xref>. This HTTPS record in the
-      "Service Form" provides the URI that gives additional information about
+      "Service Form" provides the URL that gives additional information about
       the cause of blocking access to a domain. In order to convey an error
-      page URI, this HTTPS record SHOULD be returned along with the "Forged
+      page URL, this HTTPS record SHOULD be returned along with the "Forged
       Answer" extended error code in Extended DNS Error (EDE) EDNS option and
       MUST contain the "eut" (<xref target="IANA"></xref>) name. The service
       parameter key "eut" MUST only be processed by the DNS client for a
@@ -284,22 +284,25 @@
       service parameter key, any other resource records in the answer MUST be
       ignored by clients supporting this specification.</t>
 
-      <t>The following example shows a record containing an error page URI
-      template. </t>
+      <t>The following example shows a record containing an error page URL.
+      </t>
 
       <t><figure align="center" anchor="ex" title="Example 1">
           <artwork><![CDATA[foo.example.com.  7200  IN HTTPS 1 (
-   eut=https://block.example.net/block-page={target-domain} )
+   eut=https://block.example.net/block-page=ZXhhbXBsZS5jb20K )
 ]]></artwork>
         </figure></t>
 
-      <t>To turn the Error URI Template into a URI, the client replaces the
+      <t>For example, if the URI template is
+      "https://block.example.net/block-page={target-domain}" and access to the
+      target domain "example.com" is blocked, the DNS server replaces the
       string "{target-domain}" in the template with the base64url-encoded
-      target domain <xref target="RFC4648"></xref> encoded into an HTTP GET
-      request. For example, if the target domain was "example.com" and the
-      template was as shown above the URL would be
-      https://block.example.net/block-page=ZXhhbXBsZS5jb20K in a GET request.
-      </t>
+      target domain <xref target="RFC4648"></xref>. </t>
+
+      <t>The agent acting as HTTPS client on the endpoint uses the URL as
+      given by the DNS server in a HTTP GET request to retrieve the error
+      page. HTTP/2 <xref target="RFC7540"></xref> is the minimum RECOMMENDED
+      version of HTTP to use to retrieve the error page.</t>
     </section>
 
     <section title="ERROR Page">
@@ -329,9 +332,9 @@
     </section>
 
     <section title="Usability Considerations">
-      <t>The error page SHOULD be be returned in the user's preferred language
-      as expressed by the Accept-Language header. If the error page is
-      displayed in a language not known to the end user and assuming
+      <t>The error page SHOULD be returned in the user's preferred language as
+      expressed by the Accept-Language header. If the error page is displayed
+      in a language not known to the end user and assuming
       Internationalization features failed, browser extensions to translate to
       user's native language can be used. For example, "Google Translate"
       extension <xref target="Chrome-Translate"></xref> provided by Google on
@@ -346,22 +349,22 @@
     <section anchor="Security" title="Security Considerations">
       <t>Security considerations in <xref
       target="I-D.ietf-dnsop-extended-error"></xref> need to be taken into
-      consideration. Unless the DNS response that conveys the URI that
+      consideration. Unless the DNS response that conveys the URL that
       provides additional information about the cause of blocking access to a
       domain is sent over DNS-over-HTTPS (DoH) <xref target="RFC8484"></xref>
       or DNS-over-TLS (DoT) <xref target="RFC7858"></xref>, the DNS response
       is susceptible to forgery.</t>
 
-      <t>DNS client MUST NOT construct and fetch the URL unless DNS messages
-      are exchanged over DoT/DoH. Bad actors can host DoT/DoH servers, and
-      claim the servers offer privacy and filtering capability to block
-      malware domains but exactly do the opposite to invade the security and
-      privacy of the end user. For example, this attack can be mitigated if
-      the endpoint selects DoT/DoH servers hosted by well-known organizations
-      (e.g., ISPs, organization for which a user works, etc.) or the user
-      selects DoT/DoH server with filtering capability pre-configured in the
-      OS/Browser. The DNS client can learn the filtering capability of a
-      DoH/DoT server using <xref
+      <t>The agent acting as the HTTPS client on the endpoint MUST NOT fetch
+      the URL unless DNS messages are exchanged over DoT/DoH. Bad actors can
+      host DoT/DoH servers, and claim the servers offer privacy and filtering
+      capability to block malware domains but exactly do the opposite to
+      invade the security and privacy of the end user. For example, this
+      attack can be mitigated if the endpoint selects DoT/DoH servers hosted
+      by well-known organizations (e.g., ISPs, organization for which a user
+      works, etc.) or the user selects DoT/DoH server with filtering
+      capability pre-configured in the OS/Browser. The DNS client can learn
+      the filtering capability of a DoH/DoT server using <xref
       target="I-D.reddy-add-server-policy-selection"></xref>. <xref
       target="I-D.reddy-add-server-policy-selection"></xref> also discusses
       how a DNS client can authenticate it is connecting to a DoH/DoT server
@@ -372,15 +375,23 @@
 
       <t>The URL providing additional information about the cause of blocking
       access to a domain MUST only serve static content to limit the risk of
-      security threats from dynamic content (e.g., malicious Java Script). The
-      client MUST reject the URI if the scheme is not "https". DNSSEC signing
-      and validation is not possible for the HTTPS record returning the error
-      page URI along with the "Forged Answer" extended error.</t>
+      security threats from dynamic content (e.g., malicious Java Script).
+      Most importantly, to deal with malicious servers, because the client
+      knows that it is accessing a error page URL, it can know not to send
+      cookies, credentials, disable JavaScript, auto-enable private browsing
+      mode or load the error page in a container isolated from other web
+      activity, etc. The client MUST reject the URL if the scheme is not
+      "https".</t>
+
+      <t>The DoH/DoT session provides transport security for the interaction
+      between the DNS client and server, but DNSSEC signing and validation is
+      not possible for the HTTPS record returning the error page URL along
+      with the "Forged Answer" extended error. </t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
-      <section title="Error Page URI DNS Parameter">
-        <t>This parameter indicates the URI that provides additional
+      <section title="Error Page URL DNS Parameter">
+        <t>This parameter indicates the URL that provides additional
         information about the cause of blocking access to a domain is
         designated for use with the "Forged answer" extended error code. This
         is a string encoded as UTF-8 characters. This is a string encoded as
@@ -389,7 +400,7 @@
 
             <t hangText="SvcParamKey:">TBD</t>
 
-            <t hangText="Meaning:">URI that provides additional information
+            <t hangText="Meaning:">URL that provides additional information
             about the cause of blocking access to a domain.</t>
 
             <t hangText="Reference:">This document.</t>
@@ -411,6 +422,8 @@
       <?rfc include='reference.RFC.8174'?>
 
       <?rfc include='reference.RFC.4648'?>
+
+      <?rfc include='reference.RFC.7540'?>
 
       <?rfc include='reference.I-D.ietf-dnsop-extended-error' ?>
 

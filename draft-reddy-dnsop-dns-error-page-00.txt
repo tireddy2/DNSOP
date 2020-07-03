@@ -5,12 +5,12 @@
 DNSOP WG                                                        T. Reddy
 Internet-Draft                                                    McAfee
 Intended status: Standards Track                                 N. Cook
-Expires: January 3, 2021                                    Open-Xchange
+Expires: January 4, 2021                                    Open-Xchange
                                                                  D. Wing
                                                                   Citrix
                                                             M. Boucadair
                                                                   Orange
-                                                            July 2, 2020
+                                                            July 3, 2020
 
 
                       DNS Access Denied Error page
@@ -20,7 +20,7 @@ Abstract
 
    When a DNS server filters a query the response conveys no detailed
    explanation of why the query was blocked, leading to end-user
-   confusion.  This document defines a method to return an URI that
+   confusion.  This document defines a method to return an URL that
    explains the reason the DNS query was filtered.
 
 Status of This Memo
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 3, 2021.
+   This Internet-Draft will expire on January 4, 2021.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Reddy, et al.            Expires January 3, 2021                [Page 1]
+Reddy, et al.            Expires January 4, 2021                [Page 1]
 
 Internet-Draft        DNS Access Denied Error Page             July 2020
 
@@ -72,12 +72,12 @@ Table of Contents
    5.  Usability Considerations  . . . . . . . . . . . . . . . . . .   6
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
-     7.1.  Error Page URI DNS Parameter  . . . . . . . . . . . . . .   7
+     7.1.  Error Page URL DNS Parameter  . . . . . . . . . . . . . .   8
    8.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   8
    9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   8
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .   8
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .   8
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   9
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .   9
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  10
 
 1.  Introduction
 
@@ -91,11 +91,11 @@ Table of Contents
       Prevention Systems (IPS) rely on network traffic inspection to
       implement perimeter-based security policies.  The network security
       services may, for example, prevent malware download, block known
-      malicious URLs, block phishing sites, etc.  These network security
-      services act on DNS queries originating from endpoints.  For
-      example, DNS firewalls, a method of expressing DNS response policy
-      information inside specially constructed DNS zones, known as
-      Response Policy Zones (RPZs) allows DNS servers to modify DNS
+      malicious domains, block phishing sites, etc.  These network
+      security services act on DNS queries originating from endpoints.
+      For example, DNS firewalls, a method of expressing DNS response
+      policy information inside specially constructed DNS zones, known
+      as Response Policy Zones (RPZs) allows DNS servers to modify DNS
       responses in real time to stop access to malware and phishing
       domains.  Note that some of the commonly known types of malware
       are viruses, worms, trojans, bots, ransomware, backdoors, spyware,
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Reddy, et al.            Expires January 3, 2021                [Page 2]
+Reddy, et al.            Expires January 4, 2021                [Page 2]
 
 Internet-Draft        DNS Access Denied Error Page             July 2020
 
@@ -165,7 +165,7 @@ Internet-Draft        DNS Access Denied Error Page             July 2020
 
 
 
-Reddy, et al.            Expires January 3, 2021                [Page 3]
+Reddy, et al.            Expires January 4, 2021                [Page 3]
 
 Internet-Draft        DNS Access Denied Error Page             July 2020
 
@@ -221,7 +221,7 @@ Internet-Draft        DNS Access Denied Error Page             July 2020
 
 
 
-Reddy, et al.            Expires January 3, 2021                [Page 4]
+Reddy, et al.            Expires January 4, 2021                [Page 4]
 
 Internet-Draft        DNS Access Denied Error Page             July 2020
 
@@ -234,7 +234,7 @@ Internet-Draft        DNS Access Denied Error Page             July 2020
    generated the query has little chance to understand which entity
    filtered the query, how to report a mistake in the filter, or why the
    entity filtered it at all.  This document describes a mechanism to
-   provide a URI which, when accessed, provides such information to the
+   provide a URL which, when accessed, provides such information to the
    user.
 
 2.  Terminology
@@ -255,8 +255,8 @@ Internet-Draft        DNS Access Denied Error Page             July 2020
    The mechanism for providing additional information about the cause of
    blocking access to a domain is from the HTTPS DNS record
    [I-D.ietf-dnsop-svcb-https].  This HTTPS record in the "Service Form"
-   provides the URI that gives additional information about the cause of
-   blocking access to a domain.  In order to convey an error page URI,
+   provides the URL that gives additional information about the cause of
+   blocking access to a domain.  In order to convey an error page URL,
    this HTTPS record SHOULD be returned along with the "Forged Answer"
    extended error code in Extended DNS Error (EDE) EDNS option and MUST
    contain the "eut" (Section 7) name.  The service parameter key "eut"
@@ -267,27 +267,30 @@ Internet-Draft        DNS Access Denied Error Page             July 2020
    parameter key, any other resource records in the answer MUST be
    ignored by clients supporting this specification.
 
-   The following example shows a record containing an error page URI
-   template.
+   The following example shows a record containing an error page URL.
 
    foo.example.com.  7200  IN HTTPS 1 (
-      eut=https://block.example.net/block-page={target-domain} )
+      eut=https://block.example.net/block-page=ZXhhbXBsZS5jb20K )
 
                             Figure 1: Example 1
 
 
 
-Reddy, et al.            Expires January 3, 2021                [Page 5]
+
+Reddy, et al.            Expires January 4, 2021                [Page 5]
 
 Internet-Draft        DNS Access Denied Error Page             July 2020
 
 
-   To turn the Error URI Template into a URI, the client replaces the
-   string "{target-domain}" in the template with the base64url-encoded
-   target domain [RFC4648] encoded into an HTTP GET request.  For
-   example, if the target domain was "example.com" and the template was
-   as shown above the URL would be https://block.example.net/block-
-   page=ZXhhbXBsZS5jb20K in a GET request.
+   For example, if the URI template is "https://block.example.net/block-
+   page={target-domain}" and access to the target domain "example.com"
+   is blocked, the DNS server replaces the string "{target-domain}" in
+   the template with the base64url-encoded target domain [RFC4648].
+
+   The agent acting as HTTPS client on the endpoint uses the URL as
+   given by the DNS server in a HTTP GET request to retrieve the error
+   page.  HTTP/2 [RFC7540] is the minimum RECOMMENDED version of HTTP to
+   use to retrieve the error page.
 
 4.  ERROR Page
 
@@ -315,8 +318,8 @@ Internet-Draft        DNS Access Denied Error Page             July 2020
 
 5.  Usability Considerations
 
-   The error page SHOULD be be returned in the user's preferred language
-   as expressed by the Accept-Language header.  If the error page is
+   The error page SHOULD be returned in the user's preferred language as
+   expressed by the Accept-Language header.  If the error page is
    displayed in a language not known to the end user and assuming
    Internationalization features failed, browser extensions to translate
    to user's native language can be used.  For example, "Google
@@ -330,10 +333,7 @@ Internet-Draft        DNS Access Denied Error Page             July 2020
 
 
 
-
-
-
-Reddy, et al.            Expires January 3, 2021                [Page 6]
+Reddy, et al.            Expires January 4, 2021                [Page 6]
 
 Internet-Draft        DNS Access Denied Error Page             July 2020
 
@@ -342,21 +342,21 @@ Internet-Draft        DNS Access Denied Error Page             July 2020
 
    Security considerations in [I-D.ietf-dnsop-extended-error] need to be
    taken into consideration.  Unless the DNS response that conveys the
-   URI that provides additional information about the cause of blocking
+   URL that provides additional information about the cause of blocking
    access to a domain is sent over DNS-over-HTTPS (DoH) [RFC8484] or
    DNS-over-TLS (DoT) [RFC7858], the DNS response is susceptible to
    forgery.
 
-   DNS client MUST NOT construct and fetch the URL unless DNS messages
-   are exchanged over DoT/DoH.  Bad actors can host DoT/DoH servers, and
-   claim the servers offer privacy and filtering capability to block
-   malware domains but exactly do the opposite to invade the security
-   and privacy of the end user.  For example, this attack can be
-   mitigated if the endpoint selects DoT/DoH servers hosted by well-
-   known organizations (e.g., ISPs, organization for which a user works,
-   etc.) or the user selects DoT/DoH server with filtering capability
-   pre-configured in the OS/Browser.  The DNS client can learn the
-   filtering capability of a DoH/DoT server using
+   The agent acting as the HTTPS client on the endpoint MUST NOT fetch
+   the URL unless DNS messages are exchanged over DoT/DoH.  Bad actors
+   can host DoT/DoH servers, and claim the servers offer privacy and
+   filtering capability to block malware domains but exactly do the
+   opposite to invade the security and privacy of the end user.  For
+   example, this attack can be mitigated if the endpoint selects DoT/DoH
+   servers hosted by well-known organizations (e.g., ISPs, organization
+   for which a user works, etc.) or the user selects DoT/DoH server with
+   filtering capability pre-configured in the OS/Browser.  The DNS
+   client can learn the filtering capability of a DoH/DoT server using
    [I-D.reddy-add-server-policy-selection].
    [I-D.reddy-add-server-policy-selection] also discusses how a DNS
    client can authenticate it is connecting to a DoH/DoT server hosted
@@ -369,16 +369,34 @@ Internet-Draft        DNS Access Denied Error Page             July 2020
    The URL providing additional information about the cause of blocking
    access to a domain MUST only serve static content to limit the risk
    of security threats from dynamic content (e.g., malicious Java
-   Script).  The client MUST reject the URI if the scheme is not
-   "https".  DNSSEC signing and validation is not possible for the HTTPS
-   record returning the error page URI along with the "Forged Answer"
-   extended error.
+   Script).  Most importantly, to deal with malicious servers, because
+   the client knows that it is accessing a error page URL, it can know
+   not to send cookies, credentials, disable JavaScript, auto-enable
+   private browsing mode or load the error page in a container isolated
+   from other web activity, etc.  The client MUST reject the URL if the
+   scheme is not "https".
+
+   The DoH/DoT session provides transport security for the interaction
+   between the DNS client and server, but DNSSEC signing and validation
+   is not possible for the HTTPS record returning the error page URL
+   along with the "Forged Answer" extended error.
 
 7.  IANA Considerations
 
-7.1.  Error Page URI DNS Parameter
 
-   This parameter indicates the URI that provides additional information
+
+
+
+
+
+Reddy, et al.            Expires January 4, 2021                [Page 7]
+
+Internet-Draft        DNS Access Denied Error Page             July 2020
+
+
+7.1.  Error Page URL DNS Parameter
+
+   This parameter indicates the URL that provides additional information
    about the cause of blocking access to a domain is designated for use
    with the "Forged answer" extended error code.  This is a string
    encoded as UTF-8 characters.  This is a string encoded as UTF-8
@@ -386,17 +404,9 @@ Internet-Draft        DNS Access Denied Error Page             July 2020
 
    Name:  eut
 
-
-
-
-Reddy, et al.            Expires January 3, 2021                [Page 7]
-
-Internet-Draft        DNS Access Denied Error Page             July 2020
-
-
    SvcParamKey:  TBD
 
-   Meaning:  URI that provides additional information about the cause of
+   Meaning:  URL that provides additional information about the cause of
       blocking access to a domain.
 
    Reference:  This document.
@@ -429,6 +439,22 @@ Internet-Draft        DNS Access Denied Error Page             July 2020
               Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
               <https://www.rfc-editor.org/info/rfc4648>.
 
+
+
+
+
+
+
+Reddy, et al.            Expires January 4, 2021                [Page 8]
+
+Internet-Draft        DNS Access Denied Error Page             July 2020
+
+
+   [RFC7540]  Belshe, M., Peon, R., and M. Thomson, Ed., "Hypertext
+              Transfer Protocol Version 2 (HTTP/2)", RFC 7540,
+              DOI 10.17487/RFC7540, May 2015,
+              <https://www.rfc-editor.org/info/rfc7540>.
+
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
@@ -440,15 +466,6 @@ Internet-Draft        DNS Access Denied Error Page             July 2020
               Chrome", <support.securly.com/hc/en-us/articles/206081828-
               How-to-manually-install-the-Securly-SSL-certificate-in-
               Chrome>.
-
-
-
-
-
-Reddy, et al.            Expires January 3, 2021                [Page 8]
-
-Internet-Draft        DNS Access Denied Error Page             July 2020
-
 
    [Chrome-Translate]
               "Google Translate",
@@ -480,6 +497,15 @@ Internet-Draft        DNS Access Denied Error Page             July 2020
               Terminology", BCP 219, RFC 8499, DOI 10.17487/RFC8499,
               January 2019, <https://www.rfc-editor.org/info/rfc8499>.
 
+
+
+
+
+Reddy, et al.            Expires January 4, 2021                [Page 9]
+
+Internet-Draft        DNS Access Denied Error Page             July 2020
+
+
 Authors' Addresses
 
    Tirumaleswar Reddy
@@ -496,14 +522,6 @@ Authors' Addresses
    UK
 
    Email: neil.cook@noware.co.uk
-
-
-
-
-
-Reddy, et al.            Expires January 3, 2021                [Page 9]
-
-Internet-Draft        DNS Access Denied Error Page             July 2020
 
 
    Dan Wing
@@ -539,22 +557,4 @@ Internet-Draft        DNS Access Denied Error Page             July 2020
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Reddy, et al.            Expires January 3, 2021               [Page 10]
+Reddy, et al.            Expires January 4, 2021               [Page 10]
