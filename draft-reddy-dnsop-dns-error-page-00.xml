@@ -285,7 +285,7 @@
       ignored by clients supporting this specification.</t>
 
       <t>The following example shows a record containing an error page
-      URL.</t>
+      URL:</t>
 
       <t><figure align="center" anchor="ex" title="Example 1">
           <artwork><![CDATA[foo.example.com.  7200  IN HTTPS 1 (
@@ -293,7 +293,7 @@
 ]]></artwork>
         </figure></t>
 
-      <t>For example, if the URI template is
+      <t>In the above example, if the URI template is
       "https://block.example.net/block-page={target-domain}" for the server
       returning the error page and access to the target domain "example.com"
       is blocked, the DNS server replaces the string "{target-domain}" in the

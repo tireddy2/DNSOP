@@ -5,12 +5,12 @@
 DNSOP WG                                                        T. Reddy
 Internet-Draft                                                    McAfee
 Intended status: Standards Track                                 N. Cook
-Expires: January 4, 2021                                    Open-Xchange
+Expires: January 7, 2021                                    Open-Xchange
                                                                  D. Wing
                                                                   Citrix
                                                             M. Boucadair
                                                                   Orange
-                                                            July 3, 2020
+                                                            July 6, 2020
 
 
                       DNS Access Denied Error page
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 4, 2021.
+   This Internet-Draft will expire on January 7, 2021.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Reddy, et al.            Expires January 4, 2021                [Page 1]
+Reddy, et al.            Expires January 7, 2021                [Page 1]
 
 Internet-Draft        DNS Access Denied Error Page             July 2020
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Reddy, et al.            Expires January 4, 2021                [Page 2]
+Reddy, et al.            Expires January 7, 2021                [Page 2]
 
 Internet-Draft        DNS Access Denied Error Page             July 2020
 
@@ -165,7 +165,7 @@ Internet-Draft        DNS Access Denied Error Page             July 2020
 
 
 
-Reddy, et al.            Expires January 4, 2021                [Page 3]
+Reddy, et al.            Expires January 7, 2021                [Page 3]
 
 Internet-Draft        DNS Access Denied Error Page             July 2020
 
@@ -221,7 +221,7 @@ Internet-Draft        DNS Access Denied Error Page             July 2020
 
 
 
-Reddy, et al.            Expires January 4, 2021                [Page 4]
+Reddy, et al.            Expires January 7, 2021                [Page 4]
 
 Internet-Draft        DNS Access Denied Error Page             July 2020
 
@@ -267,7 +267,7 @@ Internet-Draft        DNS Access Denied Error Page             July 2020
    parameter key, any other resource records in the answer MUST be
    ignored by clients supporting this specification.
 
-   The following example shows a record containing an error page URL.
+   The following example shows a record containing an error page URL:
 
    foo.example.com.  7200  IN HTTPS 1 (
       eut=https://block.example.net/block-page=ZXhhbXBsZS5jb20K )
@@ -277,16 +277,17 @@ Internet-Draft        DNS Access Denied Error Page             July 2020
 
 
 
-Reddy, et al.            Expires January 4, 2021                [Page 5]
+Reddy, et al.            Expires January 7, 2021                [Page 5]
 
 Internet-Draft        DNS Access Denied Error Page             July 2020
 
 
-   For example, if the URI template is "https://block.example.net/block-
-   page={target-domain}" for the server returning the error page and
-   access to the target domain "example.com" is blocked, the DNS server
-   replaces the string "{target-domain}" in the template with the
-   base64url-encoded target domain [RFC4648].
+   In the above example, if the URI template is
+   "https://block.example.net/block-page={target-domain}" for the server
+   returning the error page and access to the target domain
+   "example.com" is blocked, the DNS server replaces the string
+   "{target-domain}" in the template with the base64url-encoded target
+   domain [RFC4648].
 
    The agent acting as HTTPS client on the endpoint uses the URL as
    given by the DNS server in a HTTP GET request to retrieve the error
@@ -332,8 +333,7 @@ Internet-Draft        DNS Access Denied Error Page             July 2020
 
 
 
-
-Reddy, et al.            Expires January 4, 2021                [Page 6]
+Reddy, et al.            Expires January 7, 2021                [Page 6]
 
 Internet-Draft        DNS Access Denied Error Page             July 2020
 
@@ -389,7 +389,7 @@ Internet-Draft        DNS Access Denied Error Page             July 2020
 
 
 
-Reddy, et al.            Expires January 4, 2021                [Page 7]
+Reddy, et al.            Expires January 7, 2021                [Page 7]
 
 Internet-Draft        DNS Access Denied Error Page             July 2020
 
@@ -445,7 +445,7 @@ Internet-Draft        DNS Access Denied Error Page             July 2020
 
 
 
-Reddy, et al.            Expires January 4, 2021                [Page 8]
+Reddy, et al.            Expires January 7, 2021                [Page 8]
 
 Internet-Draft        DNS Access Denied Error Page             July 2020
 
@@ -501,7 +501,7 @@ Internet-Draft        DNS Access Denied Error Page             July 2020
 
 
 
-Reddy, et al.            Expires January 4, 2021                [Page 9]
+Reddy, et al.            Expires January 7, 2021                [Page 9]
 
 Internet-Draft        DNS Access Denied Error Page             July 2020
 
@@ -557,4 +557,4 @@ Authors' Addresses
 
 
 
-Reddy, et al.            Expires January 4, 2021               [Page 10]
+Reddy, et al.            Expires January 7, 2021               [Page 10]
