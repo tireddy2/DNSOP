@@ -253,14 +253,11 @@
       provide a URL which, when accessed, provides such information to the
       user.</t>
 
-      <t>Note that one of the other benefits of the mechanism in the
-      enterprise networks for the IT-owned devices (configured with the local
-      CA certificate to validate the server certificate) is the block page
-      HTTPS server no longer has to locally sign certificate from the local CA
-      on behalf of the server to which access is blocked and does not have to
-      act as TLS proxy to intercept the HTTPS connection to the blocked
-      server. This change will significantly reduce the load on the
-      server.</t>
+      <t>One of the other benefits of this document is eliminating
+      the need to "spoof" block pages for HTTPS resources, as the block
+      page no longer needs to create a signed certificate when blocking a 
+      destination. This avoids the need to install an additional root certificate
+      authority on those IT-managed devices.</t>
     </section>
 
     <section anchor="notation" title="Terminology">
