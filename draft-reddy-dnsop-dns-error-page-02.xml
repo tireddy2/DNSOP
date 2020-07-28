@@ -413,12 +413,10 @@
       the HTTPS record returning the error page URL should be treated only as
       diagnostic information and MUST NOT alter DNS protocol processing. </t>
 
-      <t>By design, the error page URL potentially exposes additional
+      <t>By design, the object referenced by the error page URL potentially exposes additional
       information about the DNS resolution process that may leak information.
       An example of this is the reason for blocking the access to the domain
-      name and the entity blocking access to the domain. The error page URL in
-      the HTTPS record is not visible to eavesdropper due to the encryption of
-      DNS messages. </t>
+      name and the entity blocking access to the domain.</t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
