@@ -5,12 +5,12 @@
 DNSOP WG                                                        T. Reddy
 Internet-Draft                                                    McAfee
 Intended status: Standards Track                                 N. Cook
-Expires: February 11, 2021                                  Open-Xchange
+Expires: February 12, 2021                                  Open-Xchange
                                                                  D. Wing
                                                                   Citrix
                                                             M. Boucadair
                                                                   Orange
-                                                         August 10, 2020
+                                                         August 11, 2020
 
 
                       DNS Access Denied Error page
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 11, 2021.
+   This Internet-Draft will expire on February 12, 2021.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Reddy, et al.           Expires February 11, 2021               [Page 1]
+Reddy, et al.           Expires February 12, 2021               [Page 1]
 
 Internet-Draft        DNS Access Denied Error Page           August 2020
 
@@ -69,16 +69,17 @@ Table of Contents
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   5
    3.  Error page URL EDNS0 option format  . . . . . . . . . . . . .   5
    4.  Error page URL Processing . . . . . . . . . . . . . . . . . .   7
-   5.  ERROR Page  . . . . . . . . . . . . . . . . . . . . . . . . .   9
-   6.  Usability Considerations  . . . . . . . . . . . . . . . . . .   9
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  10
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  11
-     8.1.  A New Error Page URL EDNS Option  . . . . . . . . . . . .  11
-   9.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  11
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  11
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .  11
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  12
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  13
+   5.  Sign and Verify . . . . . . . . . . . . . . . . . . . . . . .   8
+   6.  ERROR Page  . . . . . . . . . . . . . . . . . . . . . . . . .   9
+   7.  Usability Considerations  . . . . . . . . . . . . . . . . . .  10
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  10
+   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  11
+     9.1.  A New Error Page URL EDNS Option  . . . . . . . . . . . .  11
+   10. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  12
+   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  12
+     11.1.  Normative References . . . . . . . . . . . . . . . . . .  12
+     11.2.  Informative References . . . . . . . . . . . . . . . . .  13
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  14
 
 1.  Introduction
 
@@ -108,8 +109,7 @@ Table of Contents
 
 
 
-
-Reddy, et al.           Expires February 11, 2021               [Page 2]
+Reddy, et al.           Expires February 12, 2021               [Page 2]
 
 Internet-Draft        DNS Access Denied Error Page           August 2020
 
@@ -165,7 +165,7 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
 
 
 
-Reddy, et al.           Expires February 11, 2021               [Page 3]
+Reddy, et al.           Expires February 12, 2021               [Page 3]
 
 Internet-Draft        DNS Access Denied Error Page           August 2020
 
@@ -221,7 +221,7 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
 
 
 
-Reddy, et al.           Expires February 11, 2021               [Page 4]
+Reddy, et al.           Expires February 12, 2021               [Page 4]
 
 Internet-Draft        DNS Access Denied Error Page           August 2020
 
@@ -277,7 +277,7 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
 
 
 
-Reddy, et al.           Expires February 11, 2021               [Page 5]
+Reddy, et al.           Expires February 12, 2021               [Page 5]
 
 Internet-Draft        DNS Access Denied Error Page           August 2020
 
@@ -315,28 +315,11 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
 
    o  ERROR-PAGE-SIG-ALG, 16-bits, which is the signature algorithm used
       to generate the signature for the entire DNS response message.
-      The signature algorithms are defined in [DNSKEY-IANA].  The
-      "mandatory-to-implement" algorithms are recommended in [RFC8624].
-      As a reminder, there are three main advantages of Edwards-curve
-      Digital Security Algorithm (EdDSA): it does not require the use of
-      a unique random number for each signature, there are no padding or
-      truncation issues as with ECDSA, and it is more resilient to side-
-      channel attacks.
 
    o  ERROR-PAGE-SIG, a variable length, field that will hold the
-      signature of the entire DNS response message.  The signature is
-      generated by the DoH/DoT server for the entire DNS response
-      message using the private key of the DoH/DoT server certificate.
-      The field is represented as a Base64 encoding of the signature.
-
-
-
-
-
-Reddy, et al.           Expires February 11, 2021               [Page 6]
-
-Internet-Draft        DNS Access Denied Error Page           August 2020
-
+      signature of the entire DNS response message.  The field is
+      represented as a Base64 encoding of the signature.  The signature
+      generation process is discussed in Section 5.
 
    The Error page URL option can be included in error responses
    SERVFAIL, NXDOMAIN or REFUSED to a query that includes OPT Pseudo-RR
@@ -347,6 +330,14 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
    the target domain "example.com" is blocked by the DoH/DoT server, the
    DoH/DoT server replaces the string "{target-domain}" in the template
    with the base64url-encoded target domain [RFC4648].  In the above
+
+
+
+Reddy, et al.           Expires February 12, 2021               [Page 6]
+
+Internet-Draft        DNS Access Denied Error Page           August 2020
+
+
    example, the error page URL will be "https://block.example.net/block-
    page=ZXhhbXBsZS5jb20".
 
@@ -382,21 +373,26 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
       only applies to DoT protocol, there has been no such distinction
       made for DoH protocol.
 
+   o  If the DNS response has more than one Error page URL EDNS0 option,
+      the DNS client MUST discard multiple Error page URL EDNS0 options
+      in the DNS response.
+
    o  The Error page URL EDNS0 option MUST be processed by the DNS
       client for a "Censored", "Blocked" or "Filtered" extended error
       codes and MUST be ignored for any other type of extended DNS error
       code.  When "Censored", "Blocked" or "Filtered" extended error
-
-
-
-Reddy, et al.           Expires February 11, 2021               [Page 7]
-
-Internet-Draft        DNS Access Denied Error Page           August 2020
-
-
       code is returned in conjunction with an Error page URL EDNS0
       option, any other resource records in the answer MUST be ignored
       by clients supporting this specification.
+
+
+
+
+
+Reddy, et al.           Expires February 12, 2021               [Page 7]
+
+Internet-Draft        DNS Access Denied Error Page           August 2020
+
 
    o  If the DoH/DoT server does not offer DNS filtering service (e.g.,
       prevent access to malware sites or objectionable content (e.g.,
@@ -414,20 +410,16 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
       message, the DNS client MUST discard the Error page URL EDNS0
       option.
 
-   o  The DNS client verifies the signature in the ERROR-PAGE-SIG field
-      using the public key in the DNS server certificate in the TLS
-      handshake of DoH/DoT session.  For example, if Ed25519 is used,
-      Ed25519 signature algorithm and verification of the Ed25519
-      signature are described in Sections 5.1.6 and 5.1.7 of [RFC8032],
-      respectively.  If the signature is valid, the client can
-      positively identify that the Error page URL EDNS0 option has been
-      generated by the DoH/DoT server and the DoH/DoT server did not
-      forward the Error Page URL EDNS0 option from an upstream resolver.
-      Otherwise, the DNS client MUST discard the Error page URL EDNS0
-      option.
-
    o  The DNS client MUST reject the error page URL if the scheme is not
       "https".
+
+   o  The DNS client verifies the signature in the ERROR-PAGE-SIG field
+      following the mechanism discussed in Section 5.  If the signature
+      is valid, the client can positively identify that the Error page
+      URL EDNS0 option has been generated by the DoH/DoT server and the
+      DoH/DoT server did not forward the Error Page URL EDNS0 option
+      from an upstream resolver.  Otherwise, the DNS client MUST discard
+      the Error page URL EDNS0 option.
 
    When a DoH/DoT resolver receives an Error page URL EDNS0 option, the
    resolver MUST NOT forward the Error Page URL EDNS0 option from an
@@ -439,18 +431,43 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
    error page.  HTTP/2 [RFC7540] is the minimum RECOMMENDED version of
    HTTP to use to retrieve the error page.
 
+5.  Sign and Verify
+
+   The signature algorithms for generating signature for the entire DNS
+   response message are defined in [DNSKEY-IANA].  The "mandatory-to-
+   implement" algorithms are defined in [RFC8624] are RSA, ECDSA and
+   EdDSA.  Along similar lines, the DoH/DoT server's end-entity
+   certificate's public key and the algorithm with which the key can be
+   used are RSA, ECDSA and EdDSA [RFC8446].
+
+   The signature is generated by the DoH/DoT server using the entire DNS
+   response message, private key of the DoH/DoT server's end-entity
 
 
 
-
-
-
-Reddy, et al.           Expires February 11, 2021               [Page 8]
+Reddy, et al.           Expires February 12, 2021               [Page 8]
 
 Internet-Draft        DNS Access Denied Error Page           August 2020
 
 
-5.  ERROR Page
+   certificate as inputs to the signature algorithm.  The signature
+   algorithm in the ERROR-PAGE-SIG-ALG field MUST match the algorithm
+   with which the public key is used in the subjectPublicKeyInfo field
+   in the DoH/DoT server's X.509 end-entity certificate.
+
+   If the signature algorithm in the ERROR-PAGE-SIG-ALG field does not
+   match the algorithm in the subjectPublicKeyInfo field in the DoH/DoT
+   server's X.509 end-entity certificate in the TLS handshake of the
+   DoH/DoT session, the DNS client MUST discard the Error page URL EDNS0
+   option.  The DNS client verifies the signature using the signature in
+   ERROR-PAGE-SIG-ALG field, entire DNS response message and DoH/DoT
+   server's end-entity certificate's public key in the TLS handshake of
+   DoH/DoT session as inputs to the signature algorithm.  For example,
+   if Ed25519 is used, Ed25519 signature algorithm and verification of
+   the Ed25519 signature are described in Sections 5.1.6 and 5.1.7 of
+   [RFC8032], respectively.
+
+6.  ERROR Page
 
    The following text outlines the RECOMMENDED contents of an error page
    to assist the operator developing the error page.
@@ -482,7 +499,14 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
    o  It is not intended to form the basis of any legal/compliance for
       developing the error page.
 
-6.  Usability Considerations
+
+
+Reddy, et al.           Expires February 12, 2021               [Page 9]
+
+Internet-Draft        DNS Access Denied Error Page           August 2020
+
+
+7.  Usability Considerations
 
    The error page SHOULD be returned in the user's preferred language as
    expressed by the Accept-Language header.  If the error page is
@@ -497,16 +521,7 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
    The user can click on the Translate button in the banner to have all
    the text on the page appear in the language selected by the user.
 
-
-
-
-
-Reddy, et al.           Expires February 11, 2021               [Page 9]
-
-Internet-Draft        DNS Access Denied Error Page           August 2020
-
-
-7.  Security Considerations
+8.  Security Considerations
 
    Security considerations in [I-D.ietf-dnsop-extended-error] and
    [RFC8624] need to be taken into consideration.
@@ -539,6 +554,14 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
 
    In order to deal with malicious servers, because the client knows
    that it is accessing a error page URL, it can know not to send
+
+
+
+Reddy, et al.           Expires February 12, 2021              [Page 10]
+
+Internet-Draft        DNS Access Denied Error Page           August 2020
+
+
    cookies (e.g., cookie store isolated in Safari for captive portals
    [Safari-Cookie]), not to send credentials, disable JavaScript, auto-
    enable private browsing mode for the error page or load the error
@@ -548,24 +571,20 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
    The DoH/DoT session provides transport security for the interaction
    between the DNS client and server, but DNSSEC signing and validation
    is not possible for the Error Page URL EDNS0 option returning the
-   error page URL.  However, the input to the signature generation
-   process includes the entire DNS response message to provide
-   randomness for each signature and provides data origin
-   authentication.  This is also intended to allow the DNS client to
-   distinguish between servers that do not implement Error page URL
-   EDNS0 option and is useful to detect Error page URL EDNS0 option
-
-
-
-Reddy, et al.           Expires February 11, 2021              [Page 10]
-
-Internet-Draft        DNS Access Denied Error Page           August 2020
-
-
-   insertion attack by an upstream attacker (or MiTM).  Nevertheless,
-   the Error Page URL EDNS0 option returning the error page URL should
-   be treated only as diagnostic information and MUST NOT alter DNS
-   protocol processing.
+   error page URL.  For example, if access to a doman is blocked, the
+   DoH/DoT resolver can rewrite the response to send NXDOMAIN error and
+   Error page URL EDNS0 option in the DNS response, it will omit DNSSEC
+   RRsets, because the modified responses cannot be verified by DNSSEC
+   signatures.  However, the signature in the Error Page URL EDNS0
+   option provides data origin authentication and the input to the
+   signature generation process includes the entire DNS response message
+   to provide randomness for each signature.  This is also intended to
+   allow the DNS client to distinguish between servers that do not
+   implement Error page URL EDNS0 option and is useful to detect Error
+   page URL EDNS0 option insertion attack by an MiTM in the path between
+   the resolver and authoritative servers.  Nevertheless, the Error Page
+   URL EDNS0 option returning the error page URL should be treated only
+   as diagnostic information and MUST NOT alter DNS protocol processing.
 
    By design, the object referenced by the error page URL potentially
    exposes additional information about the DNS resolution process that
@@ -573,9 +592,9 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
    the access to the domain name and the entity blocking access to the
    domain.
 
-8.  IANA Considerations
+9.  IANA Considerations
 
-8.1.  A New Error Page URL EDNS Option
+9.1.  A New Error Page URL EDNS Option
 
    This document defines a new EDNS(0) option, entitled "Error Page
    URL", assigned a value of TBD from the "DNS EDNS0 Option Codes (OPT)"
@@ -587,14 +606,26 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
    -----  ----------------     ------    ------------------
     TBD   Error Page URL      Standard       [ This document ]
 
-9.  Acknowledgements
+
+
+
+
+
+
+
+Reddy, et al.           Expires February 12, 2021              [Page 11]
+
+Internet-Draft        DNS Access Denied Error Page           August 2020
+
+
+10.  Acknowledgements
 
    Thanks to Vittorio Bertola, Wes Hardaker, Ben Schwartz, Erid Orth,
    Viktor Dukhovni and Bob Harold for the comments.
 
-10.  References
+11.  References
 
-10.1.  Normative References
+11.1.  Normative References
 
    [I-D.ietf-dnsop-extended-error]
               Kumari, W., Hunt, E., Arends, R., Hardaker, W., and D.
@@ -609,14 +640,6 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
    [RFC4648]  Josefsson, S., "The Base16, Base32, and Base64 Data
               Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
               <https://www.rfc-editor.org/info/rfc4648>.
-
-
-
-
-Reddy, et al.           Expires February 11, 2021              [Page 11]
-
-Internet-Draft        DNS Access Denied Error Page           August 2020
-
 
    [RFC5198]  Klensin, J. and M. Padlipsky, "Unicode Format for Network
               Interchange", RFC 5198, DOI 10.17487/RFC5198, March 2008,
@@ -641,12 +664,26 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
               DOI 10.17487/RFC8310, March 2018,
               <https://www.rfc-editor.org/info/rfc8310>.
 
+
+
+
+
+
+Reddy, et al.           Expires February 12, 2021              [Page 12]
+
+Internet-Draft        DNS Access Denied Error Page           August 2020
+
+
+   [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
+              Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
+              <https://www.rfc-editor.org/info/rfc8446>.
+
    [RFC8624]  Wouters, P. and O. Sury, "Algorithm Implementation
               Requirements and Usage Guidance for DNSSEC", RFC 8624,
               DOI 10.17487/RFC8624, June 2019,
               <https://www.rfc-editor.org/info/rfc8624>.
 
-10.2.  Informative References
+11.2.  Informative References
 
    [Chrome-Install-Cert]
               "How to manually install the Securly SSL certificate in
@@ -664,15 +701,6 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
               "IANA, Domain Name System Security (DNSSEC) Algorithm
               Numbers",
               <http://www.iana.org/assignments/dns-sec-alg-numbers>.
-
-
-
-
-
-Reddy, et al.           Expires February 11, 2021              [Page 12]
-
-Internet-Draft        DNS Access Denied Error Page           August 2020
-
 
    [Facebook-Container]
               "Facebook container for Firefox",
@@ -694,6 +722,13 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
               and P. Hoffman, "Specification for DNS over Transport
               Layer Security (TLS)", RFC 7858, DOI 10.17487/RFC7858, May
               2016, <https://www.rfc-editor.org/info/rfc7858>.
+
+
+
+Reddy, et al.           Expires February 12, 2021              [Page 13]
+
+Internet-Draft        DNS Access Denied Error Page           August 2020
+
 
    [RFC8032]  Josefsson, S. and I. Liusvaara, "Edwards-Curve Digital
               Signature Algorithm (EdDSA)", RFC 8032,
@@ -723,13 +758,6 @@ Authors' Addresses
    Email: kondtir@gmail.com
 
 
-
-
-Reddy, et al.           Expires February 11, 2021              [Page 13]
-
-Internet-Draft        DNS Access Denied Error Page           August 2020
-
-
    Neil Cook
    Open-Xchange
    UK
@@ -753,32 +781,4 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Reddy, et al.           Expires February 11, 2021              [Page 14]
+Reddy, et al.           Expires February 12, 2021              [Page 14]
