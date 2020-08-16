@@ -271,7 +271,7 @@
       target="RFC8499"></xref> and <xref
       target="I-D.ietf-dnsop-terminology-ter"></xref>.</t>
 
-      <t>'DoH/DoT' refers to DNS-over-HTTPS and/or DNS-over-TLS.</t>
+      <t>'Encrypted DNS' refers to DNS-over-HTTPS, DNS-over-TLS, or DNS-over-QUIC</t>
     </section>
 
     <section title="Error page URL EDNS0 option format">
@@ -304,40 +304,42 @@
 
       <t><list style="symbols">
           <t>OPTION-CODE, 2-octets/16-bits (defined in <xref
-          target="RFC6891"></xref>]), for Error page URL is TBD. [RFC Editor:
+          target="RFC6891"></xref>]) for Error page URL, value is TBD. [RFC Editor:
           change TBD to the proper code once assigned by IANA.]</t>
 
-          <t>OPTION-LENGTH, 2-octets/16-bits ((defined in <xref
-          target="RFC6891"></xref>]) contains the length of the payload
+          <t>OPTION-LENGTH, 2-octets/16-bits (defined in <xref
+          target="RFC6891"></xref>) contains the length of the payload
           (everything after OPTION-LENGTH) in octets. The variability of the
           option length stems from the variable-length ERROR-PAGE-URL and
           ERROR-PAGE-SIG fields.</t>
 
-          <t>ERROR-PAGE-URL, a variable length, UTF-8 encoded <xref
-          target="RFC5198"></xref>, text field that will hold the URL that
+          <t>ERROR-PAGE-URL, a variable length UTF-8 encoded <xref
+          target="RFC5198"></xref> text field containing the URL that
           gives additional information about the cause of blocking access to a
           domain. The ERROR-PAGE-URL field MUST NOT be zero octets in length.
           The field MUST be null terminated.</t>
 
           <t>ERROR-PAGE-SIG-ALG, 16-bits, which is the signature algorithm
           used to generate the signature for the entire DNS response
-          message.</t>
+          message.  The values are defined in the <xref target="TLS-SIG-ALG">
+          TLS Signature Algorithm registry></xref> with limitations described
+          in <xref target="signandverify"></xref>.</t>
 
-          <t>ERROR-PAGE-SIG, a variable length, field that will hold the
-          signature of the entire DNS response message. The field is
-          represented as a Base64 encoding of the signature. The signature
+          <t>ERROR-PAGE-SIG, a variable length field containing the
+          signature of the entire DNS response message, encoded in 
+          Base64. The signature
           generation process is discussed in <xref
           target="signandverify"></xref>.</t>
         </list></t>
 
-      <t>The Error page URL option can be included in error responses
-      SERVFAIL, NXDOMAIN or REFUSED to a query that includes OPT Pseudo-RR
+      <t>The Error page URL option MUST only be included in error responses
+      SERVFAIL, NXDOMAIN or REFUSED to a query that included the OPT Pseudo-RR
       <xref target="RFC6891"></xref>.</t>
 
-      <t>If the URI template is
+      <t>Example: If the URI template is
       "https://block.example.net/block-page={target-domain}" for the HTTPS
       server returning the error page and access to the target domain
-      "example.com" is blocked by the DoH/DoT server, the DoH/DoT server
+      "example.com" is blocked by the encrypted DNS server, the encrypted DNS server
       replaces the string "{target-domain}" in the template with the
       base64url-encoded target domain <xref target="RFC4648"></xref>. In the
       above example, the error page URL will be
@@ -351,7 +353,7 @@
           order to defend against this attack the DNS client MUST NOT process
           the DNS response with Error page URL EDNS0 option unless DNS
           messages exchanged are cryptographically protected using
-          DoH/DoT.</t>
+          encrypted DNS.</t>
 
           <t>If an DNS client has enabled opportunistic privacy profile
           (Section 5 of <xref target="RFC8310"></xref>) for DoT, the DNS
@@ -375,25 +377,24 @@
           target="RFC8310"></xref> only applies to DoT protocol, there has
           been no such distinction made for DoH protocol.</t>
 
-          <t>If the DNS response has more than one Error page URL EDNS0
-          option, the DNS client MUST discard multiple Error page URL EDNS0
-          options in the DNS response.</t>
+          <t>If the DNS response contains more than one Error page URL EDNS0
+          option the DNS client MUST use only the first ocurrence.</t>
 
           <t>The Error page URL EDNS0 option MUST be processed by the DNS
-          client for a &ldquo;Censored&rdquo;, &ldquo;Blocked&rdquo; or
-          &ldquo;Filtered" extended error codes and MUST be ignored for any
-          other type of extended DNS error code. When &ldquo;Censored&rdquo;,
-          &ldquo;Blocked&rdquo; or &ldquo;Filtered" extended error code is
+          client for a "Censored", "Blocked" or
+          "Filtered" extended error codes and MUST be ignored for any
+          other type of extended DNS error code. When "Censored",
+          "Blocked" or "Filtered" extended error code is
           returned in conjunction with an Error page URL EDNS0 option, any
           other resource records in the answer MUST be ignored by clients
           supporting this specification.</t>
 
-          <t>If the DoH/DoT server does not offer DNS filtering service (e.g.,
+          <t>If the encrypted DNS server does not offer DNS filtering service (e.g.,
           prevent access to malware sites or objectionable content (e.g.,
           legal obligation)), the DNS client MUST discard the Error page URL
           EDNS0 option. The mechanism discussed in <xref
           target="I-D.reddy-add-server-policy-selection"></xref> can be used
-          by the DNS client to assess whether the DoH/DoT server performs
+          by the DNS client to assess whether the encrypted DNS server performs
           DNS-based content filtering.</t>
 
           <t>If the value of the variable in the error page URL does not match
@@ -411,17 +412,17 @@
           following the mechanism discussed in <xref
           target="signandverify"></xref>. If the signature is valid, the
           client can positively identify that the Error page URL EDNS0 option
-          has been generated by the DoH/DoT server and the DoH/DoT server did
+          has been generated by the encrypted DNS server and the encrypted DNS server did
           not forward the Error Page URL EDNS0 option from an upstream
-          resolver. Otherwise, the DNS client MUST discard the Error page URL
+          resolver. If signature validation fails, the DNS client MUST discard the Error page URL
           EDNS0 option.</t>
-        </list>When a DoH/DoT resolver receives an Error page URL EDNS0
+        </list>When an encrypted DNS resolver receives an Error page URL EDNS0
       option, the resolver MUST NOT forward the Error Page URL EDNS0 option
       from an upstream resolver as an attacker (e.g., MiTM) could insert a
       fake Error Page URL EDNS0 option into the DNS response.</t>
 
       <t>The agent acting as HTTPS client on the endpoint uses the URL as
-      given by the DoH/DoT server in a HTTP GET request to retrieve the error
+      given by the encrypted DNS server in an HTTP GET request to retrieve the error
       page. HTTP/2 <xref target="RFC7540"></xref> is the minimum RECOMMENDED
       version of HTTP to use to retrieve the error page.</t>
     </section>
@@ -431,25 +432,25 @@
       response message are defined in <xref target="DNSKEY-IANA"></xref>. The
       "mandatory-to-implement" algorithms are defined in <xref
       target="RFC8624"></xref> are RSA, ECDSA and EdDSA. Along similar lines,
-      the DoH/DoT server's end-entity certificate's public key and the
+      the encrypted DNS server's end-entity certificate's public key and the
       algorithm with which the key can be used are RSA, ECDSA and EdDSA <xref
       target="RFC8446"></xref>.</t>
 
-      <t>The signature is generated by the DoH/DoT server using the entire DNS
-      response message, private key of the DoH/DoT server's end-entity
+      <t>The signature is generated by the encrypted DNS server using the entire DNS
+      response message, private key of the encrypted DNS server's end-entity
       certificate as inputs to the signature algorithm. The signature
       algorithm in the ERROR-PAGE-SIG-ALG field MUST match the algorithm with
       which the public key is used in the subjectPublicKeyInfo field in the
-      DoH/DoT server's X.509 end-entity certificate.</t>
+      encrypted DNS server's X.509 end-entity certificate.</t>
 
       <t>If the signature algorithm in the ERROR-PAGE-SIG-ALG field does not
-      match the algorithm in the subjectPublicKeyInfo field in the DoH/DoT
+      match the algorithm in the subjectPublicKeyInfo field in the encrypted DNS
       server's X.509 end-entity certificate in the TLS handshake of the
-      DoH/DoT session, the DNS client MUST discard the Error page URL EDNS0
+      encrypted DNS session, the DNS client MUST discard the Error page URL EDNS0
       option. The DNS client verifies the signature using the signature in
-      ERROR-PAGE-SIG-ALG field, entire DNS response message and DoH/DoT
+      ERROR-PAGE-SIG-ALG field, entire DNS response message and encrypted DNS
       server's end-entity certificate's public key in the TLS handshake of
-      DoH/DoT session as inputs to the signature algorithm. For example, if
+      encrypted DNS session as inputs to the signature algorithm. For example, if
       Ed25519 is used, Ed25519 signature algorithm and verification of the
       Ed25519 signature are described in Sections 5.1.6 and 5.1.7 of <xref
       target="RFC8032"></xref>, respectively.</t>
@@ -508,55 +509,43 @@
       target="I-D.ietf-dnsop-extended-error"></xref> and <xref
       target="RFC8624"></xref> need to be taken into consideration.</t>
 
-      <t>Unless the Error page URL EDNS0 option that conveys the URL that
-      provides additional information about the cause of blocking access to a
-      domain is sent over DNS-over-HTTPS (DoH) <xref target="RFC8484"></xref>
-      or DNS-over-TLS (DoT) <xref target="RFC7858"></xref>, the DNS response
-      is susceptible to forgery.</t>
+      <t>The Error page URL EDNS0 option causes an HTTPS retrieval by
+      the client. To prevent forgery of the Error page URL EDNS0 option, this specification
+      requires it only be sent only over an encrypted DNS channel with an 
+      authorized DNS server.</t>
 
-      <t>The agent acting as the HTTPS client on the endpoint MUST NOT fetch
-      the URL unless DNS messages exchanged are cryptographically protected
-      using DoH/DoT. Bad actors can host DoH/DoT servers, and claim the
-      servers offer privacy and filtering capability to block malware domains
-      but exactly do the opposite to invade the security and privacy of the
-      end user. For example, this attack can be mitigated if the endpoint
-      selects DoH/DoT servers hosted by well-known organizations (e.g., ISPs,
-      organization for which a user works, etc.) or the user selects a DoH/DoT
-      server with filtering capability pre-configured in the OS/Browser.</t>
-
-      <t>The DNS client can learn the filtering capability of a DoH/DoT server
+      <t>The DNS client can learn the filtering capability of an encrypted DNS server
       using <xref target="I-D.reddy-add-server-policy-selection"></xref>.
       <xref target="I-D.reddy-add-server-policy-selection"></xref> also
-      discusses how a DNS client can authenticate it is connecting to a
-      DoH/DoT server hosted by a specific organization (e.g., ISP). This
+      discusses how a DNS client can authenticate it is connecting to an
+      encrypted DNS server hosted by a specific organization (e.g., ISP). This
       information is cryptographically signed to attest its authenticity. It
-      is particularly useful when the DoH/DoT server is insecurely discovered
-      and prevents the client from connecting to an attacker's DoH/DoT
+      is particularly useful when the encrypted DNS server is insecurely discovered
+      and prevents the client from connecting to an attacker's encrypted DNS
       server.</t>
 
-      <t>In order to deal with malicious servers, because the client knows
-      that it is accessing a error page URL, it can know not to send cookies
-      (e.g., cookie store isolated in Safari for captive portals <xref
-      target="Safari-Cookie"></xref>), not to send credentials, disable
-      JavaScript, auto-enable private browsing mode for the error page or load
-      the error page in a container isolated from other web activity (e.g.,
-      Facebook Container by Mozilla Firefox <xref
-      target="Facebook-Container"></xref>), etc.</t>
+      <t>To reduce threat surface when retrieving the Error page URL over
+      HTTP, the client SHOULD perform the retrieval using an isolated
+      environment.  Such isolation should prevent transmitting cookies,
+      block JavaScript, block auto-fill of credentials or personal information,
+      and be isolated from the user's normal environment.  Browsers perform
+      some of these limitations today when accessing captive portals <xref target="Safari-Cookie"></xref>,
+      during private browsing, or using containerization <xref
+      target="Facebook-Container"></xref>).</t>
 
-      <t>The DoH/DoT session provides transport security for the interaction
+      <t>The encrypted DNS session provides transport security for the interaction
       between the DNS client and server, but DNSSEC signing and validation is
       not possible for the Error Page URL EDNS0 option returning the error
-      page URL. For example, if access to a doman is blocked, the DoH/DoT
+      page URL. For example, if access to a doman is blocked, the encrypted DNS
       resolver can rewrite the response to send NXDOMAIN error and Error page
       URL EDNS0 option in the DNS response, it will omit DNSSEC RRsets,
       because the modified responses cannot be verified by DNSSEC signatures.
       However, the signature in the Error Page URL EDNS0 option provides data
-      origin authentication and the input to the signature generation process
-      includes the entire DNS response message to provide randomness for each
-      signature. This is also intended to allow the DNS client to distinguish
+      origin authentication of the Error Page URL EDNS0 option.  This is also 
+      intended to allow the DNS client to distinguish
       between servers that do not implement Error page URL EDNS0 option and is
       useful to detect Error page URL EDNS0 option insertion attack by an MiTM
-      in the path between the DoH/DoT resolver and authoritative servers.
+      in the path between the encrypted DNS resolver and authoritative servers.
       Nevertheless, the Error Page URL EDNS0 option returning the error page
       URL should be treated only as diagnostic information and MUST NOT alter
       DNS protocol processing.</t>
@@ -612,6 +601,18 @@
       <?rfc include='reference.RFC.8446'?>
 
       <?rfc include='reference.I-D.ietf-dnsop-extended-error' ?>
+
+      <reference anchor="TLS-SIG-ALG"
+                 target="https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-16">
+        <front>
+          <title>TLS SignatureAlgorithm</title>
+          <author></author>
+
+          <date day="" month="" year="" />
+        </front>
+      </reference>
+ 
+
     </references>
 
     <references title="Informative References">
@@ -638,6 +639,7 @@
           <date day="" month="" year="" />
         </front>
       </reference>
+
 
       <reference anchor="Chrome-Translate"
                  target="https://chrome.google.com/webstore/detail/google-translate/aapbdbdomjkkjkaonfhkkikfgjllcleb/RK%3D2/RS%3DBBFW_pnWkPY0xPMYsAZI5xOgQEE-">
@@ -684,7 +686,6 @@
         </front>
       </reference>
 
-      <!---->
     </references>
   </back>
 </rfc>
