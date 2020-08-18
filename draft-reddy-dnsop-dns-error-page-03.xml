@@ -322,8 +322,8 @@
           <t>ERROR-PAGE-URL, a variable length UTF-8 encoded <xref
           target="RFC5198"></xref> text field containing the URL that gives
           additional information about the cause of blocking access to a
-          domain. The ERROR-PAGE-URL field MUST NOT be zero octets in length.
-          </t>
+          domain. The ERROR-PAGE-URL field MUST NOT be zero octets in
+          length.</t>
 
           <t>ERROR-PAGE-SIG-ALG, 16-bits, which is the signature algorithm
           used to generate the signature for the Error page URL. The values
@@ -332,15 +332,15 @@
           described in <xref target="signandverify"></xref>.</t>
 
           <t>ERROR-PAGE-SIG, a variable length field containing the signature
-          of the Error page URL, encoded in Base64. The signature generation
-          process is discussed in <xref target="signandverify"></xref>.</t>
+          of the Error page URL. The signature generation process is discussed
+          in <xref target="signandverify"></xref>.</t>
         </list></t>
 
       <t>The Error page URL option MUST only be included in error responses
       SERVFAIL, NXDOMAIN or REFUSED to a query that included the OPT Pseudo-RR
       <xref target="RFC6891"></xref>.</t>
 
-      <t>An example is illustrated below: </t>
+      <t>An example is illustrated below:</t>
 
       <t>If the URI template is
       "https://block.example.net/block-page={target-domain}" for the HTTPS
@@ -411,7 +411,13 @@
           option.</t>
 
           <t>The DNS client MUST reject the error page URL if the scheme is
-          not "https".</t>
+          not "https". The HTTPS client retrieving the error page MUST verify
+          the entire certification path per <xref target="RFC5280"></xref>.
+          The HTTPS client additionally uses validation techniques as
+          described in <xref target="RFC6125"></xref> to compare the domain
+          name in the error page URL to the server certificate provided in TLS
+          handshake. See <xref target="RFC7525"></xref> for additional TLS
+          recommendations. </t>
 
           <t>The DNS client verifies the signature in the ERROR-PAGE-SIG field
           following the mechanism discussed in <xref
@@ -449,7 +455,7 @@
       certificate as inputs to the signature algorithm. The signature
       algorithm in the ERROR-PAGE-SIG-ALG field MUST match the algorithm with
       which the public key is used in the subjectPublicKeyInfo field in the
-      encrypted DNS server's X.509 end-entity certificate.</t>
+      encrypted DNS server's X.509 end-entity certificate. </t>
 
       <t>If the signature algorithm in the ERROR-PAGE-SIG-ALG field does not
       match the algorithm in the subjectPublicKeyInfo field in the encrypted
@@ -610,6 +616,12 @@
       <?rfc include='reference.RFC.8446'?>
 
       <?rfc include='reference.RFC.6979'?>
+
+      <?rfc include='reference.RFC.5280'?>
+
+      <?rfc include='reference.RFC.6125'?>
+
+      <?rfc include='reference.RFC.7525'?>
 
       <?rfc include='reference.I-D.ietf-dnsop-extended-error' ?>
     </references>
