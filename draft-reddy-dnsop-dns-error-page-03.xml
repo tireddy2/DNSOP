@@ -466,22 +466,22 @@
       algorithm in the ERROR-PAGE-SIG-ALG field MUST be compatible with the
       key in the DNS server's end-entity certificate. The implementation MUST
       support the same set of algorithms in the TLS client for validating the
-      signature in the CertificateVerify message and in the DNS client to
-      validate the signature for the Error page URL. As a reminder, the
-      server's end-entity certificate's public key will be compatible with the
-      selected authentication algorithm from the client's
-      "signature_algorithms" TLS extension (Section 4.4.2.2 of <xref
-      target="RFC8624"></xref>). </t>
+      signature in the CertificateVerify message from the server in the TLS
+      handshake and in the DNS client to validate the signature for the Error
+      page URL. As a reminder, the server's end-entity certificate's public
+      key will be compatible with the selected authentication algorithm from
+      the client's "signature_algorithms" TLS extension (Section 4.4.2.2 of
+      <xref target="RFC8624"></xref>). </t>
 
       <t>If the signature algorithm in the ERROR-PAGE-SIG-ALG field is not
-      compatible with the key in the DNS server's end-entity certificate
-      received in the TLS handshake, the DNS client MUST reject the Error page
-      URL EDNS0 option. The DNS client verifies the signature using the
-      signature algorithm in ERROR-PAGE-SIG-ALG field, error page URL and DNS
-      server's end-entity certificate's public key as inputs to the signature
-      algorithm. For example, if Ed25519 is used, Ed25519 signature algorithm
-      and verification of the Ed25519 signature are described in Sections
-      5.1.6 and 5.1.7 of <xref target="RFC8032"></xref>, respectively.</t>
+      compatible with the key in the DNS server's end-entity certificate, the
+      DNS client MUST reject the Error page URL EDNS0 option. The DNS client
+      verifies the signature using the signature algorithm in
+      ERROR-PAGE-SIG-ALG field, error page URL and DNS server's end-entity
+      certificate's public key as inputs to the signature algorithm. For
+      example, if Ed25519 is used, Ed25519 signature algorithm and
+      verification of the Ed25519 signature are described in Sections 5.1.6
+      and 5.1.7 of <xref target="RFC8032"></xref>, respectively.</t>
     </section>
 
     <section title="ERROR Page">
@@ -636,6 +636,17 @@
       <?rfc include='reference.RFC.5625'?>
 
       <?rfc include='reference.I-D.ietf-dnsop-extended-error' ?>
+
+      <reference anchor="TLS-SIG-SCHEME"
+                 target="https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-signaturescheme">
+        <front>
+          <title>IANA, TLS SignatureScheme</title>
+
+          <author></author>
+
+          <date day="" month="" year="" />
+        </front>
+      </reference>
     </references>
 
     <references title="Informative References">
@@ -701,17 +712,6 @@
         <front>
           <title>IANA, Domain Name System Security (DNSSEC) Algorithm
           Numbers</title>
-
-          <author></author>
-
-          <date day="" month="" year="" />
-        </front>
-      </reference>
-
-      <reference anchor="TLS-SIG-SCHEME"
-                 target="https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-signaturescheme">
-        <front>
-          <title>IANA, TLS SignatureScheme</title>
 
           <author></author>
 

@@ -477,22 +477,22 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
    algorithm in the ERROR-PAGE-SIG-ALG field MUST be compatible with the
    key in the DNS server's end-entity certificate.  The implementation
    MUST support the same set of algorithms in the TLS client for
-   validating the signature in the CertificateVerify message and in the
-   DNS client to validate the signature for the Error page URL.  As a
-   reminder, the server's end-entity certificate's public key will be
-   compatible with the selected authentication algorithm from the
-   client's "signature_algorithms" TLS extension (Section 4.4.2.2 of
-   [RFC8624]).
+   validating the signature in the CertificateVerify message from the
+   server in the TLS handshake and in the DNS client to validate the
+   signature for the Error page URL.  As a reminder, the server's end-
+   entity certificate's public key will be compatible with the selected
+   authentication algorithm from the client's "signature_algorithms" TLS
+   extension (Section 4.4.2.2 of [RFC8624]).
 
    If the signature algorithm in the ERROR-PAGE-SIG-ALG field is not
-   compatible with the key in the DNS server's end-entity certificate
-   received in the TLS handshake, the DNS client MUST reject the Error
-   page URL EDNS0 option.  The DNS client verifies the signature using
-   the signature algorithm in ERROR-PAGE-SIG-ALG field, error page URL
-   and DNS server's end-entity certificate's public key as inputs to the
-   signature algorithm.  For example, if Ed25519 is used, Ed25519
-   signature algorithm and verification of the Ed25519 signature are
-   described in Sections 5.1.6 and 5.1.7 of [RFC8032], respectively.
+   compatible with the key in the DNS server's end-entity certificate,
+   the DNS client MUST reject the Error page URL EDNS0 option.  The DNS
+   client verifies the signature using the signature algorithm in ERROR-
+   PAGE-SIG-ALG field, error page URL and DNS server's end-entity
+   certificate's public key as inputs to the signature algorithm.  For
+   example, if Ed25519 is used, Ed25519 signature algorithm and
+   verification of the Ed25519 signature are described in Sections 5.1.6
+   and 5.1.7 of [RFC8032], respectively.
 
 
 
@@ -735,6 +735,11 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
               DOI 10.17487/RFC8624, June 2019,
               <https://www.rfc-editor.org/info/rfc8624>.
 
+   [TLS-SIG-SCHEME]
+              "IANA, TLS SignatureScheme",
+              <https://www.iana.org/assignments/tls-parameters/tls-
+              parameters.xhtml#tls-signaturescheme>.
+
 11.2.  Informative References
 
    [Chrome-Install-Cert]
@@ -770,11 +775,6 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
               Assertion Token", draft-reddy-add-server-policy-
               selection-04 (work in progress), July 2020.
 
-   [RFC7858]  Hu, Z., Zhu, L., Heidemann, J., Mankin, A., Wessels, D.,
-              and P. Hoffman, "Specification for DNS over Transport
-              Layer Security (TLS)", RFC 7858, DOI 10.17487/RFC7858, May
-              2016, <https://www.rfc-editor.org/info/rfc7858>.
-
 
 
 
@@ -785,6 +785,11 @@ Reddy, et al.           Expires February 21, 2021              [Page 14]
 
 Internet-Draft        DNS Access Denied Error Page           August 2020
 
+
+   [RFC7858]  Hu, Z., Zhu, L., Heidemann, J., Mankin, A., Wessels, D.,
+              and P. Hoffman, "Specification for DNS over Transport
+              Layer Security (TLS)", RFC 7858, DOI 10.17487/RFC7858, May
+              2016, <https://www.rfc-editor.org/info/rfc7858>.
 
    [RFC8032]  Josefsson, S. and I. Liusvaara, "Edwards-Curve Digital
               Signature Algorithm (EdDSA)", RFC 8032,
@@ -802,11 +807,6 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
    [Safari-Cookie]
               "Isolated cookie store (CVE-2016-1730)",
               <https://support.apple.com/en-us/HT205732>.
-
-   [TLS-SIG-SCHEME]
-              "IANA, TLS SignatureScheme",
-              <https://www.iana.org/assignments/tls-parameters/tls-
-              parameters.xhtml#tls-signaturescheme>.
 
 Authors' Addresses
 
