@@ -358,6 +358,12 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
    the expansion of the URI Template is "https://block.example.net/
    block-page?target-domain=ZXhhbXBsZS5jb20".
 
+   The HTTPS client retrieving the error page MUST verify the entire
+   certification path per [RFC5280].  The HTTPS client additionally uses
+   validation techniques as described in [RFC6125] to compare the domain
+   name in the error page URI to the server certificate provided in TLS
+   handshake.  See [RFC7525] for additional TLS recommendations.
+
 4.  Error page URL Processing
 
    The DNS client MUST follow the following rules to process the Error
@@ -380,12 +386,6 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
 
    o  If an DNS client has enabled strict privacy profile (Section 5 of
       [RFC8310]) for DoT, the DNS client requires an encrypted
-      connection and successful authentication of the DNS server; this
-      mitigates both passive eavesdropping and client redirection (at
-      the expense of providing no DNS service if an encrypted,
-      authenticated connection is not available).  If the DNS client has
-      enabled strict privacy profile for DoT, the client can process the
-      DNS response with Error page URI EDNS0 option.  Note that the
 
 
 
@@ -394,6 +394,12 @@ Reddy, et al.           Expires February 22, 2021               [Page 7]
 Internet-Draft        DNS Access Denied Error Page           August 2020
 
 
+      connection and successful authentication of the DNS server; this
+      mitigates both passive eavesdropping and client redirection (at
+      the expense of providing no DNS service if an encrypted,
+      authenticated connection is not available).  If the DNS client has
+      enabled strict privacy profile for DoT, the client can process the
+      DNS response with Error page URI EDNS0 option.  Note that the
       strict and opportunistic privacy profiles as defined in [RFC8310]
       only applies to DoT protocol, there has been no such distinction
       made for DoH protocol.
@@ -423,12 +429,7 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
       option.
 
    o  The DNS client MUST reject the error page URI if the scheme is not
-      "https".  The HTTPS client retrieving the error page MUST verify
-      the entire certification path per [RFC5280].  The HTTPS client
-      additionally uses validation techniques as described in [RFC6125]
-      to compare the domain name in the error page URI to the server
-      certificate provided in TLS handshake.  See [RFC7525] for
-      additional TLS recommendations.
+      "https".
 
    o  The DNS client verifies the signature in the ERROR-PAGE-SIG field
       following the mechanism discussed in Section 5.  If the signature
@@ -441,7 +442,6 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
    Because EDNS is a hop-by-hop extension to DNS and EDNS responses are
    not cached (Section 6.2.1 of [RFC6891]), a DNS resolver MUST NOT
    propagate a received Error Page URI EDNS0 option, because an attacker
-   could insert a bogus URI; instead, if access to a domain is denied,
 
 
 
@@ -450,6 +450,7 @@ Reddy, et al.           Expires February 22, 2021               [Page 8]
 Internet-Draft        DNS Access Denied Error Page           August 2020
 
 
+   could insert a bogus URI; instead, if access to a domain is denied,
    the DNS resolver MUST generate its own Error Page URI.  Because DNS
    forwarders (or DNS proxies) are supposed to propagate unknown EDNS0
    options (Section 4.1 and Section 4.4.1 of [RFC5625]), the Error Page
@@ -485,18 +486,17 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
    If the signature algorithm in the ERROR-PAGE-SIG-ALG field is not
    compatible with the key in the DNS server's end-entity certificate,
    the DNS client MUST reject the Error page URI EDNS0 option.  The DNS
-   client verifies the signature using the signature algorithm in ERROR-
-   PAGE-SIG-ALG field, error page URI and DNS server's end-entity
-   certificate's public key as inputs to the signature algorithm.  For
-   example, if Ed25519 is used, Ed25519 signature algorithm and
-   verification of the Ed25519 signature are described in Sections 5.1.6
-   and 5.1.7 of [RFC8032], respectively.
+   client verifies the signature using the signature in the ERROR-PAGE-
+   SIG field, error page URI and DNS server's end-entity certificate's
+   public key as inputs to the signature algorithm.  For example, if
+   Ed25519 is used, Ed25519 signature algorithm and verification of the
+   Ed25519 signature are described in Sections 5.1.6 and 5.1.7 of
+   [RFC8032], respectively.
 
 6.  ERROR Page
 
    The following text outlines the RECOMMENDED contents of an error page
    to assist the operator developing the error page.
-
 
 
 

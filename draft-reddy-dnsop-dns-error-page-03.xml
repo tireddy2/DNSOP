@@ -361,6 +361,13 @@
       HTTP GET request. In the above example, the expansion of the URI
       Template is
       "https://block.example.net/block-page?target-domain=ZXhhbXBsZS5jb20".</t>
+
+      <t>The HTTPS client retrieving the error page MUST verify the entire
+      certification path per <xref target="RFC5280"></xref>. The HTTPS client
+      additionally uses validation techniques as described in <xref
+      target="RFC6125"></xref> to compare the domain name in the error page
+      URI to the server certificate provided in TLS handshake. See <xref
+      target="RFC7525"></xref> for additional TLS recommendations. </t>
     </section>
 
     <section title="Error page URL Processing">
@@ -419,13 +426,7 @@
           option.</t>
 
           <t>The DNS client MUST reject the error page URI if the scheme is
-          not "https". The HTTPS client retrieving the error page MUST verify
-          the entire certification path per <xref target="RFC5280"></xref>.
-          The HTTPS client additionally uses validation techniques as
-          described in <xref target="RFC6125"></xref> to compare the domain
-          name in the error page URI to the server certificate provided in TLS
-          handshake. See <xref target="RFC7525"></xref> for additional TLS
-          recommendations. </t>
+          not "https". </t>
 
           <t>The DNS client verifies the signature in the ERROR-PAGE-SIG field
           following the mechanism discussed in <xref
@@ -478,12 +479,12 @@
       <t>If the signature algorithm in the ERROR-PAGE-SIG-ALG field is not
       compatible with the key in the DNS server's end-entity certificate, the
       DNS client MUST reject the Error page URI EDNS0 option. The DNS client
-      verifies the signature using the signature algorithm in
-      ERROR-PAGE-SIG-ALG field, error page URI and DNS server's end-entity
-      certificate's public key as inputs to the signature algorithm. For
-      example, if Ed25519 is used, Ed25519 signature algorithm and
-      verification of the Ed25519 signature are described in Sections 5.1.6
-      and 5.1.7 of <xref target="RFC8032"></xref>, respectively.</t>
+      verifies the signature using the signature in the ERROR-PAGE-SIG field,
+      error page URI and DNS server's end-entity certificate's public key as
+      inputs to the signature algorithm. For example, if Ed25519 is used,
+      Ed25519 signature algorithm and verification of the Ed25519 signature
+      are described in Sections 5.1.6 and 5.1.7 of <xref
+      target="RFC8032"></xref>, respectively.</t>
     </section>
 
     <section title="ERROR Page">
