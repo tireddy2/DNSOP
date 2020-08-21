@@ -343,10 +343,10 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
    RECOMMENDED version of HTTP to use to retrieve the error page.  The
    URI Template is processed with a single defined variable "target-
    domain" whose value is set to the FQDN to which access is denied.
-   The client encodes the FQDN with base64url [RFC4648] and then
-   provided as the variable value for "target-domain" to the URI
-   Template expansion in an HTTP GET rquest.  Padding characters for
-   base64url MUST NOT be included.
+   The agent acting as HTTPS client on the endpoint encodes the FQDN
+   with base64url [RFC4648] and then provided as the variable value for
+   "target-domain" to the URI Template expansion in an HTTP GET request.
+   Padding characters for base64url MUST NOT be included.
 
    An example is illustrated below:
 

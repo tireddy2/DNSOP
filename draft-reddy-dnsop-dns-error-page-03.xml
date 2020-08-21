@@ -345,10 +345,11 @@
       is the minimum RECOMMENDED version of HTTP to use to retrieve the error
       page. The URI Template is processed with a single defined variable
       "target-domain" whose value is set to the FQDN to which access is
-      denied. The client encodes the FQDN with base64url <xref
-      target="RFC4648"></xref> and then provided as the variable value for
-      "target-domain" to the URI Template expansion in an HTTP GET rquest.
-      Padding characters for base64url MUST NOT be included. </t>
+      denied. The agent acting as HTTPS client on the endpoint encodes the
+      FQDN with base64url <xref target="RFC4648"></xref> and then provided as
+      the variable value for "target-domain" to the URI Template expansion in
+      an HTTP GET request. Padding characters for base64url MUST NOT be
+      included. </t>
 
       <t>An example is illustrated below:</t>
 
