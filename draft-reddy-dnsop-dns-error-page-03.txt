@@ -5,12 +5,12 @@
 DNSOP WG                                                        T. Reddy
 Internet-Draft                                                    McAfee
 Intended status: Standards Track                                 N. Cook
-Expires: February 22, 2021                                  Open-Xchange
+Expires: February 23, 2021                                  Open-Xchange
                                                                  D. Wing
                                                                   Citrix
                                                             M. Boucadair
                                                                   Orange
-                                                         August 21, 2020
+                                                         August 22, 2020
 
 
                       DNS Access Denied Error page
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 22, 2021.
+   This Internet-Draft will expire on February 23, 2021.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Reddy, et al.           Expires February 22, 2021               [Page 1]
+Reddy, et al.           Expires February 23, 2021               [Page 1]
 
 Internet-Draft        DNS Access Denied Error Page           August 2020
 
@@ -70,10 +70,10 @@ Table of Contents
    3.  Error page URL EDNS0 option format  . . . . . . . . . . . . .   5
    4.  Error page URL Processing . . . . . . . . . . . . . . . . . .   7
    5.  Sign and Verify . . . . . . . . . . . . . . . . . . . . . . .   9
-   6.  ERROR Page  . . . . . . . . . . . . . . . . . . . . . . . . .   9
+   6.  ERROR Page  . . . . . . . . . . . . . . . . . . . . . . . . .  10
    7.  Usability Considerations  . . . . . . . . . . . . . . . . . .  10
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  10
-   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  11
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  11
+   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  12
      9.1.  A New Error Page URL EDNS Option  . . . . . . . . . . . .  12
    10. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  12
    11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  12
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Reddy, et al.           Expires February 22, 2021               [Page 2]
+Reddy, et al.           Expires February 23, 2021               [Page 2]
 
 Internet-Draft        DNS Access Denied Error Page           August 2020
 
@@ -165,7 +165,7 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
 
 
 
-Reddy, et al.           Expires February 22, 2021               [Page 3]
+Reddy, et al.           Expires February 23, 2021               [Page 3]
 
 Internet-Draft        DNS Access Denied Error Page           August 2020
 
@@ -221,7 +221,7 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
 
 
 
-Reddy, et al.           Expires February 22, 2021               [Page 4]
+Reddy, et al.           Expires February 23, 2021               [Page 4]
 
 Internet-Draft        DNS Access Denied Error Page           August 2020
 
@@ -277,7 +277,7 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
 
 
 
-Reddy, et al.           Expires February 22, 2021               [Page 5]
+Reddy, et al.           Expires February 23, 2021               [Page 5]
 
 Internet-Draft        DNS Access Denied Error Page           August 2020
 
@@ -333,19 +333,21 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
 
 
 
-Reddy, et al.           Expires February 22, 2021               [Page 6]
+Reddy, et al.           Expires February 23, 2021               [Page 6]
 
 Internet-Draft        DNS Access Denied Error Page           August 2020
 
 
    The URI Template defined in ERROR-PAGE-URI describes how to construct
-   the URL to fetch the error page.  HTTP/2 [RFC7540] is the minimum
-   RECOMMENDED version of HTTP to use to retrieve the error page.  The
-   URI Template is processed with a single defined variable "target-
-   domain" whose value is set to the FQDN to which access is denied.
-   The agent acting as HTTPS client on the endpoint encodes the FQDN
-   with base64url [RFC4648] and then provided as the variable value for
-   "target-domain" to the URI Template expansion in an HTTP GET request.
+   the URL to fetch the error page.  The agent acting as HTTPS client on
+   the endpoint encodes a FQDN to which access is denied into an HTTP
+   GET request to retrieve the error page.  The HTTPS server returning
+   the error page defines the URI used by the HTTP GET request through
+   the use of a URI template.  The URI Template is processed with a
+   defined variable "target-domain" whose value is set to the FQDN to
+   which access is denied.  The FQDN is encoded with base64url [RFC4648]
+   and then provided as the variable value for "target-domain" to expand
+   the URI Template into a URI reference in the HTTP GET request.
    Padding characters for base64url MUST NOT be included.
 
    An example is illustrated below:
@@ -355,14 +357,16 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
    the target domain "example.com" is blocked by the encrypted DNS
    server, the variable "target-domain" has the value "example.com"
    base64url encoded into an HTTP GET request.  In the above example,
-   the expansion of the URI Template is "https://block.example.net/
-   block-page?target-domain=ZXhhbXBsZS5jb20".
+   the expansion of the above URI Template is
+   "https://block.example.net/block-page?target-domain=ZXhhbXBsZS5jb20".
 
-   The HTTPS client retrieving the error page MUST verify the entire
-   certification path per [RFC5280].  The HTTPS client additionally uses
-   validation techniques as described in [RFC6125] to compare the domain
-   name in the error page URI to the server certificate provided in TLS
-   handshake.  See [RFC7525] for additional TLS recommendations.
+   HTTP/2 [RFC7540] is the minimum RECOMMENDED version of HTTP to use to
+   retrieve the error page.  The HTTPS client retrieving the error page
+   MUST verify the entire certification path per [RFC5280].  The HTTPS
+   client additionally uses validation techniques as described in
+   [RFC6125] to compare the domain name in the error page URI to the
+   server certificate provided in TLS handshake.  See [RFC7525] for
+   additional TLS recommendations.
 
 4.  Error page URL Processing
 
@@ -381,19 +385,20 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
       server provided by the local network or fallback to clear text
       DNS, and cannot exchange encrypted DNS messages.  The fallback
       adversely impacts security and privacy.  If the DNS client has
+
+
+
+
+Reddy, et al.           Expires February 23, 2021               [Page 7]
+
+Internet-Draft        DNS Access Denied Error Page           August 2020
+
+
       enabled opportunistic privacy profile for DoT, the client MUST NOT
       process the DNS response with Error page URI EDNS0 option.
 
    o  If an DNS client has enabled strict privacy profile (Section 5 of
       [RFC8310]) for DoT, the DNS client requires an encrypted
-
-
-
-Reddy, et al.           Expires February 22, 2021               [Page 7]
-
-Internet-Draft        DNS Access Denied Error Page           August 2020
-
-
       connection and successful authentication of the DNS server; this
       mitigates both passive eavesdropping and client redirection (at
       the expense of providing no DNS service if an encrypted,
@@ -436,27 +441,28 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
       is valid, the client can positively identify that the Error page
       URI EDNS0 option has been generated by the encrypted DNS server
       and the encrypted DNS server did not forward the Error Page URI
+
+
+
+
+Reddy, et al.           Expires February 23, 2021               [Page 8]
+
+Internet-Draft        DNS Access Denied Error Page           August 2020
+
+
       EDNS0 option from an upstream resolver.  If signature validation
       fails, the DNS client MUST reject the Error page URI EDNS0 option.
 
    Because EDNS is a hop-by-hop extension to DNS and EDNS responses are
    not cached (Section 6.2.1 of [RFC6891]), a DNS resolver MUST NOT
    propagate a received Error Page URI EDNS0 option, because an attacker
-
-
-
-Reddy, et al.           Expires February 22, 2021               [Page 8]
-
-Internet-Draft        DNS Access Denied Error Page           August 2020
-
-
    could insert a bogus URI; instead, if access to a domain is denied,
    the DNS resolver MUST generate its own Error Page URI.  Because DNS
    forwarders (or DNS proxies) are supposed to propagate unknown EDNS0
    options (Section 4.1 and Section 4.4.1 of [RFC5625]), the Error Page
    URI EDNS0 option may get propagated.  To detect both of these
-   scenarios, the Error Page URI is protected with object signature
-   using the DNS resolver's private key as described in Section 5.
+   scenarios, the Error Page URI is protected with an object signature
+   as described in Section 5.
 
 5.  Sign and Verify
 
@@ -493,18 +499,17 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
    Ed25519 signature are described in Sections 5.1.6 and 5.1.7 of
    [RFC8032], respectively.
 
+
+
+Reddy, et al.           Expires February 23, 2021               [Page 9]
+
+Internet-Draft        DNS Access Denied Error Page           August 2020
+
+
 6.  ERROR Page
 
    The following text outlines the RECOMMENDED contents of an error page
    to assist the operator developing the error page.
-
-
-
-
-Reddy, et al.           Expires February 22, 2021               [Page 9]
-
-Internet-Draft        DNS Access Denied Error Page           August 2020
-
 
    o  The exact reason for blocking access to the domain.  If the domain
       is blocked based on some threat data, the threat type associated
@@ -548,19 +553,19 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
    The user can click on the Translate button in the banner to have all
    the text on the page appear in the language selected by the user.
 
+
+
+
+
+Reddy, et al.           Expires February 23, 2021              [Page 10]
+
+Internet-Draft        DNS Access Denied Error Page           August 2020
+
+
 8.  Security Considerations
 
    Security considerations in [I-D.ietf-dnsop-extended-error] and
    [RFC8624] need to be taken into consideration.
-
-
-
-
-
-Reddy, et al.           Expires February 22, 2021              [Page 10]
-
-Internet-Draft        DNS Access Denied Error Page           August 2020
-
 
    The Error page URI EDNS0 option causes an HTTPS retrieval by the
    client.  To prevent forgery of the Error page URI EDNS0 option, this
@@ -605,18 +610,15 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
    the access to the domain name and the entity blocking access to the
    domain.
 
-9.  IANA Considerations
 
 
 
-
-
-
-
-Reddy, et al.           Expires February 22, 2021              [Page 11]
+Reddy, et al.           Expires February 23, 2021              [Page 11]
 
 Internet-Draft        DNS Access Denied Error Page           August 2020
 
+
+9.  IANA Considerations
 
 9.1.  A New Error Page URL EDNS Option
 
@@ -663,16 +665,18 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
               (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
               <https://www.rfc-editor.org/info/rfc5280>.
 
-   [RFC5625]  Bellis, R., "DNS Proxy Implementation Guidelines",
-              BCP 152, RFC 5625, DOI 10.17487/RFC5625, August 2009,
-              <https://www.rfc-editor.org/info/rfc5625>.
 
 
 
-Reddy, et al.           Expires February 22, 2021              [Page 12]
+
+Reddy, et al.           Expires February 23, 2021              [Page 12]
 
 Internet-Draft        DNS Access Denied Error Page           August 2020
 
+
+   [RFC5625]  Bellis, R., "DNS Proxy Implementation Guidelines",
+              BCP 152, RFC 5625, DOI 10.17487/RFC5625, August 2009,
+              <https://www.rfc-editor.org/info/rfc5625>.
 
    [RFC6125]  Saint-Andre, P. and J. Hodges, "Representation and
               Verification of Domain-Based Application Service Identity
@@ -715,20 +719,21 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
               <https://www.rfc-editor.org/info/rfc8446>.
 
+
+
+
+
+
+
+Reddy, et al.           Expires February 23, 2021              [Page 13]
+
+Internet-Draft        DNS Access Denied Error Page           August 2020
+
+
    [RFC8624]  Wouters, P. and O. Sury, "Algorithm Implementation
               Requirements and Usage Guidance for DNSSEC", RFC 8624,
               DOI 10.17487/RFC8624, June 2019,
               <https://www.rfc-editor.org/info/rfc8624>.
-
-
-
-
-
-
-Reddy, et al.           Expires February 22, 2021              [Page 13]
-
-Internet-Draft        DNS Access Denied Error Page           August 2020
-
 
    [TLS-SIG-SCHEME]
               "IANA, TLS SignatureScheme",
@@ -770,21 +775,21 @@ Internet-Draft        DNS Access Denied Error Page           August 2020
               Assertion Token", draft-reddy-add-server-policy-
               selection-04 (work in progress), July 2020.
 
+
+
+
+
+
+
+Reddy, et al.           Expires February 23, 2021              [Page 14]
+
+Internet-Draft        DNS Access Denied Error Page           August 2020
+
+
    [RFC7858]  Hu, Z., Zhu, L., Heidemann, J., Mankin, A., Wessels, D.,
               and P. Hoffman, "Specification for DNS over Transport
               Layer Security (TLS)", RFC 7858, DOI 10.17487/RFC7858, May
               2016, <https://www.rfc-editor.org/info/rfc7858>.
-
-
-
-
-
-
-
-Reddy, et al.           Expires February 22, 2021              [Page 14]
-
-Internet-Draft        DNS Access Denied Error Page           August 2020
-
 
    [RFC8032]  Josefsson, S. and I. Liusvaara, "Edwards-Curve Digital
               Signature Algorithm (EdDSA)", RFC 8032,
@@ -828,6 +833,15 @@ Authors' Addresses
    Email: dwing-ietf@fuggles.com
 
 
+
+
+
+
+Reddy, et al.           Expires February 23, 2021              [Page 15]
+
+Internet-Draft        DNS Access Denied Error Page           August 2020
+
+
    Mohamed Boucadair
    Orange
    Rennes  35000
@@ -837,4 +851,46 @@ Authors' Addresses
 
 
 
-Reddy, et al.           Expires February 22, 2021              [Page 15]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Reddy, et al.           Expires February 23, 2021              [Page 16]
