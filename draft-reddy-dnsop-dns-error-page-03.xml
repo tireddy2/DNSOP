@@ -109,9 +109,9 @@
 
     <abstract>
       <t>When a DNS server filters a query the response conveys no detailed
-      explanation of why the query was blocked, leading to end-user confusion.
+      explanation of why that query was blocked, leading to end-user confusion.
       This document defines a method to return an URI that explains the reason
-      the DNS query was filtered.</t>
+      a DNS query was filtered.</t>
     </abstract>
   </front>
 
@@ -155,7 +155,7 @@
       these have advantages and disadvantages, discussed below:</t>
 
       <t><list style="numbers">
-          <t>The DNS response is forged providing IP addresses that points to
+          <t>The DNS response is forged providing IP addresses that point to
           a HTTP(S) server alerting the end user of the reason for blocking
           access to the domain (e.g., malware). When a HTTP(S) enabled domain
           name is blocked, the network security device presents a block page
@@ -240,8 +240,7 @@
           categorize domains may sometimes mis-classify domains (e.g., Domains
           wrongly classified as DGA (Domain Generation Algorithm) by deep
           learning techniques, domain wrongly classified as phishing due to
-          crowd sourcing, new domains not categorized by the threat data,
-          etc.). The end user needs to know the contact details of the
+          crowd sourcing, new domains not categorized by the threat data). The end user needs to know the contact details of the
           IT/InfoSec team to raise a complaint.</t>
         </list></t>
 
@@ -253,10 +252,10 @@
       provide a URI which, when accessed, provides such information to the
       user.</t>
 
-      <t>One of the other benefits of this document is eliminating the need to
+      <t>One of the other benefits of this approach is to eliminate the need to
       "spoof" block pages for HTTPS resources, as the block page no longer
       needs to create a signed certificate when blocking a destination. This
-      avoids the need to install an local root certificate authority on those
+      avoids the need to install a local root certificate authority on those
       IT-managed devices.</t>
     </section>
 
@@ -277,9 +276,9 @@
     </section>
 
     <section title="Error page URI EDNS0 option format">
-      <t>This draft uses an EDNS0 (<xref target="RFC6891"></xref>) option to
-      include the URI that gives additional information about the cause of
-      blocking access to a domain in a DNS response. The option is structured
+      <t>This document uses an EDNS0 <xref target="RFC6891"></xref> option to
+      include the URI that gives additional information in a DNS response about the cause of
+      blocking access to a domain. The option is structured
       as follows:</t>
 
       <figure>
@@ -291,42 +290,43 @@
    +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
    |                           OPTION-LENGTH                       |
    +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-   | ERROR-PAGE-URI-LENGTH  (fixed size)                           |
+   |                 ERROR-PAGE-URI-LENGTH  (fixed size)           |
    +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-   / ERROR-PAGE-URI (variable size)                                |
+   /                    ERROR-PAGE-URI (variable size)             /
    +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-   | ERROR-PAGE-SIG-ALG (fixed size)                               |
+   |                    ERROR-PAGE-SIG-ALG (fixed size)            |
    +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-   / ERROR-PAGE-SIG  (variable size)                               |
+   /                     ERROR-PAGE-SIG  (variable size)           /
    +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
 ]]></artwork>
       </figure>
 
       <t></t>
 
-      <t>Field definition details:</t>
+      <t>The description of the fields is as follows:</t>
 
       <t><list style="symbols">
-          <t>OPTION-CODE, 2-octets/16-bits (defined in <xref
-          target="RFC6891"></xref>) for Error page URI, value is TBD. [RFC
+          <t>OPTION-CODE: TBD, indicates the code assigned for Error page URI (Section 6.1.2 of <xref
+          target="RFC6891"></xref>). [RFC
           Editor: change TBD to the proper code once assigned by IANA.]</t>
 
-          <t>OPTION-LENGTH, 2-octets/16-bits (defined in <xref
-          target="RFC6891"></xref>) contains the length of the payload
+          <t>OPTION-LENGTH: See Section 6.1.2 of <xref
+          target="RFC6891"></xref>. This fields contains the length of the payload
           (everything after OPTION-LENGTH) in octets. The variability of the
           option length stems from the variable-length ERROR-PAGE-URI and
           ERROR-PAGE-SIG fields.</t>
 
-          <t>ERROR-PAGE-URI-LENGTH, 2-octets/16-bits representing the length
+          <t>ERROR-PAGE-URI-LENGTH: This 16-bit field indicates the length
           of ERROR-PAGE-URI. It MUST NOT be set to 0.</t>
 
-          <t>ERROR-PAGE-URI, a variable length UTF-8 encoded <xref
-          target="RFC5198"></xref> text field containing the URI Template that
+          <t>ERROR-PAGE-URI: a variable length UTF-8 encoded <xref
+          target="RFC5198"></xref> text field containing the URI Template <xref
+          target="RFC6570"></xref> that
           gives additional information about the cause of blocking access to a
           domain. The ERROR-PAGE-URI field MUST NOT be zero octets in
           length.</t>
 
-          <t>ERROR-PAGE-SIG-ALG, 16-bits, which is the signature algorithm
+          <t>ERROR-PAGE-SIG-ALG: A 16-bits field that contains the algorithm
           used to generate the signature for the Error page URI Template. The
           values are defined in the TLS SignatureScheme <xref
           target="TLS-SIG-SCHEME"></xref> with limitations described in <xref
@@ -338,7 +338,7 @@
         </list></t>
 
       <t>The Error page URI option MUST only be included in error responses
-      SERVFAIL, NXDOMAIN or REFUSED to a query that included the OPT Pseudo-RR
+      SERVFAIL, NXDOMAIN, or REFUSED to a query that included the OPT Pseudo-RR
       <xref target="RFC6891"></xref>.</t>
 
       <t>The URI Template defined in ERROR-PAGE-URI describes how to construct
@@ -346,9 +346,9 @@
       endpoint encodes a FQDN to which access is denied into an HTTP GET
       request to retrieve the error page. The HTTPS server returning the error
       page defines the URI used by the HTTP GET request through the use of a
-      URI template. The URI Template is processed with a defined variable
+      URI Template. The URI Template is processed with a defined variable
       "target-domain" whose value is set to the FQDN to which access is
-      denied. The FQDN is encoded with base64url <xref
+      denied. The FQDN is encoded using base64url <xref
       target="RFC4648"></xref> and then provided as the variable value for
       "target-domain" to expand the URI Template into a URI reference in the
       HTTP GET request. Padding characters for base64url MUST NOT be
@@ -356,7 +356,7 @@
 
       <t>An example is illustrated below:</t>
 
-      <t>If the URI template is
+      <t>If the URI Template is
       "https://block.example.net/block-page{?target-domain}" for the HTTPS
       server returning the error page and access to the target domain
       "example.com" is blocked by the encrypted DNS server, the variable
@@ -457,15 +457,15 @@
     </section>
 
     <section anchor="signandverify" title="Sign and Verify">
-      <t>The signature algorithms for generating signature for DNS resource
+      <t>The algorithms for generating signature for DNS resource
       record sets (RRsets) are defined in <xref target="DNSKEY-IANA"></xref>.
-      The "mandatory-to-implement" algorithms are defined in <xref
-      target="RFC8624"></xref> are RSA, ECDSA and EdDSA. Along similar lines,
+      The "mandatory-to-implement" algorithms are RSA, Elliptic Curve Digital Signature Algorithm (ECDSA), and Edwards-curve Digital Security Algorithm (EdDSA) <xref
+      target="RFC8624"></xref>. Along similar lines,
       the encrypted DNS server's end-entity certificate's public key and the
-      signature algorithm with which the key can be used are RSA, ECDSA and
+      signature algorithm with which the key can be used are RSA, ECDSA, and
       EdDSA <xref target="RFC8446"></xref>. If ECDSA is used, it is
       RECOMMENDED to use the deterministic digital signature generation
-      procedure of the Elliptic Curve Digital Signature Algorithm (ECDSA),
+      procedure of the ECDSA,
       specified in <xref target="RFC6979"></xref>.</t>
 
       <t>The signature is generated by the encrypted DNS server using the
@@ -643,6 +643,8 @@
 
       <?rfc include='reference.RFC.5625'?>
 
+      <?rfc include='reference.RFC.6570'?>
+         
       <?rfc include='reference.I-D.ietf-dnsop-extended-error' ?>
 
       <reference anchor="TLS-SIG-SCHEME"
