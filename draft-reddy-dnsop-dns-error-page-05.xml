@@ -31,7 +31,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-reddy-dnsop-error-page-04"
+<rfc category="std" docName="draft-reddy-dnsop-error-page-05"
      ipr="trust200902">
   <front>
     <title abbrev="DNS Access Denied Error Page">DNS Access Denied Error
