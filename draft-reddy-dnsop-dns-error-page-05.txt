@@ -5,12 +5,12 @@
 DNSOP WG                                                        T. Reddy
 Internet-Draft                                                    McAfee
 Intended status: Standards Track                                 N. Cook
-Expires: April 3, 2021                                      Open-Xchange
+Expires: April 9, 2021                                      Open-Xchange
                                                                  D. Wing
                                                                   Citrix
                                                             M. Boucadair
                                                                   Orange
-                                                      September 30, 2020
+                                                         October 6, 2020
 
 
                       DNS Access Denied Error page
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 3, 2021.
+   This Internet-Draft will expire on April 9, 2021.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Reddy, et al.             Expires April 3, 2021                 [Page 1]
+Reddy, et al.             Expires April 9, 2021                 [Page 1]
 
-Internet-Draft        DNS Access Denied Error Page        September 2020
+Internet-Draft        DNS Access Denied Error Page          October 2020
 
 
    to this document.  Code Components extracted from this document must
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Reddy, et al.             Expires April 3, 2021                 [Page 2]
+Reddy, et al.             Expires April 9, 2021                 [Page 2]
 
-Internet-Draft        DNS Access Denied Error Page        September 2020
+Internet-Draft        DNS Access Denied Error Page          October 2020
 
 
       for example, block access to specific domains to enforce parental
@@ -165,9 +165,9 @@ Internet-Draft        DNS Access Denied Error Page        September 2020
 
 
 
-Reddy, et al.             Expires April 3, 2021                 [Page 3]
+Reddy, et al.             Expires April 9, 2021                 [Page 3]
 
-Internet-Draft        DNS Access Denied Error Page        September 2020
+Internet-Draft        DNS Access Denied Error Page          October 2020
 
 
        *  Enterprise networks do not assume that all the devices
@@ -221,9 +221,9 @@ Internet-Draft        DNS Access Denied Error Page        September 2020
 
 
 
-Reddy, et al.             Expires April 3, 2021                 [Page 4]
+Reddy, et al.             Expires April 9, 2021                 [Page 4]
 
-Internet-Draft        DNS Access Denied Error Page        September 2020
+Internet-Draft        DNS Access Denied Error Page          October 2020
 
 
        mis-classify domains (e.g., Domains wrongly classified as DGA
@@ -277,9 +277,9 @@ Internet-Draft        DNS Access Denied Error Page        September 2020
 
 
 
-Reddy, et al.             Expires April 3, 2021                 [Page 5]
+Reddy, et al.             Expires April 9, 2021                 [Page 5]
 
-Internet-Draft        DNS Access Denied Error Page        September 2020
+Internet-Draft        DNS Access Denied Error Page          October 2020
 
 
                                                 1   1   1   1   1   1
@@ -333,9 +333,9 @@ Internet-Draft        DNS Access Denied Error Page        September 2020
 
 
 
-Reddy, et al.             Expires April 3, 2021                 [Page 6]
+Reddy, et al.             Expires April 9, 2021                 [Page 6]
 
-Internet-Draft        DNS Access Denied Error Page        September 2020
+Internet-Draft        DNS Access Denied Error Page          October 2020
 
 
    The URI Template defined in ERROR-PAGE-URI describes how to construct
@@ -389,9 +389,9 @@ Internet-Draft        DNS Access Denied Error Page        September 2020
 
 
 
-Reddy, et al.             Expires April 3, 2021                 [Page 7]
+Reddy, et al.             Expires April 9, 2021                 [Page 7]
 
-Internet-Draft        DNS Access Denied Error Page        September 2020
+Internet-Draft        DNS Access Denied Error Page          October 2020
 
 
       enabled opportunistic privacy profile for DoT, the client MUST NOT
@@ -445,9 +445,9 @@ Internet-Draft        DNS Access Denied Error Page        September 2020
 
 
 
-Reddy, et al.             Expires April 3, 2021                 [Page 8]
+Reddy, et al.             Expires April 9, 2021                 [Page 8]
 
-Internet-Draft        DNS Access Denied Error Page        September 2020
+Internet-Draft        DNS Access Denied Error Page          October 2020
 
 
       EDNS0 option from an upstream resolver.  If signature validation
@@ -501,9 +501,9 @@ Internet-Draft        DNS Access Denied Error Page        September 2020
 
 
 
-Reddy, et al.             Expires April 3, 2021                 [Page 9]
+Reddy, et al.             Expires April 9, 2021                 [Page 9]
 
-Internet-Draft        DNS Access Denied Error Page        September 2020
+Internet-Draft        DNS Access Denied Error Page          October 2020
 
 
    verification of the Ed25519 signature are described in Sections 5.1.6
@@ -557,9 +557,9 @@ Internet-Draft        DNS Access Denied Error Page        September 2020
 
 
 
-Reddy, et al.             Expires April 3, 2021                [Page 10]
+Reddy, et al.             Expires April 9, 2021                [Page 10]
 
-Internet-Draft        DNS Access Denied Error Page        September 2020
+Internet-Draft        DNS Access Denied Error Page          October 2020
 
 
    The user can click on the Translate button in the banner to have all
@@ -583,12 +583,12 @@ Internet-Draft        DNS Access Denied Error Page        September 2020
    cookies, block JavaScript, block auto-fill of credentials or personal
    information, and be isolated from the user's normal environment.
    Browsers perform some of these limitations today when accessing
-   captive portals [Safari-Cookie] and Section 5 of [RFC8910], during
-   private browsing, or using containerization [Facebook-Container]).
-   The means of sandboxing and a user interface presenting the error
-   page is not covered in this document; by its nature, it is
-   implementation specific and best left to the application and user
-   interface designers.
+   captive portals (see [Safari-Cookie] and Section 5 of [RFC8910]),
+   during private browsing, or using containerization
+   [Facebook-Container].  The means of sandboxing and a user interface
+   presenting the error page is not covered in this document; by its
+   nature, it is implementation specific and best left to the
+   application and user interface designers.
 
    The encrypted DNS session provides transport security for the
    interaction between the DNS client and server, but DNSSEC signing and
@@ -613,9 +613,9 @@ Internet-Draft        DNS Access Denied Error Page        September 2020
 
 
 
-Reddy, et al.             Expires April 3, 2021                [Page 11]
+Reddy, et al.             Expires April 9, 2021                [Page 11]
 
-Internet-Draft        DNS Access Denied Error Page        September 2020
+Internet-Draft        DNS Access Denied Error Page          October 2020
 
 
 9.  IANA Considerations
@@ -669,9 +669,9 @@ Internet-Draft        DNS Access Denied Error Page        September 2020
 
 
 
-Reddy, et al.             Expires April 3, 2021                [Page 12]
+Reddy, et al.             Expires April 9, 2021                [Page 12]
 
-Internet-Draft        DNS Access Denied Error Page        September 2020
+Internet-Draft        DNS Access Denied Error Page          October 2020
 
 
    [RFC5625]  Bellis, R., "DNS Proxy Implementation Guidelines",
@@ -725,9 +725,9 @@ Internet-Draft        DNS Access Denied Error Page        September 2020
 
 
 
-Reddy, et al.             Expires April 3, 2021                [Page 13]
+Reddy, et al.             Expires April 9, 2021                [Page 13]
 
-Internet-Draft        DNS Access Denied Error Page        September 2020
+Internet-Draft        DNS Access Denied Error Page          October 2020
 
 
    [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
@@ -781,9 +781,9 @@ Internet-Draft        DNS Access Denied Error Page        September 2020
 
 
 
-Reddy, et al.             Expires April 3, 2021                [Page 14]
+Reddy, et al.             Expires April 9, 2021                [Page 14]
 
-Internet-Draft        DNS Access Denied Error Page        September 2020
+Internet-Draft        DNS Access Denied Error Page          October 2020
 
 
    [I-D.reddy-add-server-policy-selection]
@@ -837,9 +837,9 @@ Authors' Addresses
 
 
 
-Reddy, et al.             Expires April 3, 2021                [Page 15]
+Reddy, et al.             Expires April 9, 2021                [Page 15]
 
-Internet-Draft        DNS Access Denied Error Page        September 2020
+Internet-Draft        DNS Access Denied Error Page          October 2020
 
 
    Neil Cook
@@ -893,4 +893,4 @@ Internet-Draft        DNS Access Denied Error Page        September 2020
 
 
 
-Reddy, et al.             Expires April 3, 2021                [Page 16]
+Reddy, et al.             Expires April 9, 2021                [Page 16]

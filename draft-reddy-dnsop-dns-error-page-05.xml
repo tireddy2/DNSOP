@@ -557,13 +557,13 @@
       as untrusted. Such isolation should prevent transmitting cookies, block
       JavaScript, block auto-fill of credentials or personal information, and
       be isolated from the user's normal environment. Browsers perform some of
-      these limitations today when accessing captive portals <xref
+      these limitations today when accessing captive portals (see <xref
       target="Safari-Cookie"></xref> and Section 5 of <xref
-      target="RFC8910"></xref>, during private browsing, or using
-      containerization <xref target="Facebook-Container"></xref>). The means
-      of sandboxing and a user interface presenting the error page is not
-      covered in this document; by its nature, it is implementation specific
-      and best left to the application and user interface designers.</t>
+      target="RFC8910"></xref>), during private browsing, or using
+      containerization <xref target="Facebook-Container"></xref>. The means of
+      sandboxing and a user interface presenting the error page is not covered
+      in this document; by its nature, it is implementation specific and best
+      left to the application and user interface designers.</t>
 
       <t>The encrypted DNS session provides transport security for the
       interaction between the DNS client and server, but DNSSEC signing and
