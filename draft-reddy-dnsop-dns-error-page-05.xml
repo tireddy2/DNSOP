@@ -108,10 +108,12 @@
     <workgroup>DNSOP WG</workgroup>
 
     <abstract>
-      <t>When a DNS server filters a query the response conveys no detailed
-      explanation of why that query was blocked, leading to end-user
-      confusion. This document defines a method to return an URI that explains
-      the reason a DNS query was filtered.</t>
+      <t>When a DNS server filters a query, the response conveys no detailed
+      explanation of why that query was blocked, leading thus to end-user
+      confusion. A solution is needed to enhance the user experience.</t>
+
+      <t>This document defines a method to return an URI that explains the
+      reason why a DNS query was filtered.</t>
     </abstract>
   </front>
 
@@ -552,18 +554,21 @@
 
       <t>The client knows it is connecting to a HTTPS server returning the
       error page, to reduce threat surface the client can perform the
-      retrieval of the Error page URL using an isolated or sandboxed
+      retrieval of the Error page URL using, for example, a sandbox
       environment and take other precautions such as clearly labeling the page
       as untrusted. Such isolation should prevent transmitting cookies, block
       JavaScript, block auto-fill of credentials or personal information, and
-      be isolated from the user's normal environment. Browsers perform some of
-      these limitations today when accessing captive portals (see <xref
-      target="Safari-Cookie"></xref> and Section 5 of <xref
-      target="RFC8910"></xref>), during private browsing, or using
-      containerization <xref target="Facebook-Container"></xref>. The means of
-      sandboxing and a user interface presenting the error page is not covered
-      in this document; by its nature, it is implementation specific and best
-      left to the application and user interface designers.</t>
+      be isolated from the user's normal environment.</t>
+
+      <t>Browsers perform some of the above restrictions when accessing
+      captive portals (Section 5 of <xref target="RFC8910"></xref> or <xref
+      target="Safari-Cookie"></xref>), during private browsing, or using
+      containerization <xref target="Facebook-Container"></xref>.</t>
+
+      <t>Note that the means to use a sandbox environment and a user interface
+      presenting the error page are not covered in this document. By its
+      nature, these aspects are implementation specific and best left to the
+      application and user interface designers.</t>
 
       <t>The encrypted DNS session provides transport security for the
       interaction between the DNS client and server, but DNSSEC signing and

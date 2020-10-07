@@ -18,10 +18,12 @@ Expires: April 9, 2021                                      Open-Xchange
 
 Abstract
 
-   When a DNS server filters a query the response conveys no detailed
-   explanation of why that query was blocked, leading to end-user
-   confusion.  This document defines a method to return an URI that
-   explains the reason a DNS query was filtered.
+   When a DNS server filters a query, the response conveys no detailed
+   explanation of why that query was blocked, leading thus to end-user
+   confusion.  A solution is needed to enhance the user experience.
+
+   This document defines a method to return an URI that explains the
+   reason why a DNS query was filtered.
 
 Status of This Memo
 
@@ -48,8 +50,6 @@ Copyright Notice
    This document is subject to BCP 78 and the IETF Trust's Legal
    Provisions Relating to IETF Documents
    (https://trustee.ietf.org/license-info) in effect on the date of
-   publication of this document.  Please review these documents
-   carefully, as they describe your rights and restrictions with respect
 
 
 
@@ -58,6 +58,8 @@ Reddy, et al.             Expires April 9, 2021                 [Page 1]
 Internet-Draft        DNS Access Denied Error Page          October 2020
 
 
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
    include Simplified BSD License text as described in Section 4.e of
    the Trust Legal Provisions and are provided without warranty as
@@ -103,9 +105,7 @@ Table of Contents
       are viruses, worms, trojans, bots, ransomware, backdoors, spyware,
       and adware.
 
-   o  Network devices in a home network offer network security to
-      protect the devices connected to the home network by performing
-      DNS-based content filtering.  The network security service may,
+
 
 
 
@@ -114,6 +114,9 @@ Reddy, et al.             Expires April 9, 2021                 [Page 2]
 Internet-Draft        DNS Access Denied Error Page          October 2020
 
 
+   o  Network devices in a home network offer network security to
+      protect the devices connected to the home network by performing
+      DNS-based content filtering.  The network security service may,
       for example, block access to specific domains to enforce parental
       control, block access to malware sites, etc.
 
@@ -158,9 +161,6 @@ Internet-Draft        DNS Access Denied Error Page          October 2020
           not issued by a trusted certificate authority" (Internet
           Explorer/Edge"), "The site's security certificate is not
           trusted" (Chrome), "This Connection is Untrusted" (Firefox),
-          "Safari can't verify the identity of the website..." (Safari
-          on MacOS)".
-
 
 
 
@@ -169,6 +169,9 @@ Reddy, et al.             Expires April 9, 2021                 [Page 3]
 
 Internet-Draft        DNS Access Denied Error Page          October 2020
 
+
+          "Safari can't verify the identity of the website..." (Safari
+          on MacOS)".
 
        *  Enterprise networks do not assume that all the devices
           connected to their network are managed by the IT team or
@@ -215,9 +218,6 @@ Internet-Draft        DNS Access Denied Error Page          October 2020
        entity (e.g., Law Enforcement Agency), etc.  The content
        categories for domains cannot be standardized because the
        classification of domains into content categories is vendor
-       specific, typically ranges from 40 to 100 types of categories
-       depending on the vendor and the categories keep evolving.
-       Further, the threat data used to categorize domains may sometimes
 
 
 
@@ -226,6 +226,9 @@ Reddy, et al.             Expires April 9, 2021                 [Page 4]
 Internet-Draft        DNS Access Denied Error Page          October 2020
 
 
+       specific, typically ranges from 40 to 100 types of categories
+       depending on the vendor and the categories keep evolving.
+       Further, the threat data used to categorize domains may sometimes
        mis-classify domains (e.g., Domains wrongly classified as DGA
        (Domain Generation Algorithm) by deep learning techniques, domain
        wrongly classified as phishing due to crowd sourcing, new domains
@@ -265,9 +268,6 @@ Internet-Draft        DNS Access Denied Error Page          October 2020
    This document uses an EDNS0 [RFC6891] option to include the URI that
    gives additional information in a DNS response about the cause of
    blocking access to a domain.  The option is structured as follows:
-
-
-
 
 
 
@@ -577,18 +577,20 @@ Internet-Draft        DNS Access Denied Error Page          October 2020
 
    The client knows it is connecting to a HTTPS server returning the
    error page, to reduce threat surface the client can perform the
-   retrieval of the Error page URL using an isolated or sandboxed
+   retrieval of the Error page URL using, for example, a sandbox
    environment and take other precautions such as clearly labeling the
    page as untrusted.  Such isolation should prevent transmitting
    cookies, block JavaScript, block auto-fill of credentials or personal
    information, and be isolated from the user's normal environment.
-   Browsers perform some of these limitations today when accessing
-   captive portals (see [Safari-Cookie] and Section 5 of [RFC8910]),
-   during private browsing, or using containerization
-   [Facebook-Container].  The means of sandboxing and a user interface
-   presenting the error page is not covered in this document; by its
-   nature, it is implementation specific and best left to the
-   application and user interface designers.
+
+   Browsers perform some of the above restrictions when accessing
+   captive portals (Section 5 of [RFC8910] or [Safari-Cookie]), during
+   private browsing, or using containerization [Facebook-Container].
+
+   Note that the means to use a sandbox environment and a user interface
+   presenting the error page are not covered in this document.  By its
+   nature, these aspects are implementation specific and best left to
+   the application and user interface designers.
 
    The encrypted DNS session provides transport security for the
    interaction between the DNS client and server, but DNSSEC signing and
@@ -607,8 +609,6 @@ Internet-Draft        DNS Access Denied Error Page          October 2020
    By design, the object referenced by the error page URL potentially
    exposes additional information about the DNS resolution process that
    may leak information.  An example of this is the reason for blocking
-   the access to the domain name and the entity blocking access to the
-   domain.
 
 
 
@@ -617,6 +617,9 @@ Reddy, et al.             Expires April 9, 2021                [Page 11]
 
 Internet-Draft        DNS Access Denied Error Page          October 2020
 
+
+   the access to the domain name and the entity blocking access to the
+   domain.
 
 9.  IANA Considerations
 
@@ -659,11 +662,8 @@ Internet-Draft        DNS Access Denied Error Page          October 2020
               Interchange", RFC 5198, DOI 10.17487/RFC5198, March 2008,
               <https://www.rfc-editor.org/info/rfc5198>.
 
-   [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
-              Housley, R., and W. Polk, "Internet X.509 Public Key
-              Infrastructure Certificate and Certificate Revocation List
-              (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
-              <https://www.rfc-editor.org/info/rfc5280>.
+
+
 
 
 
@@ -673,6 +673,12 @@ Reddy, et al.             Expires April 9, 2021                [Page 12]
 
 Internet-Draft        DNS Access Denied Error Page          October 2020
 
+
+   [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
+              Housley, R., and W. Polk, "Internet X.509 Public Key
+              Infrastructure Certificate and Certificate Revocation List
+              (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
+              <https://www.rfc-editor.org/info/rfc5280>.
 
    [RFC5625]  Bellis, R., "DNS Proxy Implementation Guidelines",
               BCP 152, RFC 5625, DOI 10.17487/RFC5625, August 2009,
@@ -715,12 +721,6 @@ Internet-Draft        DNS Access Denied Error Page          October 2020
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
-   [RFC8310]  Dickinson, S., Gillmor, D., and T. Reddy, "Usage Profiles
-              for DNS over TLS and DNS over DTLS", RFC 8310,
-              DOI 10.17487/RFC8310, March 2018,
-              <https://www.rfc-editor.org/info/rfc8310>.
-
-
 
 
 
@@ -729,6 +729,11 @@ Reddy, et al.             Expires April 9, 2021                [Page 13]
 
 Internet-Draft        DNS Access Denied Error Page          October 2020
 
+
+   [RFC8310]  Dickinson, S., Gillmor, D., and T. Reddy, "Usage Profiles
+              for DNS over TLS and DNS over DTLS", RFC 8310,
+              DOI 10.17487/RFC8310, March 2018,
+              <https://www.rfc-editor.org/info/rfc8310>.
 
    [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
@@ -773,11 +778,6 @@ Internet-Draft        DNS Access Denied Error Page          October 2020
               Location", draft-ietf-dnsop-terminology-ter-02 (work in
               progress), August 2020.
 
-   [I-D.ietf-dprive-dnsoquic]
-              Huitema, C., Mankin, A., and S. Dickinson, "Specification
-              of DNS over Dedicated QUIC Connections", draft-ietf-
-              dprive-dnsoquic-00 (work in progress), April 2020.
-
 
 
 
@@ -785,6 +785,11 @@ Reddy, et al.             Expires April 9, 2021                [Page 14]
 
 Internet-Draft        DNS Access Denied Error Page          October 2020
 
+
+   [I-D.ietf-dprive-dnsoquic]
+              Huitema, C., Mankin, A., and S. Dickinson, "Specification
+              of DNS over Dedicated QUIC Connections", draft-ietf-
+              dprive-dnsoquic-00 (work in progress), April 2020.
 
    [I-D.reddy-add-server-policy-selection]
               Reddy.K, T., Wing, D., Richardson, M., and M. Boucadair,
@@ -828,11 +833,6 @@ Authors' Addresses
    India
 
    Email: kondtir@gmail.com
-
-
-
-
-
 
 
 
