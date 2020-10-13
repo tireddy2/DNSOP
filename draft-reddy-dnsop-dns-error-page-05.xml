@@ -553,11 +553,13 @@
       channel with an authorized DNS server.</t>
 
       <t>The client knows it is connecting to a HTTPS server returning the
-      error page.  To reduce threat surface the client can retrieve of the Error page URL using, for example, an isolated
-      environment and take other precautions such as clearly labeling the page
-      as untrusted or prevent user interaction with the page. Such isolation should prevent transmitting cookies, block
-      JavaScript, block auto-fill of credentials or personal information, and
-      be isolated from the user's normal environment.</t>
+      error page. To reduce threat surface the client can retrieve the Error
+      page URL using, for example, an isolated environment and take other
+      precautions such as clearly labeling the page as untrusted or prevent
+      user interaction with the page. Such isolation should prevent
+      transmitting cookies, block JavaScript, block auto-fill of credentials
+      or personal information, and be isolated from the user's normal
+      environment.</t>
 
       <t>Browsers perform some of the above restrictions when accessing
       captive portals (Section 5 of <xref target="RFC8910"></xref> or <xref
