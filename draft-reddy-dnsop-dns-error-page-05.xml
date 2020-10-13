@@ -553,10 +553,9 @@
       channel with an authorized DNS server.</t>
 
       <t>The client knows it is connecting to a HTTPS server returning the
-      error page, to reduce threat surface the client can perform the
-      retrieval of the Error page URL using, for example, a sandbox
+      error page.  To reduce threat surface the client can retrieve of the Error page URL using, for example, an isolated
       environment and take other precautions such as clearly labeling the page
-      as untrusted. Such isolation should prevent transmitting cookies, block
+      as untrusted or prevent user interaction with the page. Such isolation should prevent transmitting cookies, block
       JavaScript, block auto-fill of credentials or personal information, and
       be isolated from the user's normal environment.</t>
 
