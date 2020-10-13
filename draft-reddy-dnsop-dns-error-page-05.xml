@@ -339,8 +339,8 @@
           discussed in <xref target="signandverify"></xref>.</t>
         </list></t>
 
-      <t>The Error page URI option MUST only be included in error responses
-      SERVFAIL, NXDOMAIN, or REFUSED to a query that included the OPT
+      <t>The Error page URI option can be included in any response (SERVFAIL,
+      NXDOMAIN, REFUSED, and even NOERROR, etc) to a query that includes OPT
       Pseudo-RR <xref target="RFC6891"></xref>.</t>
 
       <t>The URI Template defined in ERROR-PAGE-URI describes how to construct
@@ -409,28 +409,23 @@
           been no such distinction made for DoH protocol.</t>
 
           <t>If the DNS response contains more than one Error page URI EDNS0
-          option, the DNS client MUST discard multiple Error page URI EDNS0
-          options in the DNS response.</t>
+          option, the DNS client MUST discard all Error page URI EDNS0 options
+          in the DNS response.</t>
 
           <t>The Error page URI EDNS0 option MUST be processed by the DNS
-          client for a "Censored", "Blocked" or "Filtered" extended error
-          codes and MUST be ignored for any other type of extended DNS error
-          code. When "Censored", "Blocked" or "Filtered" extended error code
-          is returned in conjunction with an Error page URI EDNS0 option, any
-          other resource records in the answer MUST be ignored by clients
-          supporting this specification.</t>
+          client for a "Censored", &ldquo;Blocked", &ldquo;Filtered&rdquo; or
+          &ldquo;Forged" extended error codes and MUST be ignored for any
+          other type of extended DNS error code. When "Censored",
+          &ldquo;Blocked&rdquo;, "Filtered&rdquo; or &ldquo;Forged&rdquo;
+          extended error code is returned in conjunction with an Error page
+          URI EDNS0 option, any other resource records in the answer MUST be
+          ignored by clients supporting this specification.</t>
 
-          <t>If the encrypted DNS server does not offer DNS filtering service
-          (e.g., prevent access to malware sites or objectionable content
-          (e.g., legal obligation)), the DNS client MUST reject the Error page
-          URI EDNS0 option. For example, the mechanism discussed in <xref
-          target="I-D.reddy-add-server-policy-selection"></xref> can be used
-          by the DNS client to assess whether the encrypted DNS server
-          performs DNS-based content filtering.</t>
-
-          <t>If the Error page URI EDNS0 option is included in a NOERROR RCODE
-          message, the DNS client MUST reject the Error page URI EDNS0
-          option.</t>
+          <t>If the DNS client determines that the encrypted DNS server does
+          not offer DNS filtering service, it MUST reject the Error page URI
+          EDNS0 option. For example, the DNS client knows whether the
+          pre-configured encrypted DNS resolver performs DNS-based content
+          filtering or not.</t>
 
           <t>The DNS client MUST reject the error page URI if the scheme is
           not "https".</t>
@@ -608,7 +603,7 @@
 
     <section title="Acknowledgements">
       <t>Thanks to Vittorio Bertola, Wes Hardaker, Ben Schwartz, Erid Orth,
-      Viktor Dukhovni and Bob Harold for the comments.</t>
+      Viktor Dukhovni, Warren Kumari and Bob Harold for the comments.</t>
     </section>
   </middle>
 
@@ -672,8 +667,6 @@
       <?rfc include='reference.RFC.8910'?>
 
       <?rfc include='reference.I-D.ietf-dprive-dnsoquic'?>
-
-      <?rfc include='reference.I-D.reddy-add-server-policy-selection'?>
 
       <?rfc include='reference.I-D.ietf-dnsop-terminology-ter'?>
 
