@@ -5,12 +5,12 @@
 DNSOP WG                                                        T. Reddy
 Internet-Draft                                                    McAfee
 Intended status: Standards Track                                 N. Cook
-Expires: June 24, 2021                                      Open-Xchange
+Expires: June 26, 2021                                      Open-Xchange
                                                                  D. Wing
                                                                   Citrix
                                                             M. Boucadair
                                                                   Orange
-                                                       December 21, 2020
+                                                       December 23, 2020
 
 
                       DNS Access Denied Error page
@@ -40,7 +40,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on June 24, 2021.
+   This Internet-Draft will expire on June 26, 2021.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Reddy, et al.             Expires June 24, 2021                 [Page 1]
+Reddy, et al.             Expires June 26, 2021                 [Page 1]
 
 Internet-Draft        DNS Access Denied Error Page         December 2020
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Reddy, et al.             Expires June 24, 2021                 [Page 2]
+Reddy, et al.             Expires June 26, 2021                 [Page 2]
 
 Internet-Draft        DNS Access Denied Error Page         December 2020
 
@@ -165,7 +165,7 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
 
 
 
-Reddy, et al.             Expires June 24, 2021                 [Page 3]
+Reddy, et al.             Expires June 26, 2021                 [Page 3]
 
 Internet-Draft        DNS Access Denied Error Page         December 2020
 
@@ -221,7 +221,7 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
 
 
 
-Reddy, et al.             Expires June 24, 2021                 [Page 4]
+Reddy, et al.             Expires June 26, 2021                 [Page 4]
 
 Internet-Draft        DNS Access Denied Error Page         December 2020
 
@@ -277,7 +277,7 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
 
 
 
-Reddy, et al.             Expires June 24, 2021                 [Page 5]
+Reddy, et al.             Expires June 26, 2021                 [Page 5]
 
 Internet-Draft        DNS Access Denied Error Page         December 2020
 
@@ -333,7 +333,7 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
 
 
 
-Reddy, et al.             Expires June 24, 2021                 [Page 6]
+Reddy, et al.             Expires June 26, 2021                 [Page 6]
 
 Internet-Draft        DNS Access Denied Error Page         December 2020
 
@@ -389,7 +389,7 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
 
 
 
-Reddy, et al.             Expires June 24, 2021                 [Page 7]
+Reddy, et al.             Expires June 26, 2021                 [Page 7]
 
 Internet-Draft        DNS Access Denied Error Page         December 2020
 
@@ -445,7 +445,7 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
 
 
 
-Reddy, et al.             Expires June 24, 2021                 [Page 8]
+Reddy, et al.             Expires June 26, 2021                 [Page 8]
 
 Internet-Draft        DNS Access Denied Error Page         December 2020
 
@@ -462,23 +462,27 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
    chooses to forward the Error Page URI EDNS0 option received over an
    encrypted connection, it MUST create a new Error Page URI EDNS0
    option that conveys the URI in the received Error Page URI EDNS0
-   option.  The signature for the new Error Page URI EDNS0 option MUST
-   be generated using the private key of the DNS resolver or forwarder
-   end-entity certificate used in the TLS connection to the original
-   client.  If the resolver or forwarder simply forwards the received
-   Error Page URI EDNS0 option without updating the signature in the
-   ERROR-PAGE-SIG field, signature validation by the original client
-   will fail and the forwarded Error page URI EDNS0 option will be
-   rejected.  As a reminder, Section 3 of
-   [I-D.ietf-dnsop-extended-error] discusses the source of the error
-   should be attributed in the EXTRA-TEXT field, since an EDNS0 option
-   received by the original client will appear to have come from the
-   resolver or forwarder sending it.  Because DNS forwarders (or DNS
-   proxies) are supposed to propagate unknown EDNS0 options (Section 4.1
-   and Section 4.4.1 of [RFC5625]), the Error Page URI EDNS0 option may
-   get propagated.  To detect this scenario, the Error Page URI Template
-   is protected with an object signature as described in Section 5 for
-   data origin authentication.
+   option after successful signature validation.  The signature for the
+   new Error Page URI EDNS0 option MUST be generated using the private
+   key of the DNS resolver or forwarder end-entity certificate used in
+   the TLS connection to the original client.  If signature validation
+   fails for the received Error Page URI EDNS0 option, the DNS resolver
+   or forwarder end-entity certificate MUST reject the Error page URI
+   EDNS0 option.  The DNS resolver or forwarder MUST NOT modify the
+   ERROR-PAGE-URI field in the forwarded Error page URI EDNS0 option.
+   If the resolver or forwarder simply forwards the received Error Page
+   URI EDNS0 option without updating the signature in the ERROR-PAGE-SIG
+   field, signature validation by the original client will fail and the
+   forwarded Error page URI EDNS0 option will be rejected.  As a
+   reminder, Section 3 of [I-D.ietf-dnsop-extended-error] discusses the
+   source of the error should be attributed in the EXTRA-TEXT field,
+   since an EDNS0 option received by the original client will appear to
+   have come from the resolver or forwarder sending it.  Because DNS
+   forwarders (or DNS proxies) are supposed to propagate unknown EDNS0
+   options (Section 4.1 and Section 4.4.1 of [RFC5625]), the Error Page
+   URI EDNS0 option may get propagated.  To detect this scenario, the
+   Error Page URI Template is protected with an object signature as
+   described in Section 5 for data origin authentication.
 
 5.  Sign and Verify
 
@@ -494,18 +498,18 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
 
    The signature is generated by the encrypted DNS server using the
    Error page URI Template, private key of the encrypted DNS server's
-   end-entity certificate as inputs to the signature algorithm.  The
-   signature algorithm in the ERROR-PAGE-SIG-ALG field MUST be
-   compatible with the key in the DNS server's end-entity certificate.
-   The implementation MUST support the same set of algorithms in the TLS
 
 
 
-Reddy, et al.             Expires June 24, 2021                 [Page 9]
+Reddy, et al.             Expires June 26, 2021                 [Page 9]
 
 Internet-Draft        DNS Access Denied Error Page         December 2020
 
 
+   end-entity certificate as inputs to the signature algorithm.  The
+   signature algorithm in the ERROR-PAGE-SIG-ALG field MUST be
+   compatible with the key in the DNS server's end-entity certificate.
+   The implementation MUST support the same set of algorithms in the TLS
    client for validating the signature in the CertificateVerify message
    from the server in the TLS handshake and in the DNS client to
    validate the signature for the Error page URI Template.  As a
@@ -550,17 +554,16 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
    above text only provides the guidelines and template for the error
    page and.
 
-   o  Does not attempt to offer an exhaustive list for the contents of
-      an error page.
 
 
 
-
-
-Reddy, et al.             Expires June 24, 2021                [Page 10]
+Reddy, et al.             Expires June 26, 2021                [Page 10]
 
 Internet-Draft        DNS Access Denied Error Page         December 2020
 
+
+   o  Does not attempt to offer an exhaustive list for the contents of
+      an error page.
 
    o  It is not intended to form the basis of any legal/compliance for
       developing the error page.
@@ -607,17 +610,16 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
    response, it will omit DNSSEC RRsets, because the modified responses
    cannot be verified by DNSSEC signatures.  However, the signature in
    the Error Page URI EDNS0 option provides data origin authentication
-   of the Error Page URI EDNS0 option.  Nevertheless, the Error Page URI
-   EDNS0 option returning the error page URI Template should be treated
 
 
 
-
-Reddy, et al.             Expires June 24, 2021                [Page 11]
+Reddy, et al.             Expires June 26, 2021                [Page 11]
 
 Internet-Draft        DNS Access Denied Error Page         December 2020
 
 
+   of the Error Page URI EDNS0 option.  Nevertheless, the Error Page URI
+   EDNS0 option returning the error page URI Template should be treated
    only as diagnostic information and MUST NOT alter DNS protocol
    processing.
 
@@ -667,9 +669,7 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
 
 
 
-
-
-Reddy, et al.             Expires June 24, 2021                [Page 12]
+Reddy, et al.             Expires June 26, 2021                [Page 12]
 
 Internet-Draft        DNS Access Denied Error Page         December 2020
 
@@ -725,7 +725,7 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
 
 
 
-Reddy, et al.             Expires June 24, 2021                [Page 13]
+Reddy, et al.             Expires June 26, 2021                [Page 13]
 
 Internet-Draft        DNS Access Denied Error Page         December 2020
 
@@ -781,7 +781,7 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
 
 
 
-Reddy, et al.             Expires June 24, 2021                [Page 14]
+Reddy, et al.             Expires June 26, 2021                [Page 14]
 
 Internet-Draft        DNS Access Denied Error Page         December 2020
 
@@ -837,7 +837,7 @@ Authors' Addresses
 
 
 
-Reddy, et al.             Expires June 24, 2021                [Page 15]
+Reddy, et al.             Expires June 26, 2021                [Page 15]
 
 Internet-Draft        DNS Access Denied Error Page         December 2020
 
@@ -893,4 +893,4 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
 
 
 
-Reddy, et al.             Expires June 24, 2021                [Page 16]
+Reddy, et al.             Expires June 26, 2021                [Page 16]

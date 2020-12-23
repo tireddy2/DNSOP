@@ -464,14 +464,19 @@
       is implementation dependent. If the Implementation chooses to forward
       the Error Page URI EDNS0 option received over an encrypted connection,
       it MUST create a new Error Page URI EDNS0 option that conveys the URI in
-      the received Error Page URI EDNS0 option. The signature for the new
-      Error Page URI EDNS0 option MUST be generated using the private key of
-      the DNS resolver or forwarder end-entity certificate used in the TLS
-      connection to the original client. If the resolver or forwarder simply
-      forwards the received Error Page URI EDNS0 option without updating the
-      signature in the ERROR-PAGE-SIG field, signature validation by the
-      original client will fail and the forwarded Error page URI EDNS0 option
-      will be rejected. As a reminder, Section 3 of <xref
+      the received Error Page URI EDNS0 option after successful signature
+      validation. The signature for the new Error Page URI EDNS0 option MUST
+      be generated using the private key of the DNS resolver or forwarder
+      end-entity certificate used in the TLS connection to the original
+      client. If signature validation fails for the received Error Page URI
+      EDNS0 option, the DNS resolver or forwarder end-entity certificate MUST
+      reject the Error page URI EDNS0 option. The DNS resolver or forwarder
+      MUST NOT modify the ERROR-PAGE-URI field in the forwarded Error page URI
+      EDNS0 option. If the resolver or forwarder simply forwards the received
+      Error Page URI EDNS0 option without updating the signature in the
+      ERROR-PAGE-SIG field, signature validation by the original client will
+      fail and the forwarded Error page URI EDNS0 option will be rejected. As
+      a reminder, Section 3 of <xref
       target="I-D.ietf-dnsop-extended-error"></xref> discusses the source of
       the error should be attributed in the EXTRA-TEXT field, since an EDNS0
       option received by the original client will appear to have come from the
@@ -554,7 +559,7 @@
 
     <section title="Usability Considerations">
       <t>The error page SHOULD be returned in the user's preferred language as
-      expressed by the Accept-Language header. </t>
+      expressed by the Accept-Language header.</t>
     </section>
 
     <section anchor="Security" title="Security Considerations">
