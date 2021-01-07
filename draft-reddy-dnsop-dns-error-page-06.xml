@@ -35,7 +35,7 @@
      ipr="trust200902">
   <front>
     <title abbrev="DNS Access Denied Error Page">DNS Access Denied Error
-    page</title>
+    Page</title>
 
     <author fullname="Tirumaleswar Reddy" initials="T." surname="Reddy">
       <organization abbrev="McAfee">McAfee, Inc.</organization>
@@ -108,162 +108,165 @@
     <workgroup>DNSOP WG</workgroup>
 
     <abstract>
-      <t>When a DNS server filters a query, the response conveys no detailed
-      explanation of why that query was blocked, leading thus to end-user
-      confusion. A solution is needed to enhance the user experience.</t>
+      <t>When a DNS server filters a query, the response to such query conveys
+      no detailed explanation that explains why that query was blocked,
+      leading thus to end-user confusion. A solution to this problem is needed
+      in order to enhance the user experience.</t>
 
       <t>This document defines a method to return an URI that explains the
-      reason why a DNS query was filtered.</t>
+      reason why a DNS query was filtered by a DNS server.</t>
     </abstract>
   </front>
 
   <middle>
     <section anchor="intro" title="Introduction">
-      <t>DNS filters are deployed for a variety of reasons including endpoint
+      <t>DNS filters are deployed for a variety of reasons, including endpoint
       security, parental filtering, and filtering required by law enforcement.
-      These are discussed in more detail below:</t>
+      Some of these reasons are discussed in more detail below:</t>
 
       <t><list style="symbols">
           <t>Various network security services are provided by Enterprise
           networks to protect endpoints (e.g., Hosts including IoT devices).
           Network-based security solutions such as firewalls and Intrusion
-          Prevention Systems (IPS) rely on network traffic inspection to
+          Prevention Systems (IPS) rely upon network traffic inspection to
           implement perimeter-based security policies. The network security
           services may, for example, prevent malware download, block known
           malicious domains, block phishing sites, etc. These network security
           services act on DNS queries originating from endpoints. For example,
           DNS firewalls, a method of expressing DNS response policy
           information inside specially constructed DNS zones, known as
-          Response Policy Zones (RPZs) allows DNS servers to modify DNS
-          responses in real time to stop access to malware and phishing
-          domains. Note that some of the commonly known types of malware are
-          viruses, worms, trojans, bots, ransomware, backdoors, spyware, and
-          adware.</t>
+          Response Policy Zones (RPZs) allows DNS servers to modify their DNS
+          responses in real time in order to stop access to malware and
+          phishing domains. Note that some of the commonly known types of
+          malware are viruses, worms, trojans, bots, ransomware, backdoors,
+          spyware, and adware.</t>
 
           <t>Network devices in a home network offer network security to
-          protect the devices connected to the home network by performing
-          DNS-based content filtering. The network security service may, for
-          example, block access to specific domains to enforce parental
-          control, block access to malware sites, etc.</t>
+          protect the devices within the home network by performing DNS-based
+          content filtering. The network security service may, for example,
+          block access to specific domains to enforce parental control, block
+          access to malware sites, etc.</t>
 
-          <t>ISPs typically block access to some domains due to a requirement
-          imposed by an external entity (e.g., Law Enforcement Agency) by
-          performing DNS-based content filtering.</t>
+          <t>Internet Service Providers (ISPs) typically block access to some
+          domains due to a requirement imposed by an external entity (e.g.,
+          Law Enforcement Agency) by performing DNS-based content
+          filtering.</t>
         </list></t>
 
-      <t>DNS responses can be filtered by sending a bogus ("forged") A or AAAA
-      response, NXDOMAIN error or empty answer, or an extended error code
-      defined in <xref target="I-D.ietf-dnsop-extended-error"></xref>. Each of
-      these have advantages and disadvantages, discussed below:</t>
+      <t>DNS responses can be filtered by sending a bogus (also called,
+      "forged") A or AAAA response, NXDOMAIN error or empty answer, or an
+      extended DNS error (EDE) code defined in <xref target="RFC8914"></xref>.
+      Each of these methods have advantages and disadvantages that are
+      discussed below:</t>
 
       <t><list style="numbers">
-          <t>The DNS response is forged providing IP addresses that point to a
-          HTTP(S) server alerting the end user of the reason for blocking
-          access to the domain (e.g., malware). When a HTTP(S) enabled domain
-          name is blocked, the network security device presents a block page
-          instead of the HTTP response from the content provider. If an HTTP
+          <t>The DNS response is forged to provide a list of IP addresses that
+          point to an HTTP(S) server alerting the end user of the reason for
+          blocking access to the requested domain (e.g., malware). When an
+          HTTP(S) enabled domain name is blocked, the network security device
+          (e.g., CPE, firewall) presents a block page instead of the HTTP
+          response from the content provider hosting that domain. If an HTTP
           enabled domain name is blocked, the network security device
           intercepts the HTTP request and returns a block page over HTTP. If
           an HTTPS enabled domain is blocked, the block page is also served
           over HTTPS. In order to return a block page over HTTPS, man in the
           middle (MITM) is enabled on endpoints by generating a local root
           certificate and an accompanying (local) public/private key pair. The
-          local root certificate is installed on the endpoint, and the network
-          security device(s) store a copy of the private key. During the TLS
-          handshake, the network security device modifies the certificate
-          provided by the server and (re)signs it with the private key from
-          the local root certificate. <list style="symbols">
+          local root certificate is installed on the endpoint while the
+          network security device(s) stores a copy of the private key. During
+          the TLS handshake, the network security device modifies the
+          certificate provided by the server and (re)signs it with the private
+          key from the local root certificate. <list style="symbols">
               <t>However, configuring the local root certificate on endpoints
-              is not viable option in several deployments like Home networks,
-              Schools, Small Office/Home Office (SOHO), and Small/ Medium
-              Enterprise (SME). In these cases, the typical behavior is that
-              the forged DNS response directs the user towards a server hosted
-              to display the block page which breaks the TLS connection. For
-              web-browsing this then results in an HTTPS certificate error
-              message indicating that a secure connection could not be
-              established, which gives no information to the end-user about
-              the reason for the error. The typical errors are "The security
-              certificate presented by this website was not issued by a
-              trusted certificate authority" (Internet Explorer/Edge"), "The
-              site's security certificate is not trusted" (Chrome), "This
-              Connection is Untrusted" (Firefox), &ldquo;Safari can't verify
-              the identity of the website&hellip;&rdquo; (Safari on
-              MacOS)".</t>
+              is not a viable option in several deployments like home
+              networks, schools, Small Office/Home Office (SOHO), and Small/
+              Medium Enterprise (SME). In these cases, the typical behavior is
+              that the forged DNS response directs the user towards a server
+              hosted to display the block page which breaks the TLS
+              connection. For web-browsing this then results in an HTTPS
+              certificate error message indicating that a secure connection
+              could not be established, which gives no information to the
+              end-user about the reason for the error. The typical errors are
+              "The security certificate presented by this website was not
+              issued by a trusted certificate authority" (Internet
+              Explorer/Edge"), "The site's security certificate is not
+              trusted" (Chrome), "This Connection is Untrusted" (Firefox),
+              &ldquo;Safari can't verify the identity of the
+              website&hellip;&rdquo; (Safari on MacOS)".</t>
 
-              <t>Enterprise networks do not assume that all the devices
-              connected to their network are managed by the IT team or Mobile
-              Device Management (MDM) devices, especially in the quite common
-              BYOD ("Bring Your Own Device") scenario. In addition, the local
-              root certificate cannot be installed on IoT devices without a
-              device management tool.</t>
+              <t>Enterprise networks do not assume that all the connected
+              devices are managed by the IT team or Mobile Device Management
+              (MDM) devices, especially in the quite common Bring Your Own
+              Device (BYOD) scenario. In addition, the local root certificate
+              cannot be installed on IoT devices without a device management
+              tool.</t>
 
               <t>An end user does not know why the connection was reset and,
-              consequently, may repeatedly try to unsuccessfully reach the
-              domain. Frustrated, the end user may use insecure interfaces to
+              consequently, may repeatedly try to reach the domain but with no
+              success. Frustrated, an end user may use insecure connections to
               reach the domain, potentially compromising both security and
               privacy. Furthermore, certificate errors train users to click
-              through certificate errors, which is poor security practice. To
+              through certificate errors, which is a bad security practice. To
               eliminate the need for an end user to click through certificate
               errors, an end user may manually install a local root
-              certificate <xref target="Chrome-Install-Cert"></xref> on a host
-              device. Doing so, however, is also poor security practice as it
-              creates a security vulnerability that may be exploited by a MITM
-              attack. When the manually installed local root certificate
-              expires, the user has to (again) manually install the new local
-              root certificate.</t>
+              certificate on a host device (e.g. <xref
+              target="Chrome-Install-Cert"></xref>). Doing so, however, is
+              also a bad security practice as it creates a security
+              vulnerability that may be exploited by a MITM attack. When a
+              manually installed local root certificate expires, the user has
+              to (again) manually install the new local root certificate.</t>
             </list></t>
 
           <t>The DNS response is forged to provide a NXDOMAIN response to
           cause the DNS lookup to terminate in failure. In this case, an end
-          user does not know why the domain cannot be reached, and may
-          repeatedly try to unsuccessfully reach the domain. Frustrated, the
-          end user may use insecure interfaces to reach the domain,
+          user does not know why the domain cannot be reached and may
+          repeatedly try to reach the domain but with no success. Frustrated,
+          the end user may use insecure connections to reach the domain,
           potentially compromising both security and privacy.</t>
 
           <t>The extended error codes Blocked, Censored, and Filtered defined
-          in <xref target="I-D.ietf-dnsop-extended-error"></xref> can be
-          returned by the DNS server to provide additional information about
-          the cause of an DNS error. If the extended error code "Forged
-          answer" defined in <xref
-          target="I-D.ietf-dnsop-extended-error"></xref> is returned by the
-          DNS server, the client can identify the DNS response is forged and
-          the reason for HTTPS certificate error. These extended error codes
-          do not suffer from the limitations discussed in (1) and (2) but the
-          user still does not know the exact reason nor the user is aware of
-          the exact entity blocking the access to the domain. For example, a
-          DNS server may block access domain based on the content category
-          like "Adult Content" to enforce parental control, "Violence &amp;
+          in Section 4 of <xref target="RFC8914"></xref> can be returned by a
+          DNS server to provide additional information about the cause of an
+          DNS error. If the extended error code "Forged Answer" defined in
+          Section 4.5 of <xref target="RFC8914"></xref> is returned by the DNS
+          server, the client can identify the DNS response is forged together
+          with the reason for HTTPS certificate error. <vspace
+          blankLines="1" />These extended error codes do not suffer from the
+          limitations discussed in bullets (1) and (2), but the user still
+          does not know the exact reason nor he/she is aware of the exact
+          entity blocking the access to the domain. For example, a DNS server
+          may block access to a domain based on the content category such as
+          "Adult Content" to enforce parental control, "Violence &amp;
           Terrorism" due to an external requirement imposed by an external
-          entity (e.g., Law Enforcement Agency), etc. The content categories
-          for domains cannot be standardized because the classification of
-          domains into content categories is vendor specific, typically ranges
-          from 40 to 100 types of categories depending on the vendor and the
-          categories keep evolving. Further, the threat data used to
-          categorize domains may sometimes mis-classify domains (e.g., Domains
-          wrongly classified as DGA (Domain Generation Algorithm) by deep
-          learning techniques, domain wrongly classified as phishing due to
-          crowd sourcing, new domains not categorized by the threat data). The
-          end user needs to know the contact details of the IT/InfoSec team to
-          raise a complaint.</t>
+          entity (e.g., Law Enforcement Agency), etc. These content categories
+          cannot be standardized because the classification of domains into
+          content categories is vendor specific, typically ranges from 40 to
+          100 types of categories depending on the vendor and the categories
+          keep evolving. Furthermore, the threat data used to categorize
+          domains may sometimes misclassify domains (e.g., domains wrongly
+          classified as Domain Generation Algorithm (DGA) by deep learning
+          techniques, domain wrongly classified as phishing due to crowd
+          sourcing, new domains not categorized by the threat data). A user
+          needs to know the contact details of the IT/InfoSec team to raise a
+          complaint.</t>
 
-          <t>The EXTRA-TEXT field in the EDE option defined in <xref
-          target="I-D.ietf-dnsop-extended-error"></xref> can include
-          additional textual information about the cause of the error but the
-          information could be provided in a language not understood by the
-          user. When a resolver or forwarder forwards the received EDE option,
-          the EXTRA-TEXT field only conveys the source of the error (Section 3
-          of <xref target="I-D.ietf-dnsop-extended-error"></xref>) and does
-          not provide additional textual information about the cause of the
-          error. Most importantly, EDE option does not offer authenticated
-          information, and it can be spoofed by an attacker. Further, the
-          additional textual information may not be able to convey all of the
-          required information about the cause of the DNS error because
-          lengthy EXTRA-TEXT content would to truncated to prevent
-          fragmentation (see Section 3 of <xref
-          target="I-D.ietf-dnsop-extended-error"></xref>).</t>
+          <t>The EXTRA-TEXT field of the EDE option defined in Section 2 of
+          <xref target="RFC8914"></xref> can include additional textual
+          information about the cause of the error, but the information could
+          be provided in a language that is not understood by the user. When a
+          resolver or forwarder forwards the received EDE option, the
+          EXTRA-TEXT field only conveys the source of the error (Section 3 of
+          <xref target="RFC8914"></xref>) and does not provide additional
+          textual information about the cause of the error. Most importantly,
+          EDE option does not offer authenticated information; it can thus be
+          be spoofed by an attacker. In addition, the additional textual
+          information may not be able to convey all of the required
+          information about the cause of the DNS error because lengthy
+          EXTRA-TEXT content would be truncated to prevent fragmentation
+          (Section 3 of <xref target="RFC8914"></xref>).</t>
         </list></t>
 
-      <t>No matter which type of response is generated (forged IP address,
+      <t>No matter which type of response is generated (forged IP address(es),
       NXDOMAIN or empty answer, or an extended error code), the user who
       generated the query has little chance to understand which entity
       filtered the query, how to report a mistake in the filter, or why the
@@ -273,9 +276,9 @@
 
       <t>One of the other benefits of this approach is to eliminate the need
       to "spoof" block pages for HTTPS resources, as the block page no longer
-      needs to create a signed certificate when blocking a destination. This
-      avoids the need to install a local root certificate authority on those
-      IT-managed devices.</t>
+      needs to create a signed certificate when blocking a destination. Also,
+      the approach avoids the need to install a local root certificate
+      authority on those IT-managed devices.</t>
     </section>
 
     <section anchor="notation" title="Terminology">
@@ -289,33 +292,34 @@
       target="RFC8499"></xref> and <xref
       target="I-D.ietf-dnsop-terminology-ter"></xref>.</t>
 
-      <t>'Encrypted DNS' refers to DNS-over-HTTPS <xref
-      target="RFC8484"></xref>, DNS-over-TLS <xref target="RFC7858"></xref>,
-      or DNS-over-QUIC <xref target="I-D.ietf-dprive-dnsoquic"></xref>.</t>
+      <t>'Encrypted DNS' refers to any encrypted scheme to convey DNS
+      messages, for example, DNS-over-HTTPS <xref target="RFC8484"></xref>,
+      DNS-over-TLS <xref target="RFC7858"></xref>, or DNS-over-QUIC <xref
+      target="I-D.ietf-dprive-dnsoquic"></xref>.</t>
     </section>
 
-    <section title="Error page URI EDNS0 option format">
+    <section anchor="format-sec" title="Error page URI EDNS0 Option Format">
       <t>This document uses an EDNS0 <xref target="RFC6891"></xref> option to
       include the URI that gives additional information in a DNS response
-      about the cause of blocking access to a domain. The option is structured
-      as follows:</t>
+      about the cause of blocking access to a domain. This option is
+      structured as depicted in <xref target="format"></xref>.</t>
 
-      <figure>
-        <artwork align="left"><![CDATA[
-                                             1   1   1   1   1   1
+      <figure align="center" anchor="format"
+              title="Error page URI EDNS0 Option Format">
+        <artwork align="center"><![CDATA[                                             1   1   1   1   1   1
      0   1   2   3   4   5   6   7   8   9   0   1   2   3   4   5
    +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-   |                            OPTION-CODE                        |
+   |                         OPTION-CODE                           |
    +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-   |                           OPTION-LENGTH                       |
+   |                        OPTION-LENGTH                          |
    +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-   |                 ERROR-PAGE-URI-LENGTH  (fixed size)           |
+   |                ERROR-PAGE-URI-LENGTH  (fixed size)            |
    +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-   /                    ERROR-PAGE-URI (variable size)             /
+   /                 ERROR-PAGE-URI (variable size)                /
    +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-   |                    ERROR-PAGE-SIG-ALG (fixed size)            |
+   |                 ERROR-PAGE-SIG-ALG (fixed size)               |
    +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-   /                     ERROR-PAGE-SIG  (variable size)           /
+   /                 ERROR-PAGE-SIG  (variable size)               /
    +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
 ]]></artwork>
       </figure>
@@ -338,20 +342,20 @@
           <t>ERROR-PAGE-URI-LENGTH: This 16-bit field indicates the length of
           ERROR-PAGE-URI. It MUST NOT be set to 0.</t>
 
-          <t>ERROR-PAGE-URI: a variable length UTF-8 encoded <xref
+          <t>ERROR-PAGE-URI: A variable length UTF-8 encoded <xref
           target="RFC5198"></xref> text field containing the URI Template
           <xref target="RFC6570"></xref> that gives additional information
           about the cause of blocking access to a domain. The ERROR-PAGE-URI
           field MUST NOT be zero octets in length.</t>
 
           <t>ERROR-PAGE-SIG-ALG: A 16-bits field that contains the algorithm
-          used to generate the signature for the Error page URI Template. The
+          used to generate the signature for the Error Page URI Template. The
           values are defined in the TLS SignatureScheme <xref
           target="TLS-SIG-SCHEME"></xref> with limitations described in <xref
           target="signandverify"></xref>.</t>
 
           <t>ERROR-PAGE-SIG, a variable length field containing the signature
-          of the Error page URI Template. The signature generation process is
+          of the Error Page URI Template. The signature generation process is
           discussed in <xref target="signandverify"></xref>.</t>
         </list></t>
 
@@ -372,33 +376,33 @@
       HTTP GET request. Padding characters for base64url MUST NOT be
       included.</t>
 
-      <t>An example is illustrated below:</t>
+      <t>An example is illustrated below:<list style="empty">
+          <t>If the URI Template is
+          "https://block.example.net/block-page{?target-domain}" for the HTTPS
+          server returning the error page and access to the target domain
+          "example.com" is blocked by the encrypted DNS server, the variable
+          "target-domain" has the value "example.com" base64url encoded into
+          an HTTP GET request. In the above example, the expansion of the
+          above URI Template is
+          "https://block.example.net/block-page?target-domain=ZXhhbXBsZS5jb20".</t>
+        </list></t>
 
-      <t>If the URI Template is
-      "https://block.example.net/block-page{?target-domain}" for the HTTPS
-      server returning the error page and access to the target domain
-      "example.com" is blocked by the encrypted DNS server, the variable
-      "target-domain" has the value "example.com" base64url encoded into an
-      HTTP GET request. In the above example, the expansion of the above URI
-      Template is
-      "https://block.example.net/block-page?target-domain=ZXhhbXBsZS5jb20".</t>
-
-      <t>HTTP/2 <xref target="RFC7540"></xref> is the minimum RECOMMENDED
-      version of HTTP to use to retrieve the error page. The HTTPS client
-      retrieving the error page MUST verify the entire certification path per
-      <xref target="RFC5280"></xref>. The HTTPS client additionally uses
-      validation techniques as described in <xref target="RFC6125"></xref> to
-      compare the domain name in the error page URI to the server certificate
-      provided in TLS handshake. See <xref target="RFC7525"></xref> for
-      additional TLS recommendations.</t>
+      <t>HTTP/2 <xref target="RFC7540"></xref> is the minimum RECOMMENDED HTTP
+      version to use to retrieve the error page. The HTTPS client retrieving
+      the error page MUST verify the entire certification path as per <xref
+      target="RFC5280"></xref>. The HTTPS client additionally uses validation
+      techniques described in <xref target="RFC6125"></xref> to compare the
+      domain name in the error page URI to the server certificate provided in
+      TLS handshake. See <xref target="RFC7525"></xref> for additional TLS
+      recommendations.</t>
     </section>
 
-    <section title="Error page URI Processing">
+    <section title="Error Page URI Processing">
       <t>The DNS client MUST follow the following rules to process the Error
-      page URI EDNS0 option:<list style="symbols">
-          <t>The Error page URI EDNS0 option is susceptible to forgery. In
+      Page URI EDNS0 option:<list style="symbols">
+          <t>The Error Page URI EDNS0 option is susceptible to forgery. In
           order to defend against this attack the DNS client MUST NOT process
-          the DNS response with Error page URI EDNS0 option unless DNS
+          the DNS response with Error Page URI EDNS0 option unless DNS
           messages exchanged are cryptographically protected using encrypted
           DNS.</t>
 
@@ -409,7 +413,7 @@
           fallback to clear text DNS, and cannot exchange encrypted DNS
           messages. The fallback adversely impacts security and privacy. If
           the DNS client has enabled opportunistic privacy profile for DoT,
-          the client MUST NOT process the DNS response with Error page URI
+          the client MUST NOT process the DNS response with Error Page URI
           EDNS0 option.</t>
 
           <t>If an DNS client has enabled strict privacy profile (Section 5 of
@@ -419,26 +423,26 @@
           redirection (at the expense of providing no DNS service if an
           encrypted, authenticated connection is not available). If the DNS
           client has enabled strict privacy profile for DoT, the client can
-          process the DNS response with Error page URI EDNS0 option. Note that
+          process the DNS response with Error Page URI EDNS0 option. Note that
           the strict and opportunistic privacy profiles as defined in <xref
           target="RFC8310"></xref> only applies to DoT protocol, there has
           been no such distinction made for DoH protocol.</t>
 
-          <t>If the DNS response contains more than one Error page URI EDNS0
-          option, the DNS client MUST discard all Error page URI EDNS0 options
+          <t>If the DNS response contains more than one Error Page URI EDNS0
+          option, the DNS client MUST discard all Error Page URI EDNS0 options
           in the DNS response.</t>
 
-          <t>The Error page URI EDNS0 option MUST be processed by the DNS
+          <t>The Error Page URI EDNS0 option MUST be processed by the DNS
           client for a "Censored", &ldquo;Blocked", &ldquo;Filtered&rdquo; or
           &ldquo;Forged" extended error codes and MUST be ignored for any
           other type of extended DNS error code. When "Censored",
           &ldquo;Blocked&rdquo;, "Filtered&rdquo; or &ldquo;Forged&rdquo;
-          extended error code is returned in conjunction with an Error page
+          extended error code is returned in conjunction with an Error Page
           URI EDNS0 option, any other resource records in the answer MUST be
           ignored by clients supporting this specification.</t>
 
           <t>If the DNS client determines that the encrypted DNS server does
-          not offer DNS filtering service, it MUST reject the Error page URI
+          not offer DNS filtering service, it MUST reject the Error Page URI
           EDNS0 option. For example, the DNS client knows whether the
           pre-configured encrypted DNS resolver performs DNS-based content
           filtering or not.</t>
@@ -447,44 +451,48 @@
           not "https".</t>
 
           <t>The DNS client verifies the signature in the ERROR-PAGE-SIG field
-          following the mechanism discussed in <xref
-          target="signandverify"></xref>. If the signature is valid, the
-          client can positively identify that the Error page URI EDNS0 option
+          (<xref target="format"></xref>) following the mechanism discussed in
+          <xref target="signandverify"></xref>. If the signature is valid, the
+          client can positively identify that the Error Page URI EDNS0 option
           has been generated by the encrypted DNS server and the encrypted DNS
           server did not forward the Error Page URI EDNS0 option from an
           upstream resolver. If signature validation fails, the DNS client
-          MUST reject the Error page URI EDNS0 option.</t>
+          MUST reject the Error Page URI EDNS0 option.</t>
         </list></t>
 
       <t>A DNS resolver or forwarder MUST NOT propagate a received Error Page
-      URI EDNS0 option over an unencrypted connection, because an attacker
-      could insert a bogus URI. However, when a resolver or forwarder receives
-      an Error Page URI EDNS0 option over an encrypted connection, whether or
-      not to pass along Error Page URI EDNS0 option on to the original client
-      is implementation dependent. If the Implementation chooses to forward
-      the Error Page URI EDNS0 option received over an encrypted connection,
-      it MUST create a new Error Page URI EDNS0 option that conveys the URI in
+      URI EDNS0 option over an unencrypted connection because an attacker can
+      insert a bogus URI. However, when a resolver or forwarder receives an
+      Error Page URI EDNS0 option over an encrypted connection, whether or not
+      to pass along Error Page URI EDNS0 option on to the original client is
+      implementation dependent. If the Implementation chooses to forward the
+      Error Page URI EDNS0 option received over an encrypted connection, it
+      MUST create a new Error Page URI EDNS0 option that conveys the URI in
       the received Error Page URI EDNS0 option after successful signature
       validation. The signature for the new Error Page URI EDNS0 option MUST
       be generated using the private key of the DNS resolver or forwarder
       end-entity certificate used in the TLS connection to the original
       client. If signature validation fails for the received Error Page URI
       EDNS0 option, the DNS resolver or forwarder end-entity certificate MUST
-      reject the Error page URI EDNS0 option. The DNS resolver or forwarder
-      MUST NOT modify the ERROR-PAGE-URI field in the forwarded Error page URI
-      EDNS0 option. If the resolver or forwarder simply forwards the received
-      Error Page URI EDNS0 option without updating the signature in the
-      ERROR-PAGE-SIG field, signature validation by the original client will
-      fail and the forwarded Error page URI EDNS0 option will be rejected. As
-      a reminder, Section 3 of <xref
-      target="I-D.ietf-dnsop-extended-error"></xref> discusses the source of
-      the error should be attributed in the EXTRA-TEXT field, since an EDNS0
-      option received by the original client will appear to have come from the
-      resolver or forwarder sending it. Because DNS forwarders (or DNS
-      proxies) are supposed to propagate unknown EDNS0 options (Section 4.1
-      and Section 4.4.1 of <xref target="RFC5625"></xref>), the Error Page URI
-      EDNS0 option may get propagated. To detect this scenario, the Error Page
-      URI Template is protected with an object signature as described in <xref
+      reject the Error Page URI EDNS0 option. </t>
+
+      <t>The DNS resolver or forwarder MUST NOT modify the ERROR-PAGE-URI
+      field (<xref target="format"></xref>) in the forwarded Error Page URI
+      EDNS0 option. </t>
+
+      <t>If the resolver or forwarder simply forwards the received Error Page
+      URI EDNS0 option without updating the signature in the ERROR-PAGE-SIG
+      field (<xref target="format"></xref>), signature validation by the
+      original client will fail and the forwarded Error Page URI EDNS0 option
+      will be rejected. As a reminder, Section 3 of <xref
+      target="RFC8914"></xref> discusses the source of the error should be
+      attributed in the EXTRA-TEXT field, since an EDNS0 option received by
+      the original client will appear to have come from the resolver or
+      forwarder sending it. Because DNS forwarders (or DNS proxies) are
+      supposed to propagate unknown EDNS0 options (Sections 4.1 and 4.4.1 of
+      <xref target="RFC5625"></xref>), the Error Page URI EDNS0 option may get
+      propagated. To detect this scenario, the Error Page URI Template is
+      protected with an object signature as described in <xref
       target="signandverify"></xref> to provide authenticated information.</t>
     </section>
 
@@ -501,32 +509,32 @@
       procedure of the ECDSA, specified in <xref target="RFC6979"></xref>.</t>
 
       <t>The signature is generated by the encrypted DNS server using the
-      Error page URI Template, private key of the encrypted DNS server's
+      Error Page URI Template, private key of the encrypted DNS server's
       end-entity certificate as inputs to the signature algorithm. The
       signature algorithm in the ERROR-PAGE-SIG-ALG field MUST be compatible
       with the key in the DNS server's end-entity certificate. The
       implementation MUST support the same set of algorithms in the TLS client
       for validating the signature in the CertificateVerify message from the
       server in the TLS handshake and in the DNS client to validate the
-      signature for the Error page URI Template. As a reminder, the server's
+      signature for the Error Page URI Template. As a reminder, the server's
       end-entity certificate's public key will be compatible with the selected
       authentication algorithm from the client's "signature_algorithms" TLS
       extension (Section 4.4.2.2 of <xref target="RFC8446"></xref>).</t>
 
       <t>If the signature algorithm in the ERROR-PAGE-SIG-ALG field is not
       compatible with the key in the DNS server's end-entity certificate, the
-      DNS client MUST reject the Error page URI EDNS0 option. The DNS client
+      DNS client MUST reject the Error Page URI EDNS0 option. The DNS client
       verifies the signature using the signature in the ERROR-PAGE-SIG field,
-      error page URI Template and DNS server's end-entity certificate's public
+      Error Page URI Template and DNS server's end-entity certificate's public
       key as inputs to the signature algorithm. For example, if Ed25519 is
       used, Ed25519 signature algorithm and verification of the Ed25519
       signature are described in Sections 5.1.6 and 5.1.7 of <xref
       target="RFC8032"></xref>, respectively.</t>
     </section>
 
-    <section title="ERROR Page">
-      <t>The following text outlines the RECOMMENDED contents of an error page
-      to assist the operator developing the error page.</t>
+    <section title="Error Page">
+      <t>The following outlines the RECOMMENDED contents of an error page to
+      assist the operator developing the error page:</t>
 
       <t><list style="symbols">
           <t>The exact reason for blocking access to the domain. If the domain
@@ -548,27 +556,27 @@
           content.</t>
         </list>The content of the error page discussed above is non-normative,
       the above text only provides the guidelines and template for the error
-      page and.<list style="symbols">
-          <t>Does not attempt to offer an exhaustive list for the contents of
+      page and:<list style="symbols">
+          <t>does not attempt to offer an exhaustive list for the contents of
           an error page.</t>
 
-          <t>It is not intended to form the basis of any legal/compliance for
+          <t>it is not intended to form the basis of any legal/compliance for
           developing the error page.</t>
         </list></t>
     </section>
 
     <section title="Usability Considerations">
       <t>The error page SHOULD be returned in the user's preferred language as
-      expressed by the Accept-Language header.</t>
+      expressed by the Accept-Language HTTP header.</t>
     </section>
 
     <section anchor="Security" title="Security Considerations">
-      <t>Security considerations in <xref
-      target="I-D.ietf-dnsop-extended-error"></xref> and <xref
-      target="RFC8624"></xref> need to be taken into consideration.</t>
+      <t>Security considerations in Section 6 of <xref
+      target="RFC8914"></xref> and <xref target="RFC8624"></xref> need to be
+      taken into consideration.</t>
 
-      <t>The Error page URI EDNS0 option causes an HTTPS retrieval by the
-      client. To prevent forgery of the Error page URI EDNS0 option, this
+      <t>The Error Page URI EDNS0 option causes an HTTPS retrieval by the
+      client. To prevent forgery of the Error Page URI EDNS0 option, this
       specification requires it only be sent only over an encrypted DNS
       channel with an authorized DNS server.</t>
 
@@ -594,14 +602,14 @@
       <t>The encrypted DNS session provides transport security for the
       interaction between the DNS client and server, but DNSSEC signing and
       validation is not possible for the Error Page URI EDNS0 option returning
-      the error page URI template. For example, if access to a doman is
+      the Error Page URI Template. For example, if access to a doman is
       blocked, the encrypted DNS resolver can rewrite the response to send
-      NXDOMAIN error and Error page URI EDNS0 option in the DNS response, it
+      NXDOMAIN error and Error Page URI EDNS0 option in the DNS response, it
       will omit DNSSEC RRsets, because the modified responses cannot be
       verified by DNSSEC signatures. However, the signature in the Error Page
       URI EDNS0 option provides authentication for the Error Page URI EDNS0
       option. Nevertheless, the Error Page URI EDNS0 option returning the
-      error page URI Template should be treated only as diagnostic information
+      Error Page URI Template should be treated only as diagnostic information
       and MUST NOT alter DNS protocol processing.</t>
 
       <t>By design, the object referenced by the error page URL potentially
@@ -666,7 +674,7 @@
 
       <?rfc include='reference.RFC.6570'?>
 
-      <?rfc include='reference.I-D.ietf-dnsop-extended-error' ?>
+      <?rfc include='reference.RFC.8914' ?>
 
       <reference anchor="TLS-SIG-SCHEME"
                  target="https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-signaturescheme">
