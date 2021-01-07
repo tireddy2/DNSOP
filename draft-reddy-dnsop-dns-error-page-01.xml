@@ -185,8 +185,8 @@
               trusted certificate authority" (Internet Explorer/Edge"), "The
               site's security certificate is not trusted" (Chrome), "This
               Connection is Untrusted" (Firefox), &ldquo;Safari can't verify
-              the identity of the website&hellip;&rdquo; (Safari on
-              MacOS)".</t>
+              the identity of the website&hellip;&rdquo; (Safari on MacOS)".
+              </t>
 
               <t>Enterprise networks do not assume that all the devices
               connected to their network are managed by the IT team or Mobile
@@ -252,6 +252,12 @@
       entity filtered it at all. This document describes a mechanism to
       provide a URL which, when accessed, provides such information to the
       user.</t>
+
+      <t>One of the other benefits of this document is eliminating
+      the need to "spoof" block pages for HTTPS resources, as the block
+      page no longer needs to create a signed certificate when blocking a 
+      destination. This avoids the need to install an additional root certificate
+      authority on those IT-managed devices.</t>
     </section>
 
     <section anchor="notation" title="Terminology">
@@ -271,25 +277,31 @@
     <section title="Method to return the error page URL">
       <t>The mechanism for providing additional information about the cause of
       blocking access to a domain is from the HTTPS DNS record <xref
-      target="I-D.ietf-dnsop-svcb-https"></xref>. This HTTPS record in the
-      "Service Form" provides the URL that gives additional information about
-      the cause of blocking access to a domain. In order to convey an error
-      page URL, this HTTPS record SHOULD be returned along with the "Forged
-      Answer" extended error code in Extended DNS Error (EDE) EDNS option and
-      MUST contain the "eut" (<xref target="IANA"></xref>) name. The service
-      parameter key "eut" MUST only be processed by the DNS client for a
-      "Forged Answer" extended error code and MUST be ignored for any other
-      type of DNS response. When the "forged answer&rdquo; extended error code
-      is returned in conjunction with an HTTPS record containing the "eut"
-      service parameter key, any other resource records in the answer MUST be
-      ignored by clients supporting this specification.</t>
+      target="I-D.ietf-dnsop-svcb-https"></xref>. The "HTTPS" DNS resource
+      record type provides more information to the client before it attempts
+      to establish a HTTPS connection. This HTTPS record in the "ServiceMode"
+      (Section 2.4.2 of <xref target="I-D.ietf-dnsop-svcb-https"></xref>)
+      provides the URL that gives additional information about the cause of
+      blocking access to a domain. In order to convey an error page URL, this
+      HTTPS record SHOULD be returned along with the "Forged Answer" extended
+      error code in Extended DNS Error (EDE) EDNS option and MUST contain the
+      "eut" (<xref target="IANA"></xref>) parameter. The value stored in the
+      parameter is a URL. The SvcParamKey "eut" MUST only be processed by the
+      DNS client for a "Forged Answer" extended error code and MUST be ignored
+      for any other type of DNS response. When the "forged answer&rdquo;
+      extended error code is returned in conjunction with an HTTPS record
+      containing the "eut" SvcParamKey, any other resource records in the
+      answer MUST be ignored by clients supporting this specification. The
+      "eut" SvcParamKey is a "automatically mandatory" key (Section 6.5 of
+      <xref target="I-D.ietf-dnsop-svcb-https"></xref>). The "eut" is a
+      single-valued SvcParamKey and the value MUST NOT be empty. </t>
 
       <t>The following example shows a record containing an error page
       URL:</t>
 
       <t><figure align="center" anchor="ex" title="Example 1">
-          <artwork><![CDATA[foo.example.com.  7200  IN HTTPS 1 (
-   eut=https://block.example.net/block-page=ZXhhbXBsZS5jb20K )
+          <artwork><![CDATA[foo.example.com.  7200  IN HTTPS 1 . (
+   eut=https://block.example.net/block-page=ZXhhbXBsZS5jb20 )
 ]]></artwork>
         </figure></t>
 
@@ -307,8 +319,8 @@
     </section>
 
     <section title="ERROR Page">
-      <t>The following text outlines the RECOMMENDED contents of an error
-      page.</t>
+      <t>The following text outlines the RECOMMENDED contents of an error page
+      to assist the operator developing the error page.</t>
 
       <t><list style="symbols">
           <t>The exact reason for blocking access to the domain. If the domain
@@ -326,9 +338,16 @@
           <t>The entity (or organization) blocking the access to the domain
           and contact details of the IT/InfoSec team to raise a complaint.</t>
 
-          <t>The blocked error page MUST NOT include Ads.</t>
+          <t>The blocked error page to not include Ads and dynamic
+          content.</t>
+        </list>The content of the error page discussed above is non-normative,
+      the above text only provides the guidelines and template for the error
+      page and.<list style="symbols">
+          <t>Does not attempt to offer an exhaustive list for the contents of
+          an error page.</t>
 
-          <t>The blocked error page MUST NOT include dynamic content.</t>
+          <t>It is not intended to form the basis of any legal/compliance for
+          developing the error page.</t>
         </list></t>
     </section>
 
@@ -357,16 +376,16 @@
       is susceptible to forgery.</t>
 
       <t>The agent acting as the HTTPS client on the endpoint MUST NOT fetch
-      the URL unless DNS messages are exchanged over DoT/DoH. Bad actors can
-      host DoT/DoH servers, and claim the servers offer privacy and filtering
-      capability to block malware domains but exactly do the opposite to
-      invade the security and privacy of the end user. For example, this
-      attack can be mitigated if the endpoint selects DoT/DoH servers hosted
-      by well-known organizations (e.g., ISPs, organization for which a user
-      works, etc.) or the user selects DoT/DoH server with filtering
-      capability pre-configured in the OS/Browser. The DNS client can learn
-      the filtering capability of a DoH/DoT server using <xref
-      target="I-D.reddy-add-server-policy-selection"></xref>. <xref
+      the URL unless DNS messages exchanged are cryptographically protected
+      using DoH/DoT. Bad actors can host DoH/DoT servers, and claim the
+      servers offer privacy and filtering capability to block malware domains
+      but exactly do the opposite to invade the security and privacy of the
+      end user. For example, this attack can be mitigated if the endpoint
+      selects DoH/DoT servers hosted by well-known organizations (e.g., ISPs,
+      organization for which a user works, etc.) or the user selects DoH/DoT
+      server with filtering capability pre-configured in the OS/Browser. The
+      DNS client can learn the filtering capability of a DoH/DoT server using
+      <xref target="I-D.reddy-add-server-policy-selection"></xref>. <xref
       target="I-D.reddy-add-server-policy-selection"></xref> also discusses
       how a DNS client can authenticate it is connecting to a DoH/DoT server
       hosted by a specific organization (e.g., ISP). This information is
@@ -374,15 +393,12 @@
       useful when the DoH/DoT server is insecurely discovered and prevents the
       client from connecting to an attackers DoH/DoT server.</t>
 
-      <t>The URL providing additional information about the cause of blocking
-      access to a domain MUST only serve static content to limit the risk of
-      security threats from dynamic content (e.g., malicious Java Script).
-      Most importantly, to deal with malicious servers, because the client
-      knows that it is accessing a error page URL, it can know not to send
-      cookies, not to send credentials, disable JavaScript, auto-enable
-      private browsing mode or load the error page in a container isolated
-      from other web activity, etc. The client MUST reject the URL if the
-      scheme is not "https".</t>
+      <t>In order to deal with malicious servers, because the client knows
+      that it is accessing a error page URL, it can know not to send cookies,
+      not to send credentials, disable JavaScript, auto-enable private
+      browsing mode for the error page or load the error page in a container
+      isolated from other web activity, etc. The client MUST reject the URL if
+      the scheme is not "https".</t>
 
       <t>The DoH/DoT session provides transport security for the interaction
       between the DNS client and server, but DNSSEC signing and validation is
@@ -392,11 +408,12 @@
 
     <section anchor="IANA" title="IANA Considerations">
       <section title="Error Page URL DNS Parameter">
-        <t>This parameter indicates the URL that provides additional
-        information about the cause of blocking access to a domain is
-        designated for use with the "Forged answer" extended error code. This
-        is a string encoded as UTF-8 characters. This is a string encoded as
-        UTF-8 characters. <list style="hanging">
+        <t>This document adds a parameter to the "Service Binding (SVCB)
+        Parameter" registry. If present, this parameter indicates the URL that
+        provides additional information about the cause of blocking access to
+        a domain is designated for use with the "Forged answer" extended error
+        code. This is a string encoded as UTF-8 characters. <list
+            style="hanging">
             <t hangText="Name:">eut</t>
 
             <t hangText="SvcParamKey:">TBD</t>
@@ -410,7 +427,7 @@
     </section>
 
     <section title="Acknowledgements">
-      <t>TODO.</t>
+      <t>Thanks to Vittorio Bertola and Bob Harold for the comments..</t>
     </section>
   </middle>
 
