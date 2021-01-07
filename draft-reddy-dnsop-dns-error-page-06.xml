@@ -250,17 +250,17 @@
           target="I-D.ietf-dnsop-extended-error"></xref> can include
           additional textual information about the cause of the error but the
           information could be provided in a language not understood by the
-          user. The additional textual information may not be able to convey
-          all of the required information about the cause of the DNS error
-          because lengthy EXTRA-TEXT content would to truncated to prevent
+          user. When a resolver or forwarder forwards the received EDE option,
+          the EXTRA-TEXT field only conveys the source of the error (Section 3
+          of <xref target="I-D.ietf-dnsop-extended-error"></xref>) and does
+          not provide additional textual information about the cause of the
+          error. Most importantly, EDE option does not offer authenticated
+          information, and it can be spoofed by an attacker. Further, the
+          additional textual information may not be able to convey all of the
+          required information about the cause of the DNS error because
+          lengthy EXTRA-TEXT content would to truncated to prevent
           fragmentation (see Section 3 of <xref
-          target="I-D.ietf-dnsop-extended-error"></xref>). Further, when a
-          resolver or forwarder forwards the received EDE option, the
-          EXTRA-TEXT field only conveys the source of the error (Section 3 of
-          <xref target="I-D.ietf-dnsop-extended-error"></xref>) and does not
-          provide additional textual information about the cause of the error.
-          Most importantly, EDE option does not offer data origin
-          authentication, and it can be spoofed by an attacker.</t>
+          target="I-D.ietf-dnsop-extended-error"></xref>).</t>
         </list></t>
 
       <t>No matter which type of response is generated (forged IP address,

@@ -5,12 +5,12 @@
 DNSOP WG                                                        T. Reddy
 Internet-Draft                                                    McAfee
 Intended status: Standards Track                                 N. Cook
-Expires: June 26, 2021                                      Open-Xchange
+Expires: July 11, 2021                                      Open-Xchange
                                                                  D. Wing
                                                                   Citrix
                                                             M. Boucadair
                                                                   Orange
-                                                       December 23, 2020
+                                                         January 7, 2021
 
 
                       DNS Access Denied Error page
@@ -40,11 +40,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on June 26, 2021.
+   This Internet-Draft will expire on July 11, 2021.
 
 Copyright Notice
 
-   Copyright (c) 2020 IETF Trust and the persons identified as the
+   Copyright (c) 2021 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Reddy, et al.             Expires June 26, 2021                 [Page 1]
+Reddy, et al.             Expires July 11, 2021                 [Page 1]
 
-Internet-Draft        DNS Access Denied Error Page         December 2020
+Internet-Draft        DNS Access Denied Error Page          January 2021
 
 
    publication of this document.  Please review these documents
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Reddy, et al.             Expires June 26, 2021                 [Page 2]
+Reddy, et al.             Expires July 11, 2021                 [Page 2]
 
-Internet-Draft        DNS Access Denied Error Page         December 2020
+Internet-Draft        DNS Access Denied Error Page          January 2021
 
 
    o  Network devices in a home network offer network security to
@@ -165,9 +165,9 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
 
 
 
-Reddy, et al.             Expires June 26, 2021                 [Page 3]
+Reddy, et al.             Expires July 11, 2021                 [Page 3]
 
-Internet-Draft        DNS Access Denied Error Page         December 2020
+Internet-Draft        DNS Access Denied Error Page          January 2021
 
 
           "Safari can't verify the identity of the website..." (Safari
@@ -221,9 +221,9 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
 
 
 
-Reddy, et al.             Expires June 26, 2021                 [Page 4]
+Reddy, et al.             Expires July 11, 2021                 [Page 4]
 
-Internet-Draft        DNS Access Denied Error Page         December 2020
+Internet-Draft        DNS Access Denied Error Page          January 2021
 
 
        specific, typically ranges from 40 to 100 types of categories
@@ -238,17 +238,17 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
    4.  The EXTRA-TEXT field in the EDE option defined in
        [I-D.ietf-dnsop-extended-error] can include additional textual
        information about the cause of the error but the information
-       could be provided in a language not understood by the user.  The
+       could be provided in a language not understood by the user.  When
+       a resolver or forwarder forwards the received EDE option, the
+       EXTRA-TEXT field only conveys the source of the error (Section 3
+       of [I-D.ietf-dnsop-extended-error]) and does not provide
+       additional textual information about the cause of the error.
+       Most importantly, EDE option does not offer authenticated
+       information, and it can be spoofed by an attacker.  Further, the
        additional textual information may not be able to convey all of
        the required information about the cause of the DNS error because
        lengthy EXTRA-TEXT content would to truncated to prevent
        fragmentation (see Section 3 of [I-D.ietf-dnsop-extended-error]).
-       Further, when a resolver or forwarder forwards the received EDE
-       option, the EXTRA-TEXT field only conveys the source of the error
-       (Section 3 of [I-D.ietf-dnsop-extended-error]) and does not
-       provide additional textual information about the cause of the
-       error.  Most importantly, EDE option does not offer data origin
-       authentication, and it can be spoofed by an attacker.
 
    No matter which type of response is generated (forged IP address,
    NXDOMAIN or empty answer, or an extended error code), the user who
@@ -277,9 +277,9 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
 
 
 
-Reddy, et al.             Expires June 26, 2021                 [Page 5]
+Reddy, et al.             Expires July 11, 2021                 [Page 5]
 
-Internet-Draft        DNS Access Denied Error Page         December 2020
+Internet-Draft        DNS Access Denied Error Page          January 2021
 
 
    'Encrypted DNS' refers to DNS-over-HTTPS [RFC8484], DNS-over-TLS
@@ -333,9 +333,9 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
 
 
 
-Reddy, et al.             Expires June 26, 2021                 [Page 6]
+Reddy, et al.             Expires July 11, 2021                 [Page 6]
 
-Internet-Draft        DNS Access Denied Error Page         December 2020
+Internet-Draft        DNS Access Denied Error Page          January 2021
 
 
    o  ERROR-PAGE-SIG, a variable length field containing the signature
@@ -389,9 +389,9 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
 
 
 
-Reddy, et al.             Expires June 26, 2021                 [Page 7]
+Reddy, et al.             Expires July 11, 2021                 [Page 7]
 
-Internet-Draft        DNS Access Denied Error Page         December 2020
+Internet-Draft        DNS Access Denied Error Page          January 2021
 
 
    o  If an DNS client has enabled opportunistic privacy profile
@@ -445,9 +445,9 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
 
 
 
-Reddy, et al.             Expires June 26, 2021                 [Page 8]
+Reddy, et al.             Expires July 11, 2021                 [Page 8]
 
-Internet-Draft        DNS Access Denied Error Page         December 2020
+Internet-Draft        DNS Access Denied Error Page          January 2021
 
 
       EDNS0 option from an upstream resolver.  If signature validation
@@ -501,9 +501,9 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
 
 
 
-Reddy, et al.             Expires June 26, 2021                 [Page 9]
+Reddy, et al.             Expires July 11, 2021                 [Page 9]
 
-Internet-Draft        DNS Access Denied Error Page         December 2020
+Internet-Draft        DNS Access Denied Error Page          January 2021
 
 
    end-entity certificate as inputs to the signature algorithm.  The
@@ -557,9 +557,9 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
 
 
 
-Reddy, et al.             Expires June 26, 2021                [Page 10]
+Reddy, et al.             Expires July 11, 2021                [Page 10]
 
-Internet-Draft        DNS Access Denied Error Page         December 2020
+Internet-Draft        DNS Access Denied Error Page          January 2021
 
 
    o  Does not attempt to offer an exhaustive list for the contents of
@@ -613,9 +613,9 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
 
 
 
-Reddy, et al.             Expires June 26, 2021                [Page 11]
+Reddy, et al.             Expires July 11, 2021                [Page 11]
 
-Internet-Draft        DNS Access Denied Error Page         December 2020
+Internet-Draft        DNS Access Denied Error Page          January 2021
 
 
    of the Error Page URI EDNS0 option.  Nevertheless, the Error Page URI
@@ -669,9 +669,9 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
 
 
 
-Reddy, et al.             Expires June 26, 2021                [Page 12]
+Reddy, et al.             Expires July 11, 2021                [Page 12]
 
-Internet-Draft        DNS Access Denied Error Page         December 2020
+Internet-Draft        DNS Access Denied Error Page          January 2021
 
 
    [RFC5198]  Klensin, J. and M. Padlipsky, "Unicode Format for Network
@@ -725,9 +725,9 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
 
 
 
-Reddy, et al.             Expires June 26, 2021                [Page 13]
+Reddy, et al.             Expires July 11, 2021                [Page 13]
 
-Internet-Draft        DNS Access Denied Error Page         December 2020
+Internet-Draft        DNS Access Denied Error Page          January 2021
 
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
@@ -781,9 +781,9 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
 
 
 
-Reddy, et al.             Expires June 26, 2021                [Page 14]
+Reddy, et al.             Expires July 11, 2021                [Page 14]
 
-Internet-Draft        DNS Access Denied Error Page         December 2020
+Internet-Draft        DNS Access Denied Error Page          January 2021
 
 
    [I-D.ietf-dnsop-terminology-ter]
@@ -837,9 +837,9 @@ Authors' Addresses
 
 
 
-Reddy, et al.             Expires June 26, 2021                [Page 15]
+Reddy, et al.             Expires July 11, 2021                [Page 15]
 
-Internet-Draft        DNS Access Denied Error Page         December 2020
+Internet-Draft        DNS Access Denied Error Page          January 2021
 
 
    Neil Cook
@@ -893,4 +893,4 @@ Internet-Draft        DNS Access Denied Error Page         December 2020
 
 
 
-Reddy, et al.             Expires June 26, 2021                [Page 16]
+Reddy, et al.             Expires July 11, 2021                [Page 16]
