@@ -485,7 +485,8 @@
       and Section 4.4.1 of <xref target="RFC5625"></xref>), the Error Page URI
       EDNS0 option may get propagated. To detect this scenario, the Error Page
       URI Template is protected with an object signature as described in <xref
-      target="signandverify"></xref> for data origin authentication.</t>
+      target="signandverify"></xref> to provide authentication
+      information.</t>
     </section>
 
     <section anchor="signandverify" title="Sign and Verify">
@@ -599,7 +600,7 @@
       NXDOMAIN error and Error page URI EDNS0 option in the DNS response, it
       will omit DNSSEC RRsets, because the modified responses cannot be
       verified by DNSSEC signatures. However, the signature in the Error Page
-      URI EDNS0 option provides data origin authentication of the Error Page
+      URI EDNS0 option provides authentication information for the Error Page
       URI EDNS0 option. Nevertheless, the Error Page URI EDNS0 option
       returning the error page URI Template should be treated only as
       diagnostic information and MUST NOT alter DNS protocol processing.</t>

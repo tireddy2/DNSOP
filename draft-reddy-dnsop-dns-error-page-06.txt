@@ -482,7 +482,7 @@ Internet-Draft        DNS Access Denied Error Page          January 2021
    options (Section 4.1 and Section 4.4.1 of [RFC5625]), the Error Page
    URI EDNS0 option may get propagated.  To detect this scenario, the
    Error Page URI Template is protected with an object signature as
-   described in Section 5 for data origin authentication.
+   described in Section 5 to provide authentication information.
 
 5.  Sign and Verify
 
@@ -609,7 +609,7 @@ Internet-Draft        DNS Access Denied Error Page          January 2021
    to send NXDOMAIN error and Error page URI EDNS0 option in the DNS
    response, it will omit DNSSEC RRsets, because the modified responses
    cannot be verified by DNSSEC signatures.  However, the signature in
-   the Error Page URI EDNS0 option provides data origin authentication
+   the Error Page URI EDNS0 option provides authentication information
 
 
 
@@ -618,10 +618,10 @@ Reddy, et al.             Expires July 11, 2021                [Page 11]
 Internet-Draft        DNS Access Denied Error Page          January 2021
 
 
-   of the Error Page URI EDNS0 option.  Nevertheless, the Error Page URI
-   EDNS0 option returning the error page URI Template should be treated
-   only as diagnostic information and MUST NOT alter DNS protocol
-   processing.
+   for the Error Page URI EDNS0 option.  Nevertheless, the Error Page
+   URI EDNS0 option returning the error page URI Template should be
+   treated only as diagnostic information and MUST NOT alter DNS
+   protocol processing.
 
    By design, the object referenced by the error page URL potentially
    exposes additional information about the DNS resolution process that
