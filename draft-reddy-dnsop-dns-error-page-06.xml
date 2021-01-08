@@ -203,10 +203,11 @@
 
               <t>An end user does not know why the connection was reset and,
               consequently, may repeatedly try to reach the domain but with no
-              success. Frustrated, an end user may use insecure connections to
-              reach the domain, potentially compromising both security and
-              privacy. Furthermore, certificate errors train users to click
-              through certificate errors, which is a bad security practice. To
+              success. Frustrated, the end user may switch to an alternate
+              network that offers no DNS-level protection against malware and
+              phishing, potentially compromising both security and privacy.
+              Furthermore, certificate errors train users to click through
+              certificate errors, which is a bad security practice. To
               eliminate the need for an end user to click through certificate
               errors, an end user may manually install a local root
               certificate on a host device (e.g. <xref
@@ -474,11 +475,11 @@
       end-entity certificate used in the TLS connection to the original
       client. If signature validation fails for the received Error Page URI
       EDNS0 option, the DNS resolver or forwarder end-entity certificate MUST
-      reject the Error Page URI EDNS0 option. </t>
+      reject the Error Page URI EDNS0 option.</t>
 
       <t>The DNS resolver or forwarder MUST NOT modify the ERROR-PAGE-URI
       field (<xref target="format"></xref>) in the forwarded Error Page URI
-      EDNS0 option. </t>
+      EDNS0 option.</t>
 
       <t>If the resolver or forwarder simply forwards the received Error Page
       URI EDNS0 option without updating the signature in the ERROR-PAGE-SIG

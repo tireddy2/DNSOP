@@ -182,13 +182,14 @@ Internet-Draft        DNS Access Denied Error Page          January 2021
 
        *  An end user does not know why the connection was reset and,
           consequently, may repeatedly try to reach the domain but with
-          no success.  Frustrated, an end user may use insecure
-          connections to reach the domain, potentially compromising both
-          security and privacy.  Furthermore, certificate errors train
-          users to click through certificate errors, which is a bad
-          security practice.  To eliminate the need for an end user to
-          click through certificate errors, an end user may manually
-          install a local root certificate on a host device (e.g.
+          no success.  Frustrated, the end user may switch to an
+          alternate network that offers no DNS-level protection against
+          malware and phishing, potentially compromising both security
+          and privacy.  Furthermore, certificate errors train users to
+          click through certificate errors, which is a bad security
+          practice.  To eliminate the need for an end user to click
+          through certificate errors, an end user may manually install a
+          local root certificate on a host device (e.g.
           [Chrome-Install-Cert]).  Doing so, however, is also a bad
           security practice as it creates a security vulnerability that
           may be exploited by a MITM attack.  When a manually installed
@@ -217,7 +218,6 @@ Internet-Draft        DNS Access Denied Error Page          January 2021
        block access to a domain based on the content category such as
        "Adult Content" to enforce parental control, "Violence &
        Terrorism" due to an external requirement imposed by an external
-       entity (e.g., Law Enforcement Agency), etc.  These content
 
 
 
@@ -226,6 +226,7 @@ Reddy, et al.             Expires July 11, 2021                 [Page 4]
 Internet-Draft        DNS Access Denied Error Page          January 2021
 
 
+       entity (e.g., Law Enforcement Agency), etc.  These content
        categories cannot be standardized because the classification of
        domains into content categories is vendor specific, typically
        ranges from 40 to 100 types of categories depending on the vendor
@@ -272,7 +273,6 @@ Internet-Draft        DNS Access Denied Error Page          January 2021
    "OPTIONAL" in this document are to be interpreted as described in BCP
    14 [RFC2119][RFC8174] when, and only when, they appear in all
    capitals, as shown here.
-
 
 
 
