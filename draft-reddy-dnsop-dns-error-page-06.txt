@@ -5,12 +5,12 @@
 DNSOP WG                                                        T. Reddy
 Internet-Draft                                                    McAfee
 Intended status: Standards Track                                 N. Cook
-Expires: July 11, 2021                                      Open-Xchange
+Expires: July 15, 2021                                      Open-Xchange
                                                                  D. Wing
                                                                   Citrix
                                                             M. Boucadair
                                                                   Orange
-                                                         January 7, 2021
+                                                        January 11, 2021
 
 
                       DNS Access Denied Error Page
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on July 11, 2021.
+   This Internet-Draft will expire on July 15, 2021.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Reddy, et al.             Expires July 11, 2021                 [Page 1]
+Reddy, et al.             Expires July 15, 2021                 [Page 1]
 
 Internet-Draft        DNS Access Denied Error Page          January 2021
 
@@ -80,7 +80,7 @@ Table of Contents
      9.1.  A New Error Page URI EDNS Option  . . . . . . . . . . . .  12
    10. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  12
    11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  12
-     11.1.  Normative References . . . . . . . . . . . . . . . . . .  13
+     11.1.  Normative References . . . . . . . . . . . . . . . . . .  12
      11.2.  Informative References . . . . . . . . . . . . . . . . .  14
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  16
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Reddy, et al.             Expires July 11, 2021                 [Page 2]
+Reddy, et al.             Expires July 15, 2021                 [Page 2]
 
 Internet-Draft        DNS Access Denied Error Page          January 2021
 
@@ -165,7 +165,7 @@ Internet-Draft        DNS Access Denied Error Page          January 2021
 
 
 
-Reddy, et al.             Expires July 11, 2021                 [Page 3]
+Reddy, et al.             Expires July 15, 2021                 [Page 3]
 
 Internet-Draft        DNS Access Denied Error Page          January 2021
 
@@ -221,7 +221,7 @@ Internet-Draft        DNS Access Denied Error Page          January 2021
 
 
 
-Reddy, et al.             Expires July 11, 2021                 [Page 4]
+Reddy, et al.             Expires July 15, 2021                 [Page 4]
 
 Internet-Draft        DNS Access Denied Error Page          January 2021
 
@@ -277,7 +277,7 @@ Internet-Draft        DNS Access Denied Error Page          January 2021
 
 
 
-Reddy, et al.             Expires July 11, 2021                 [Page 5]
+Reddy, et al.             Expires July 15, 2021                 [Page 5]
 
 Internet-Draft        DNS Access Denied Error Page          January 2021
 
@@ -333,7 +333,7 @@ Internet-Draft        DNS Access Denied Error Page          January 2021
 
 
 
-Reddy, et al.             Expires July 11, 2021                 [Page 6]
+Reddy, et al.             Expires July 15, 2021                 [Page 6]
 
 Internet-Draft        DNS Access Denied Error Page          January 2021
 
@@ -389,7 +389,7 @@ Internet-Draft        DNS Access Denied Error Page          January 2021
 
 
 
-Reddy, et al.             Expires July 11, 2021                 [Page 7]
+Reddy, et al.             Expires July 15, 2021                 [Page 7]
 
 Internet-Draft        DNS Access Denied Error Page          January 2021
 
@@ -445,7 +445,7 @@ Internet-Draft        DNS Access Denied Error Page          January 2021
 
 
 
-Reddy, et al.             Expires July 11, 2021                 [Page 8]
+Reddy, et al.             Expires July 15, 2021                 [Page 8]
 
 Internet-Draft        DNS Access Denied Error Page          January 2021
 
@@ -501,7 +501,7 @@ Internet-Draft        DNS Access Denied Error Page          January 2021
 
 
 
-Reddy, et al.             Expires July 11, 2021                 [Page 9]
+Reddy, et al.             Expires July 15, 2021                 [Page 9]
 
 Internet-Draft        DNS Access Denied Error Page          January 2021
 
@@ -557,7 +557,7 @@ Internet-Draft        DNS Access Denied Error Page          January 2021
 
 
 
-Reddy, et al.             Expires July 11, 2021                [Page 10]
+Reddy, et al.             Expires July 15, 2021                [Page 10]
 
 Internet-Draft        DNS Access Denied Error Page          January 2021
 
@@ -613,7 +613,7 @@ Internet-Draft        DNS Access Denied Error Page          January 2021
 
 
 
-Reddy, et al.             Expires July 11, 2021                [Page 11]
+Reddy, et al.             Expires July 15, 2021                [Page 11]
 
 Internet-Draft        DNS Access Denied Error Page          January 2021
 
@@ -626,15 +626,9 @@ Internet-Draft        DNS Access Denied Error Page          January 2021
    The encrypted DNS session provides transport security for the
    interaction between the DNS client and server, but DNSSEC signing and
    validation is not possible for the Error Page URI EDNS0 option
-   returning the Error Page URI Template.  For example, if access to a
-   doman is blocked, the encrypted DNS resolver can rewrite the response
-   to send NXDOMAIN error and Error Page URI EDNS0 option in the DNS
-   response, it will omit DNSSEC RRsets, because the modified responses
-   cannot be verified by DNSSEC signatures.  However, the signature in
-   the Error Page URI EDNS0 option provides authentication for the Error
-   Page URI EDNS0 option.  Nevertheless, the Error Page URI EDNS0 option
-   returning the Error Page URI Template should be treated only as
-   diagnostic information and MUST NOT alter DNS protocol processing.
+   returning the Error Page URI Template.  However, the signature in the
+   Error Page URI EDNS0 option provides authentication for the Error
+   Page URI EDNS0 option.
 
    By design, the object referenced by the error page URL potentially
    exposes additional information about the DNS resolution process that
@@ -663,23 +657,22 @@ Internet-Draft        DNS Access Denied Error Page          January 2021
 
 11.  References
 
-
-
-
-
-
-
-Reddy, et al.             Expires July 11, 2021                [Page 12]
-
-Internet-Draft        DNS Access Denied Error Page          January 2021
-
-
 11.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
+
+
+
+
+
+
+Reddy, et al.             Expires July 15, 2021                [Page 12]
+
+Internet-Draft        DNS Access Denied Error Page          January 2021
+
 
    [RFC4648]  Josefsson, S., "The Base16, Base32, and Base64 Data
               Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
@@ -721,20 +714,21 @@ Internet-Draft        DNS Access Denied Error Page          January 2021
               Algorithm (ECDSA)", RFC 6979, DOI 10.17487/RFC6979, August
               2013, <https://www.rfc-editor.org/info/rfc6979>.
 
-
-
-
-
-Reddy, et al.             Expires July 11, 2021                [Page 13]
-
-Internet-Draft        DNS Access Denied Error Page          January 2021
-
-
    [RFC7525]  Sheffer, Y., Holz, R., and P. Saint-Andre,
               "Recommendations for Secure Use of Transport Layer
               Security (TLS) and Datagram Transport Layer Security
               (DTLS)", BCP 195, RFC 7525, DOI 10.17487/RFC7525, May
               2015, <https://www.rfc-editor.org/info/rfc7525>.
+
+
+
+
+
+
+Reddy, et al.             Expires July 15, 2021                [Page 13]
+
+Internet-Draft        DNS Access Denied Error Page          January 2021
+
 
    [RFC7540]  Belshe, M., Peon, R., and M. Thomson, Ed., "Hypertext
               Transfer Protocol Version 2 (HTTP/2)", RFC 7540,
@@ -777,20 +771,20 @@ Internet-Draft        DNS Access Denied Error Page          January 2021
               How-to-manually-install-the-Securly-SSL-certificate-in-
               Chrome>.
 
-
-
-
-
-Reddy, et al.             Expires July 11, 2021                [Page 14]
-
-Internet-Draft        DNS Access Denied Error Page          January 2021
-
-
    [Chrome-Translate]
               "Google Translate",
               <https://chrome.google.com/webstore/detail/google-
               translate/aapbdbdomjkkjkaonfhkkikfgjllcleb/RK%3D2/
               RS%3DBBFW_pnWkPY0xPMYsAZI5xOgQEE->.
+
+
+
+
+
+Reddy, et al.             Expires July 15, 2021                [Page 14]
+
+Internet-Draft        DNS Access Denied Error Page          January 2021
+
 
    [DNSKEY-IANA]
               "IANA, Domain Name System Security (DNSSEC) Algorithm
@@ -835,16 +829,18 @@ Internet-Draft        DNS Access Denied Error Page          January 2021
               DOI 10.17487/RFC8910, September 2020,
               <https://www.rfc-editor.org/info/rfc8910>.
 
-
-
-Reddy, et al.             Expires July 11, 2021                [Page 15]
-
-Internet-Draft        DNS Access Denied Error Page          January 2021
-
-
    [Safari-Cookie]
               "Isolated cookie store (CVE-2016-1730)",
               <https://support.apple.com/en-us/HT205732>.
+
+
+
+
+
+Reddy, et al.             Expires July 15, 2021                [Page 15]
+
+Internet-Draft        DNS Access Denied Error Page          January 2021
+
 
 Authors' Addresses
 
@@ -893,4 +889,8 @@ Authors' Addresses
 
 
 
-Reddy, et al.             Expires July 11, 2021                [Page 16]
+
+
+
+
+Reddy, et al.             Expires July 15, 2021                [Page 16]

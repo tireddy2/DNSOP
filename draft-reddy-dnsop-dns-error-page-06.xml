@@ -603,15 +603,9 @@
       <t>The encrypted DNS session provides transport security for the
       interaction between the DNS client and server, but DNSSEC signing and
       validation is not possible for the Error Page URI EDNS0 option returning
-      the Error Page URI Template. For example, if access to a doman is
-      blocked, the encrypted DNS resolver can rewrite the response to send
-      NXDOMAIN error and Error Page URI EDNS0 option in the DNS response, it
-      will omit DNSSEC RRsets, because the modified responses cannot be
-      verified by DNSSEC signatures. However, the signature in the Error Page
+      the Error Page URI Template. However, the signature in the Error Page
       URI EDNS0 option provides authentication for the Error Page URI EDNS0
-      option. Nevertheless, the Error Page URI EDNS0 option returning the
-      Error Page URI Template should be treated only as diagnostic information
-      and MUST NOT alter DNS protocol processing.</t>
+      option. </t>
 
       <t>By design, the object referenced by the error page URL potentially
       exposes additional information about the DNS resolution process that may
