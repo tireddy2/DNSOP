@@ -529,10 +529,10 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
    validation is not possible for the Error Page URI EDNS0 option
    returning the Error Page URI Template.  However, this specification
    mandates the DNS client to not process DNS response with Error Page
-   URI EDNS0 option if domain name in the Error Page URI matches the
-   domain name of the encrypted DNS server.  The validation ensures both
-   the servers are operated by the same entity and have the same origin
-   (similar to the Same Origin Policy (SOP)).
+   URI EDNS0 option if domain name in the Error Page URI does not match
+   the domain name of the encrypted DNS server.  The validation ensures
+   both the servers are operated by the same entity and have the same
+   origin (similar to the Same Origin Policy (SOP)).
 
    By design, the object referenced by the error page URL potentially
    exposes additional information about the DNS resolution process that
