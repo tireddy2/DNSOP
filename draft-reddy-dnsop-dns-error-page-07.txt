@@ -248,11 +248,11 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
        only conveys the source of the error (Section 3 of [RFC8914]) and
        does not provide additional textual information about the cause
        of the error.  Most importantly, EDE option does not offer
-       authenticated information; it can thus be be spoofed by an
-       attacker.  In addition, the additional textual information may
-       not be able to convey all of the required information about the
-       cause of the DNS error because lengthy EXTRA-TEXT content would
-       be truncated to prevent fragmentation (Section 3 of [RFC8914]).
+       authenticated information; it can thus be spoofed by an attacker.
+       In addition, the additional textual information may not be able
+       to convey all of the required information about the cause of the
+       DNS error because lengthy EXTRA-TEXT content would be truncated
+       to prevent fragmentation (Section 3 of [RFC8914]).
 
    No matter which type of response is generated (forged IP address(es),
    NXDOMAIN or empty answer, or an extended error code), the user who
@@ -344,7 +344,7 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
 
    The URI Template defined in ERROR-PAGE-URI describes how to construct
    the URL to fetch the error page.  The agent acting as the HTTPS
-   client on the endpoint encodes a nFQDN to which access is denied into
+   client on the endpoint encodes an FQDN to which access is denied into
    an HTTP GET request to retrieve the error page.  The HTTPS server
    returning the error page defines the URI used by the HTTP GET request
    through the use of a URI Template.  The URI Template is processed
@@ -381,7 +381,7 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
    URI EDNS0 option:
 
    o  The Error Page URI EDNS0 option is susceptible to forgery.  In
-      order to defend against such asn attack, the DNS client MUST NOT
+      order to defend against such an attack, the DNS client MUST NOT
       process the DNS response with Error Page URI EDNS0 option unless
       DNS messages exchanged are cryptographically protected using
       encrypted DNS.
