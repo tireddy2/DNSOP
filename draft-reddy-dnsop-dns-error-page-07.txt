@@ -5,12 +5,12 @@
 DNSOP WG                                                        T. Reddy
 Internet-Draft                                                    McAfee
 Intended status: Standards Track                                 N. Cook
-Expires: October 7, 2021                                    Open-Xchange
+Expires: October 17, 2021                                   Open-Xchange
                                                                  D. Wing
                                                                   Citrix
                                                             M. Boucadair
                                                                   Orange
-                                                           April 5, 2021
+                                                          April 15, 2021
 
 
                       DNS Access Denied Error Page
@@ -19,7 +19,7 @@ Expires: October 7, 2021                                    Open-Xchange
 Abstract
 
    When a DNS server filters a query, the response to such query conveys
-   no detailed explanation that explains why that query was blocked,
+   no detailed explanation that elaborates why that query was blocked,
    leading thus to end-user confusion.  A solution to this problem is
    needed in order to enhance the user experience.
 
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on October 7, 2021.
+   This Internet-Draft will expire on October 17, 2021.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Reddy, et al.            Expires October 7, 2021                [Page 1]
+Reddy, et al.           Expires October 17, 2021                [Page 1]
 
 Internet-Draft        DNS Access Denied Error Page            April 2021
 
@@ -70,7 +70,7 @@ Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   5
-   3.  Error page URI EDNS0 Option Format  . . . . . . . . . . . . .   6
+   3.  Error Page URI EDNS0 Option Format  . . . . . . . . . . . . .   6
    4.  Error Page URI Processing . . . . . . . . . . . . . . . . . .   7
    5.  Error Page  . . . . . . . . . . . . . . . . . . . . . . . . .   9
    6.  Usability Considerations  . . . . . . . . . . . . . . . . . .   9
@@ -96,20 +96,20 @@ Table of Contents
       Prevention Systems (IPS) rely upon network traffic inspection to
       implement perimeter-based security policies.  The network security
       services may, for example, prevent malware download, block known
-      malicious domains, block phishing sites, etc.  These network
-      security services act on DNS queries originating from endpoints.
-      For example, DNS firewalls, a method of expressing DNS response
-      policy information inside specially constructed DNS zones, known
-      as Response Policy Zones (RPZs) allows DNS servers to modify their
-      DNS responses in real time in order to stop access to malware and
-      phishing domains.  Note that some of the commonly known types of
-      malware are viruses, worms, trojans, bots, ransomware, backdoors,
-      spyware, and adware.
+      malicious domains, block phishing sites, etc.
+
+      These network security services act on DNS queries originating
+      from endpoints.  For example, DNS firewalls, a method of
+      expressing DNS response policy information inside specially
+      constructed DNS zones, known as Response Policy Zones (RPZs)
+      allows DNS servers to modify their DNS responses in real time in
+      order to stop access to malware and phishing domains.  Note that
+      some of the commonly known types of malware are viruses, worms,
+      trojans, bots, ransomware, backdoors, spyware, and adware.
 
 
 
-
-Reddy, et al.            Expires October 7, 2021                [Page 2]
+Reddy, et al.           Expires October 17, 2021                [Page 2]
 
 Internet-Draft        DNS Access Denied Error Page            April 2021
 
@@ -121,8 +121,9 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
       control, block access to malware sites, etc.
 
    o  Internet Service Providers (ISPs) typically block access to some
-      domains due to a requirement imposed by an external entity (e.g.,
-      Law Enforcement Agency) by performing DNS-based content filtering.
+      DNS domains due to a requirement imposed by an external entity
+      (e.g., Law Enforcement Agency).  Such blocking is performed using
+      DNS-based content filtering.
 
    DNS responses can be filtered by sending a bogus (also called,
    "forged") A or AAAA response, NXDOMAIN error or empty answer, or an
@@ -130,23 +131,23 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
    methods have advantages and disadvantages that are discussed below:
 
    1.  The DNS response is forged to provide a list of IP addresses that
-       point to an HTTP(S) server alerting the end user of the reason
-       for blocking access to the requested domain (e.g., malware).
-       When an HTTP(S) enabled domain name is blocked, the network
-       security device (e.g., CPE, firewall) presents a block page
-       instead of the HTTP response from the content provider hosting
-       that domain.  If an HTTP enabled domain name is blocked, the
-       network security device intercepts the HTTP request and returns a
-       block page over HTTP.  If an HTTPS enabled domain is blocked, the
-       block page is also served over HTTPS.  In order to return a block
-       page over HTTPS, man in the middle (MITM) is enabled on endpoints
-       by generating a local root certificate and an accompanying
-       (local) public/private key pair.  The local root certificate is
-       installed on the endpoint while the network security device(s)
-       stores a copy of the private key.  During the TLS handshake, the
-       network security device modifies the certificate provided by the
-       server and (re)signs it with the private key from the local root
-       certificate.
+       points to an HTTP(S) server alerting the end user about the
+       reason for blocking access to the requested domain (e.g.,
+       malware).  When an HTTP(S) enabled domain name is blocked, the
+       network security device (e.g., CPE, firewall) presents a block
+       page instead of the HTTP response from the content provider
+       hosting that domain.  If an HTTP enabled domain name is blocked,
+       the network security device intercepts the HTTP request and
+       returns a block page over HTTP.  If an HTTPS enabled domain is
+       blocked, the block page is also served over HTTPS.  In order to
+       return a block page over HTTPS, man in the middle (MITM) is
+       enabled on endpoints by generating a local root certificate and
+       an accompanying (local) public/private key pair.  The local root
+       certificate is installed on the endpoint while the network
+       security device(s) stores a copy of the private key.  During the
+       TLS handshake, the network security device modifies the
+       certificate provided by the server and (re)signs it using the
+       private key from the local root certificate.
 
        *  However, configuring the local root certificate on endpoints
           is not a viable option in several deployments like home
@@ -157,21 +158,22 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
           connection.  For web-browsing this then results in an HTTPS
           certificate error message indicating that a secure connection
           could not be established, which gives no information to the
-          end-user about the reason for the error.  The typical errors
-          are "The security certificate presented by this website was
-          not issued by a trusted certificate authority" (Internet
-          Explorer/Edge"), "The site's security certificate is not
-          trusted" (Chrome), "This Connection is Untrusted" (Firefox),
+          end-user about the reason for the error.
+
+          The typical errors are "The security certificate presented by
+          this website was not issued by a trusted certificate
 
 
 
-Reddy, et al.            Expires October 7, 2021                [Page 3]
+Reddy, et al.           Expires October 17, 2021                [Page 3]
 
 Internet-Draft        DNS Access Denied Error Page            April 2021
 
 
-          "Safari can't verify the identity of the website..." (Safari
-          on MacOS)".
+          authority" (Internet Explorer/Edge"), "The site's security
+          certificate is not trusted" (Chrome), "This Connection is
+          Untrusted" (Firefox), "Safari can't verify the identity of the
+          website..." (Safari on MacOS)".
 
        *  Enterprise networks do not assume that all the connected
           devices are managed by the IT team or Mobile Device Management
@@ -216,16 +218,16 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
        know the exact reason nor he/she is aware of the exact entity
        blocking the access to the domain.  For example, a DNS server may
        block access to a domain based on the content category such as
-       "Adult Content" to enforce parental control, "Violence &
-       Terrorism" due to an external requirement imposed by an external
 
 
 
-Reddy, et al.            Expires October 7, 2021                [Page 4]
+Reddy, et al.           Expires October 17, 2021                [Page 4]
 
 Internet-Draft        DNS Access Denied Error Page            April 2021
 
 
+       "Adult Content" to enforce parental control, "Violence &
+       Terrorism" due to an external requirement imposed by an external
        entity (e.g., Law Enforcement Agency), etc.  These content
        categories cannot be standardized because the classification of
        domains into content categories is vendor specific, typically
@@ -246,55 +248,55 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
        only conveys the source of the error (Section 3 of [RFC8914]) and
        does not provide additional textual information about the cause
        of the error.  Most importantly, EDE option does not offer
-       authenticated information; it can thus be be spoofed by an
-       attacker.  In addition, the additional textual information may
-       not be able to convey all of the required information about the
-       cause of the DNS error because lengthy EXTRA-TEXT content would
-       be truncated to prevent fragmentation (Section 3 of [RFC8914]).
+       authenticated information; it can thus be spoofed by an attacker.
+       In addition, the additional textual information may not be able
+       to convey all of the required information about the cause of the
+       DNS error because lengthy EXTRA-TEXT content would be truncated
+       to prevent fragmentation (Section 3 of [RFC8914]).
 
    No matter which type of response is generated (forged IP address(es),
    NXDOMAIN or empty answer, or an extended error code), the user who
-   generated the query has little chance to understand which entity
+   triggered the DNS query has little chance to understand which entity
    filtered the query, how to report a mistake in the filter, or why the
    entity filtered it at all.  This document describes a mechanism to
-   provide a URI which, when accessed, provides such information to the
+   provide an URI which, when accessed, provides such information to the
    user.
 
    One of the other benefits of this approach is to eliminate the need
-   to "spoof" block pages for HTTPS resources, as the block page no
-   longer needs to create a signed certificate when blocking a
-   destination.  Also, the approach avoids the need to install a local
-   root certificate authority on those IT-managed devices.
+   to "spoof" block pages for HTTPS resources.  This is achieved as the
+   block page no longer needs to create a signed certificate when
+   blocking a destination.  This approach avoids the need to install a
+   local root certificate authority on those IT-managed devices.
 
 2.  Terminology
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
    "OPTIONAL" in this document are to be interpreted as described in BCP
-   14 [RFC2119][RFC8174] when, and only when, they appear in all
-   capitals, as shown here.
 
 
 
 
-Reddy, et al.            Expires October 7, 2021                [Page 5]
+Reddy, et al.           Expires October 17, 2021                [Page 5]
 
 Internet-Draft        DNS Access Denied Error Page            April 2021
 
 
-   This document makes use of the terms defined in [RFC8499] and
-   [I-D.ietf-dnsop-terminology-ter].
+   14 [RFC2119][RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+   This document makes use of the terms defined in [RFC8499].
 
    'Encrypted DNS' refers to any encrypted scheme to convey DNS
    messages, for example, DNS-over-HTTPS [RFC8484], DNS-over-TLS
    [RFC7858], or DNS-over-QUIC [I-D.ietf-dprive-dnsoquic].
 
-3.  Error page URI EDNS0 Option Format
+3.  Error Page URI EDNS0 Option Format
 
    This document uses an EDNS0 [RFC6891] option to include the URI that
-   gives additional information in a DNS response about the cause of
-   blocking access to a domain.  This option is structured as depicted
-   in Figure 1.
+   provides additional information in a DNS response about the cause of
+   blocking access to a requested domain.  This option is structured as
+   depicted in Figure 1.
 
                                                 1   1   1   1   1   1
         0   1   2   3   4   5   6   7   8   9   0   1   2   3   4   5
@@ -308,18 +310,18 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
       /                 ERROR-PAGE-URI (variable size)                /
       +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
 
-               Figure 1: Error page URI EDNS0 Option Format
+               Figure 1: Error Page URI EDNS0 Option Format
 
    The description of the fields is as follows:
 
-   o  OPTION-CODE: TBD, indicates the code assigned for Error page URI
+   o  OPTION-CODE: TBD, indicates the code assigned for Error Page URI
       (Section 6.1.2 of [RFC6891]).  [RFC Editor: change TBD to the
       proper code once assigned by IANA.]
 
-   o  OPTION-LENGTH: See Section 6.1.2 of [RFC6891].  This fields
+   o  OPTION-LENGTH: See Section 6.1.2 of [RFC6891].  This field
       contains the length of the payload (everything after OPTION-
       LENGTH) in octets.  The variability of the option length stems
-      from the variable-length ERROR-PAGE-URI and ERROR-PAGE-SIG fields.
+      from the variable-length ERROR-PAGE-URI fields.
 
    o  ERROR-PAGE-URI-LENGTH: This 16-bit field indicates the length of
       ERROR-PAGE-URI.  It MUST NOT be set to 0.
@@ -327,32 +329,32 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
    o  ERROR-PAGE-URI: A variable length UTF-8 encoded [RFC5198] text
       field containing the URI Template [RFC6570] that gives additional
       information about the cause of blocking access to a domain.  The
-      ERROR-PAGE-URI field MUST NOT be zero octets in length..
+      ERROR-PAGE-URI field MUST NOT be zero octets in length.
 
 
 
-
-
-Reddy, et al.            Expires October 7, 2021                [Page 6]
+Reddy, et al.           Expires October 17, 2021                [Page 6]
 
 Internet-Draft        DNS Access Denied Error Page            April 2021
 
 
-   The Error page URI option can be included in any response (SERVFAIL,
-   NXDOMAIN, REFUSED, and even NOERROR, etc) to a query that includes
+   The Error Page URI option can be included in any response (SERVFAIL,
+   NXDOMAIN, REFUSED, and even NOERROR, etc.) to a query that includes
    OPT Pseudo-RR [RFC6891].
 
    The URI Template defined in ERROR-PAGE-URI describes how to construct
-   the URL to fetch the error page.  The agent acting as HTTPS client on
-   the endpoint encodes a FQDN to which access is denied into an HTTP
-   GET request to retrieve the error page.  The HTTPS server returning
-   the error page defines the URI used by the HTTP GET request through
-   the use of a URI Template.  The URI Template is processed with a
-   defined variable "target-domain" whose value is set to the FQDN to
-   which access is denied.  The FQDN is encoded using base64url
-   [RFC4648] and then provided as the variable value for "target-domain"
-   to expand the URI Template into a URI reference in the HTTP GET
-   request.  Padding characters for base64url MUST NOT be included.
+   the URL to fetch the error page.  The agent acting as the HTTPS
+   client on the endpoint encodes an FQDN to which access is denied into
+   an HTTP GET request to retrieve the error page.  The HTTPS server
+   returning the error page defines the URI used by the HTTP GET request
+   through the use of a URI Template.  The URI Template is processed
+   with a defined variable "target-domain" whose value is set to the
+   FQDN to which access is denied.
+
+   The FQDN is encoded using base64url [RFC4648] and then provided as
+   the variable value for "target-domain" to expand the URI Template
+   into an URI reference in the HTTP GET request.  Padding characters
+   for base64url MUST NOT be included.
 
    An example is illustrated below:
 
@@ -375,25 +377,25 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
 
 4.  Error Page URI Processing
 
-   The DNS client MUST follow the following rules to process the Error
-   Page URI EDNS0 option:
+   The DNS client MUST follow the rules below to process the Error Page
+   URI EDNS0 option:
 
    o  The Error Page URI EDNS0 option is susceptible to forgery.  In
-      order to defend against this attack the DNS client MUST NOT
+      order to defend against such an attack, the DNS client MUST NOT
       process the DNS response with Error Page URI EDNS0 option unless
       DNS messages exchanged are cryptographically protected using
       encrypted DNS.
 
-   o  If an DNS client has enabled opportunistic privacy profile
-      (Section 5 of [RFC8310]) for DoT, the DNS client will either
 
 
 
-Reddy, et al.            Expires October 7, 2021                [Page 7]
+Reddy, et al.           Expires October 17, 2021                [Page 7]
 
 Internet-Draft        DNS Access Denied Error Page            April 2021
 
 
+   o  If a DNS client has enabled opportunistic privacy profile
+      (Section 5 of [RFC8310]) for DoT, the DNS client will either
       fallback to an encrypted connection without authenticating the DNS
       server provided by the local network or fallback to clear text
       DNS, and cannot exchange encrypted DNS messages.  The fallback
@@ -401,7 +403,7 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
       enabled opportunistic privacy profile for DoT, the client MUST NOT
       process the DNS response with Error Page URI EDNS0 option.
 
-   o  If an DNS client has enabled strict privacy profile (Section 5 of
+   o  If a DNS client has enabled strict privacy profile (Section 5 of
       [RFC8310]) for DoT, the DNS client requires an encrypted
       connection and successful authentication of the DNS server; this
       mitigates both passive eavesdropping and client redirection (at
@@ -440,15 +442,16 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
    EDNS0 options (Sections 4.1 and 4.4.1 of [RFC5625]), the Error Page
    URI EDNS0 option may get propagated.  To detect this scenario, the
    domain name in the Error Page URI MUST match the domain name of the
-   encrypted DNS resolver.  If the match is not successful, the client
-   MUST NOT process the DNS response with Error Page URI EDNS0 option.
 
 
 
-Reddy, et al.            Expires October 7, 2021                [Page 8]
+Reddy, et al.           Expires October 17, 2021                [Page 8]
 
 Internet-Draft        DNS Access Denied Error Page            April 2021
 
+
+   encrypted DNS resolver.  If the match is not successful, the client
+   MUST NOT process the DNS response with Error Page URI EDNS0 option.
 
 5.  Error Page
 
@@ -494,21 +497,21 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
 
    The Error Page URI EDNS0 option causes an HTTPS retrieval by the
    client.  To prevent forgery of the Error Page URI EDNS0 option, this
-   specification requires it only be sent only over an encrypted DNS
-   channel with an authorized DNS server.
 
 
 
 
-
-Reddy, et al.            Expires October 7, 2021                [Page 9]
+Reddy, et al.           Expires October 17, 2021                [Page 9]
 
 Internet-Draft        DNS Access Denied Error Page            April 2021
 
 
+   specification requires it only be sent only over an encrypted DNS
+   channel with an authorized DNS server.
+
    The client knows it is connecting to a HTTPS server returning the
    error page.  To reduce threat surface the client can retrieve the
-   Error page URL using, for example, an isolated environment and take
+   Error Page URL using, for example, an isolated environment and take
    other precautions such as clearly labeling the page as untrusted or
    prevent user interaction with the page.  Such isolation should
    prevent transmitting cookies, block JavaScript, block auto-fill of
@@ -550,17 +553,18 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
    [http://www.iana.org/assignments/dns-parameters/dns-
    parameters.xhtml#dns-parameters-11]
 
-   Value  Name                 Status    Reference
-   -----  ----------------     ------    ------------------
-    TBD   Error Page URI      Standard       [ This document ]
 
 
 
 
-Reddy, et al.            Expires October 7, 2021               [Page 10]
+Reddy, et al.           Expires October 17, 2021               [Page 10]
 
 Internet-Draft        DNS Access Denied Error Page            April 2021
 
+
+   Value  Name                 Status    Reference
+   -----  ----------------     ------    ------------------
+    TBD   Error Page URI      Standard       [ This document ]
 
 9.  Acknowledgements
 
@@ -606,17 +610,18 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
               DOI 10.17487/RFC6570, March 2012,
               <https://www.rfc-editor.org/info/rfc6570>.
 
+
+
+
+Reddy, et al.           Expires October 17, 2021               [Page 11]
+
+Internet-Draft        DNS Access Denied Error Page            April 2021
+
+
    [RFC6891]  Damas, J., Graff, M., and P. Vixie, "Extension Mechanisms
               for DNS (EDNS(0))", STD 75, RFC 6891,
               DOI 10.17487/RFC6891, April 2013,
               <https://www.rfc-editor.org/info/rfc6891>.
-
-
-
-Reddy, et al.            Expires October 7, 2021               [Page 11]
-
-Internet-Draft        DNS Access Denied Error Page            April 2021
-
 
    [RFC7525]  Sheffer, Y., Holz, R., and P. Saint-Andre,
               "Recommendations for Secure Use of Transport Layer
@@ -661,15 +666,10 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
               <https://www.mozilla.org/en-US/firefox/
               facebookcontainer/>.
 
-   [I-D.ietf-dnsop-terminology-ter]
-              Hoffman, P., "Terminology for DNS Transports and
-              Location", draft-ietf-dnsop-terminology-ter-02 (work in
-              progress), August 2020.
 
 
 
-
-Reddy, et al.            Expires October 7, 2021               [Page 12]
+Reddy, et al.           Expires October 17, 2021               [Page 12]
 
 Internet-Draft        DNS Access Denied Error Page            April 2021
 
@@ -725,7 +725,7 @@ Authors' Addresses
 
 
 
-Reddy, et al.            Expires October 7, 2021               [Page 13]
+Reddy, et al.           Expires October 17, 2021               [Page 13]
 
 Internet-Draft        DNS Access Denied Error Page            April 2021
 
@@ -781,4 +781,4 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
 
 
 
-Reddy, et al.            Expires October 7, 2021               [Page 14]
+Reddy, et al.           Expires October 17, 2021               [Page 14]
