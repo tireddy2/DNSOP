@@ -334,7 +334,7 @@
           target="RFC6891"></xref>. This field contains the length of the
           payload (everything after OPTION-LENGTH) in octets. The variability
           of the option length stems from the variable-length ERROR-PAGE-URI
-          fields.</t>
+          field.</t>
 
           <t>ERROR-PAGE-URI-LENGTH: This 16-bit field indicates the length of
           ERROR-PAGE-URI. It MUST NOT be set to 0.</t>
@@ -357,7 +357,7 @@
       page defines the URI used by the HTTP GET request through the use of a
       URI Template. The URI Template is processed with a defined variable
       "target-domain" whose value is set to the FQDN to which access is
-      denied. </t>
+      denied.</t>
 
       <t>The FQDN is encoded using base64url <xref target="RFC4648"></xref>
       and then provided as the variable value for "target-domain" to expand
@@ -388,11 +388,12 @@
     <section title="Error Page URI Processing">
       <t>The DNS client MUST follow the rules below to process the Error Page
       URI EDNS0 option:<list style="symbols">
-          <t>The Error Page URI EDNS0 option is susceptible to forgery. In
-          order to defend against such an attack, the DNS client MUST NOT
-          process the DNS response with Error Page URI EDNS0 option unless DNS
-          messages exchanged are cryptographically protected using encrypted
-          DNS.</t>
+          <t>The Error Page URI EDNS0 option is susceptible to forgery. An
+          attacker (e.g., a man in the middle (MITM)) could insert an extended
+          Error Page URI EDNS0 option into the DNS response. In order to
+          defend against such an attack, the DNS client MUST NOT process the
+          DNS response with Error Page URI EDNS0 option unless DNS messages
+          exchanged are cryptographically protected using encrypted DNS.</t>
 
           <t>If a DNS client has enabled opportunistic privacy profile
           (Section 5 of <xref target="RFC8310"></xref>) for DoT, the DNS

@@ -321,7 +321,7 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
    o  OPTION-LENGTH: See Section 6.1.2 of [RFC6891].  This field
       contains the length of the payload (everything after OPTION-
       LENGTH) in octets.  The variability of the option length stems
-      from the variable-length ERROR-PAGE-URI fields.
+      from the variable-length ERROR-PAGE-URI field.
 
    o  ERROR-PAGE-URI-LENGTH: This 16-bit field indicates the length of
       ERROR-PAGE-URI.  It MUST NOT be set to 0.
@@ -380,11 +380,11 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
    The DNS client MUST follow the rules below to process the Error Page
    URI EDNS0 option:
 
-   o  The Error Page URI EDNS0 option is susceptible to forgery.  In
+   o  The Error Page URI EDNS0 option is susceptible to forgery.  An
+      attacker (e.g., a man in the middle (MITM)) could insert an
+      extended Error Page URI EDNS0 option into the DNS response.  In
       order to defend against such an attack, the DNS client MUST NOT
       process the DNS response with Error Page URI EDNS0 option unless
-      DNS messages exchanged are cryptographically protected using
-      encrypted DNS.
 
 
 
@@ -393,6 +393,9 @@ Reddy, et al.           Expires October 17, 2021                [Page 7]
 
 Internet-Draft        DNS Access Denied Error Page            April 2021
 
+
+      DNS messages exchanged are cryptographically protected using
+      encrypted DNS.
 
    o  If a DNS client has enabled opportunistic privacy profile
       (Section 5 of [RFC8310]) for DoT, the DNS client will either
@@ -439,9 +442,6 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
    A DNS resolver or forwarder MUST NOT propagate a received Error Page
    URI EDNS0 option because an attacker can insert a bogus URI.  Because
    DNS forwarders (or DNS proxies) are supposed to propagate unknown
-   EDNS0 options (Sections 4.1 and 4.4.1 of [RFC5625]), the Error Page
-   URI EDNS0 option may get propagated.  To detect this scenario, the
-   domain name in the Error Page URI MUST match the domain name of the
 
 
 
@@ -450,6 +450,9 @@ Reddy, et al.           Expires October 17, 2021                [Page 8]
 Internet-Draft        DNS Access Denied Error Page            April 2021
 
 
+   EDNS0 options (Sections 4.1 and 4.4.1 of [RFC5625]), the Error Page
+   URI EDNS0 option may get propagated.  To detect this scenario, the
+   domain name in the Error Page URI MUST match the domain name of the
    encrypted DNS resolver.  If the match is not successful, the client
    MUST NOT process the DNS response with Error Page URI EDNS0 option.
 
@@ -495,9 +498,6 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
    Security considerations in Section 6 of [RFC8914] and [RFC8624] need
    to be taken into consideration.
 
-   The Error Page URI EDNS0 option causes an HTTPS retrieval by the
-   client.  To prevent forgery of the Error Page URI EDNS0 option, this
-
 
 
 
@@ -506,6 +506,8 @@ Reddy, et al.           Expires October 17, 2021                [Page 9]
 Internet-Draft        DNS Access Denied Error Page            April 2021
 
 
+   The Error Page URI EDNS0 option causes an HTTPS retrieval by the
+   client.  To prevent forgery of the Error Page URI EDNS0 option, this
    specification requires it only be sent only over an encrypted DNS
    channel with an authorized DNS server.
 
@@ -552,8 +554,6 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
    registry [to be removed upon publication:
    [http://www.iana.org/assignments/dns-parameters/dns-
    parameters.xhtml#dns-parameters-11]
-
-
 
 
 
