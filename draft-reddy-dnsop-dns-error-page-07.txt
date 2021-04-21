@@ -5,12 +5,12 @@
 DNSOP WG                                                        T. Reddy
 Internet-Draft                                                    McAfee
 Intended status: Standards Track                                 N. Cook
-Expires: October 17, 2021                                   Open-Xchange
+Expires: October 22, 2021                                   Open-Xchange
                                                                  D. Wing
                                                                   Citrix
                                                             M. Boucadair
                                                                   Orange
-                                                          April 15, 2021
+                                                          April 20, 2021
 
 
                       DNS Access Denied Error Page
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on October 17, 2021.
+   This Internet-Draft will expire on October 22, 2021.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Reddy, et al.           Expires October 17, 2021                [Page 1]
+Reddy, et al.           Expires October 22, 2021                [Page 1]
 
 Internet-Draft        DNS Access Denied Error Page            April 2021
 
@@ -69,19 +69,20 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
-   2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   5
+   2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   6
    3.  Error Page URI EDNS0 Option Format  . . . . . . . . . . . . .   6
    4.  Error Page URI Processing . . . . . . . . . . . . . . . . . .   7
+     4.1.  Mitigating EDNS0 Forgery  . . . . . . . . . . . . . . . .   8
    5.  Error Page  . . . . . . . . . . . . . . . . . . . . . . . . .   9
-   6.  Usability Considerations  . . . . . . . . . . . . . . . . . .   9
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  10
-     8.1.  A New Error Page URI EDNS Option  . . . . . . . . . . . .  10
+   6.  Usability Considerations  . . . . . . . . . . . . . . . . . .  10
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  10
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  11
+     8.1.  A New Error Page URI EDNS Option  . . . . . . . . . . . .  11
    9.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  11
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  11
      10.1.  Normative References . . . . . . . . . . . . . . . . . .  11
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  12
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  13
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  13
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  14
 
 1.  Introduction
 
@@ -104,15 +105,17 @@ Table of Contents
       constructed DNS zones, known as Response Policy Zones (RPZs)
       allows DNS servers to modify their DNS responses in real time in
       order to stop access to malware and phishing domains.  Note that
-      some of the commonly known types of malware are viruses, worms,
-      trojans, bots, ransomware, backdoors, spyware, and adware.
 
 
 
-Reddy, et al.           Expires October 17, 2021                [Page 2]
+
+Reddy, et al.           Expires October 22, 2021                [Page 2]
 
 Internet-Draft        DNS Access Denied Error Page            April 2021
 
+
+      some of the commonly known types of malware are viruses, worms,
+      trojans, bots, ransomware, backdoors, spyware, and adware.
 
    o  Network devices in a home network offer network security to
       protect the devices within the home network by performing DNS-
@@ -160,16 +163,15 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
           could not be established, which gives no information to the
           end-user about the reason for the error.
 
-          The typical errors are "The security certificate presented by
-          this website was not issued by a trusted certificate
 
 
-
-Reddy, et al.           Expires October 17, 2021                [Page 3]
+Reddy, et al.           Expires October 22, 2021                [Page 3]
 
 Internet-Draft        DNS Access Denied Error Page            April 2021
 
 
+          The typical errors are "The security certificate presented by
+          this website was not issued by a trusted certificate
           authority" (Internet Explorer/Edge"), "The site's security
           certificate is not trusted" (Chrome), "This Connection is
           Untrusted" (Firefox), "Safari can't verify the identity of the
@@ -216,16 +218,16 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
        These extended error codes do not suffer from the limitations
        discussed in bullets (1) and (2), but the user still does not
        know the exact reason nor he/she is aware of the exact entity
-       blocking the access to the domain.  For example, a DNS server may
-       block access to a domain based on the content category such as
 
 
 
-Reddy, et al.           Expires October 17, 2021                [Page 4]
+Reddy, et al.           Expires October 22, 2021                [Page 4]
 
 Internet-Draft        DNS Access Denied Error Page            April 2021
 
 
+       blocking the access to the domain.  For example, a DNS server may
+       block access to a domain based on the content category such as
        "Adult Content" to enforce parental control, "Violence &
        Terrorism" due to an external requirement imposed by an external
        entity (e.g., Law Enforcement Agency), etc.  These content
@@ -268,20 +270,23 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
    blocking a destination.  This approach avoids the need to install a
    local root certificate authority on those IT-managed devices.
 
+
+
+
+
+
+
+
+Reddy, et al.           Expires October 22, 2021                [Page 5]
+
+Internet-Draft        DNS Access Denied Error Page            April 2021
+
+
 2.  Terminology
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
    "OPTIONAL" in this document are to be interpreted as described in BCP
-
-
-
-
-Reddy, et al.           Expires October 17, 2021                [Page 5]
-
-Internet-Draft        DNS Access Denied Error Page            April 2021
-
-
    14 [RFC2119][RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
@@ -326,17 +331,17 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
    o  ERROR-PAGE-URI-LENGTH: This 16-bit field indicates the length of
       ERROR-PAGE-URI.  It MUST NOT be set to 0.
 
+
+
+Reddy, et al.           Expires October 22, 2021                [Page 6]
+
+Internet-Draft        DNS Access Denied Error Page            April 2021
+
+
    o  ERROR-PAGE-URI: A variable length UTF-8 encoded [RFC5198] text
       field containing the URI Template [RFC6570] that gives additional
       information about the cause of blocking access to a domain.  The
       ERROR-PAGE-URI field MUST NOT be zero octets in length.
-
-
-
-Reddy, et al.           Expires October 17, 2021                [Page 6]
-
-Internet-Draft        DNS Access Denied Error Page            April 2021
-
 
    The Error Page URI option can be included in any response (SERVFAIL,
    NXDOMAIN, REFUSED, and even NOERROR, etc.) to a query that includes
@@ -380,43 +385,14 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
    The DNS client MUST follow the rules below to process the Error Page
    URI EDNS0 option:
 
-   o  The Error Page URI EDNS0 option is susceptible to forgery.  An
-      attacker (e.g., a man in the middle (MITM)) could insert an
-      extended Error Page URI EDNS0 option into the DNS response.  In
-      order to defend against such an attack, the DNS client MUST NOT
-      process the DNS response with Error Page URI EDNS0 option unless
 
 
 
 
-Reddy, et al.           Expires October 17, 2021                [Page 7]
+Reddy, et al.           Expires October 22, 2021                [Page 7]
 
 Internet-Draft        DNS Access Denied Error Page            April 2021
 
-
-      DNS messages exchanged are cryptographically protected using
-      encrypted DNS.
-
-   o  If a DNS client has enabled opportunistic privacy profile
-      (Section 5 of [RFC8310]) for DoT, the DNS client will either
-      fallback to an encrypted connection without authenticating the DNS
-      server provided by the local network or fallback to clear text
-      DNS, and cannot exchange encrypted DNS messages.  The fallback
-      adversely impacts security and privacy.  If the DNS client has
-      enabled opportunistic privacy profile for DoT, the client MUST NOT
-      process the DNS response with Error Page URI EDNS0 option.
-
-   o  If a DNS client has enabled strict privacy profile (Section 5 of
-      [RFC8310]) for DoT, the DNS client requires an encrypted
-      connection and successful authentication of the DNS server; this
-      mitigates both passive eavesdropping and client redirection (at
-      the expense of providing no DNS service if an encrypted,
-      authenticated connection is not available).  If the DNS client has
-      enabled strict privacy profile for DoT, the client can process the
-      DNS response with Error Page URI EDNS0 option.  Note that the
-      strict and opportunistic privacy profiles as defined in [RFC8310]
-      only applies to DoT protocol, there has been no such distinction
-      made for DoH protocol.
 
    o  If the DNS response contains more than one Error Page URI EDNS0
       option, the DNS client MUST discard all Error Page URI EDNS0
@@ -430,31 +406,69 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
       Error Page URI EDNS0 option, any other resource records in the
       answer MUST be ignored by clients supporting this specification.
 
-   o  If the DNS client determines that the encrypted DNS server does
-      not offer DNS filtering service, it MUST reject the Error Page URI
-      EDNS0 option.  For example, the DNS client knows whether the pre-
-      configured encrypted DNS resolver performs DNS-based content
-      filtering or not.
-
    o  The DNS client MUST reject the error page URI if the scheme is not
       "https".
 
-   A DNS resolver or forwarder MUST NOT propagate a received Error Page
-   URI EDNS0 option because an attacker can insert a bogus URI.  Because
-   DNS forwarders (or DNS proxies) are supposed to propagate unknown
+4.1.  Mitigating EDNS0 Forgery
+
+   The Error Page URI EDNS0 option is susceptible to forgery.  An
+   attacker (e.g., a man in the middle (MITM)) could insert an extended
+   Error Page URI EDNS0 option into the DNS response causing a client to
+   attempt to visit that URI.  For instance, the attacker can be located
+   between the stub resolver and DNS recursive server or between the DNS
+   proxy and the upstream resolver.  To mitigate that attack, the
+   following measures are enforced:
+
+   o  The DNS client MUST NOT process the DNS response with Error Page
+      URI EDNS0 option unless DNS messages exchanged are
+      cryptographically protected using encrypted DNS.
+
+   o  If a DNS client has enabled opportunistic privacy profile
+      (Section 5 of [RFC8310]) for DoT, the DNS client will either
+      fallback to an encrypted connection without authenticating the DNS
+      server provided by the local network or fallback to clear text
+      DNS, and cannot exchange encrypted DNS messages.  Both of these
+      fallback mechanisms adversely impacts security and privacy.  If
+      the DNS client has enabled opportunistic privacy profile for DoT,
+      the DNS client MUST ignore Error Page URI EDNS0 option in
+      responses, but SHOULD process other parts of the response.
+
+   o  If a DNS client has enabled strict privacy profile (Section 5 of
+      [RFC8310]) for DoT, the DNS client requires an encrypted
+      connection and successful authentication of the DNS server; this
+      mitigates both passive eavesdropping and client redirection (at
+      the expense of providing no DNS service if an encrypted,
+      authenticated connection is not available).  If the DNS client has
+      enabled strict privacy profile for DoT, the client can process the
+      DNS response with Error Page URI EDNS0 option.  Note that the
+      strict and opportunistic privacy profiles as defined in [RFC8310]
 
 
 
-Reddy, et al.           Expires October 17, 2021                [Page 8]
+Reddy, et al.           Expires October 22, 2021                [Page 8]
 
 Internet-Draft        DNS Access Denied Error Page            April 2021
 
 
-   EDNS0 options (Sections 4.1 and 4.4.1 of [RFC5625]), the Error Page
-   URI EDNS0 option may get propagated.  To detect this scenario, the
-   domain name in the Error Page URI MUST match the domain name of the
-   encrypted DNS resolver.  If the match is not successful, the client
-   MUST NOT process the DNS response with Error Page URI EDNS0 option.
+      only applies to DoT protocol, there has been no such distinction
+      made for DoH protocol.
+
+   o  If the DNS client determines that the encrypted DNS server does
+      not offer DNS filtering service, it MUST reject the Error Page URI
+      EDNS0 option.  For example, the DNS client can learn whether the
+      encrypted DNS resolver performs DNS-based content filtering or not
+      by retrieving resolver information using the method defined in
+      [I-D.reddy-add-resolver-info].
+
+   o  DNS forwarders (or DNS proxies) are supposed to propagate unknown
+      EDNS0 options (Sections 4.1 and 4.4.1 of [RFC5625]), the Error
+      Page URI EDNS0 option may get propagated by a DNS server that has
+      not implemented this specification.  To detect this scenario, the
+      DNS client MUST verify the domain name in the Error Page URI
+      matches the domain name of the encrypted DNS resolver.  If this
+      match fails, the DNS client MUST ignore Error Page URI EDNS0
+      option in the response, but SHOULD process other parts of the
+      response.
 
 5.  Error Page
 
@@ -485,6 +499,13 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
    o  does not attempt to offer an exhaustive list for the contents of
       an error page.
 
+
+
+Reddy, et al.           Expires October 22, 2021                [Page 9]
+
+Internet-Draft        DNS Access Denied Error Page            April 2021
+
+
    o  it is not intended to form the basis of any legal/compliance for
       developing the error page.
 
@@ -497,14 +518,6 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
 
    Security considerations in Section 6 of [RFC8914] and [RFC8624] need
    to be taken into consideration.
-
-
-
-
-Reddy, et al.           Expires October 17, 2021                [Page 9]
-
-Internet-Draft        DNS Access Denied Error Page            April 2021
-
 
    The Error Page URI EDNS0 option causes an HTTPS retrieval by the
    client.  To prevent forgery of the Error Page URI EDNS0 option, this
@@ -541,6 +554,14 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
 
    By design, the object referenced by the error page URL potentially
    exposes additional information about the DNS resolution process that
+
+
+
+Reddy, et al.           Expires October 22, 2021               [Page 10]
+
+Internet-Draft        DNS Access Denied Error Page            April 2021
+
+
    may leak information.  An example of this is the reason for blocking
    the access to the domain name and the entity blocking access to the
    domain.
@@ -554,13 +575,6 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
    registry [to be removed upon publication:
    [http://www.iana.org/assignments/dns-parameters/dns-
    parameters.xhtml#dns-parameters-11]
-
-
-
-Reddy, et al.           Expires October 17, 2021               [Page 10]
-
-Internet-Draft        DNS Access Denied Error Page            April 2021
-
 
    Value  Name                 Status    Reference
    -----  ----------------     ------    ------------------
@@ -594,6 +608,16 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
               (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
               <https://www.rfc-editor.org/info/rfc5280>.
 
+
+
+
+
+
+Reddy, et al.           Expires October 22, 2021               [Page 11]
+
+Internet-Draft        DNS Access Denied Error Page            April 2021
+
+
    [RFC5625]  Bellis, R., "DNS Proxy Implementation Guidelines",
               BCP 152, RFC 5625, DOI 10.17487/RFC5625, August 2009,
               <https://www.rfc-editor.org/info/rfc5625>.
@@ -609,14 +633,6 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
               and D. Orchard, "URI Template", RFC 6570,
               DOI 10.17487/RFC6570, March 2012,
               <https://www.rfc-editor.org/info/rfc6570>.
-
-
-
-
-Reddy, et al.           Expires October 17, 2021               [Page 11]
-
-Internet-Draft        DNS Access Denied Error Page            April 2021
-
 
    [RFC6891]  Damas, J., Graff, M., and P. Vixie, "Extension Mechanisms
               for DNS (EDNS(0))", STD 75, RFC 6891,
@@ -648,6 +664,16 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
               DOI 10.17487/RFC8624, June 2019,
               <https://www.rfc-editor.org/info/rfc8624>.
 
+
+
+
+
+
+Reddy, et al.           Expires October 22, 2021               [Page 12]
+
+Internet-Draft        DNS Access Denied Error Page            April 2021
+
+
    [RFC8914]  Kumari, W., Hunt, E., Arends, R., Hardaker, W., and D.
               Lawrence, "Extended DNS Errors", RFC 8914,
               DOI 10.17487/RFC8914, October 2020,
@@ -666,18 +692,15 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
               <https://www.mozilla.org/en-US/firefox/
               facebookcontainer/>.
 
-
-
-
-Reddy, et al.           Expires October 17, 2021               [Page 12]
-
-Internet-Draft        DNS Access Denied Error Page            April 2021
-
-
    [I-D.ietf-dprive-dnsoquic]
               Huitema, C., Mankin, A., and S. Dickinson, "Specification
               of DNS over Dedicated QUIC Connections", draft-ietf-
               dprive-dnsoquic-01 (work in progress), October 2020.
+
+   [I-D.reddy-add-resolver-info]
+              Reddy, T. and M. Boucadair, "DNS Resolver Information",
+              draft-reddy-add-resolver-info-03 (work in progress), April
+              2021.
 
    [RFC7858]  Hu, Z., Zhu, L., Heidemann, J., Mankin, A., Wessels, D.,
               and P. Hoffman, "Specification for DNS over Transport
@@ -696,6 +719,16 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
               DHCP and Router Advertisements (RAs)", RFC 8910,
               DOI 10.17487/RFC8910, September 2020,
               <https://www.rfc-editor.org/info/rfc8910>.
+
+
+
+
+
+
+Reddy, et al.           Expires October 22, 2021               [Page 13]
+
+Internet-Draft        DNS Access Denied Error Page            April 2021
+
 
    [Safari-Cookie]
               "Isolated cookie store (CVE-2016-1730)",
@@ -717,17 +750,6 @@ Authors' Addresses
    UK
 
    Email: neil.cook@noware.co.uk
-
-
-
-
-
-
-
-
-Reddy, et al.           Expires October 17, 2021               [Page 13]
-
-Internet-Draft        DNS Access Denied Error Page            April 2021
 
 
    Dan Wing
@@ -759,26 +781,4 @@ Internet-Draft        DNS Access Denied Error Page            April 2021
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Reddy, et al.           Expires October 17, 2021               [Page 14]
+Reddy, et al.           Expires October 22, 2021               [Page 14]

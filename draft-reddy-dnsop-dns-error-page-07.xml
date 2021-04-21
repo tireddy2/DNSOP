@@ -388,35 +388,6 @@
     <section title="Error Page URI Processing">
       <t>The DNS client MUST follow the rules below to process the Error Page
       URI EDNS0 option:<list style="symbols">
-          <t>The Error Page URI EDNS0 option is susceptible to forgery. An
-          attacker (e.g., a man in the middle (MITM)) could insert an extended
-          Error Page URI EDNS0 option into the DNS response. In order to
-          defend against such an attack, the DNS client MUST NOT process the
-          DNS response with Error Page URI EDNS0 option unless DNS messages
-          exchanged are cryptographically protected using encrypted DNS.</t>
-
-          <t>If a DNS client has enabled opportunistic privacy profile
-          (Section 5 of <xref target="RFC8310"></xref>) for DoT, the DNS
-          client will either fallback to an encrypted connection without
-          authenticating the DNS server provided by the local network or
-          fallback to clear text DNS, and cannot exchange encrypted DNS
-          messages. The fallback adversely impacts security and privacy. If
-          the DNS client has enabled opportunistic privacy profile for DoT,
-          the client MUST NOT process the DNS response with Error Page URI
-          EDNS0 option.</t>
-
-          <t>If a DNS client has enabled strict privacy profile (Section 5 of
-          <xref target="RFC8310"></xref>) for DoT, the DNS client requires an
-          encrypted connection and successful authentication of the DNS
-          server; this mitigates both passive eavesdropping and client
-          redirection (at the expense of providing no DNS service if an
-          encrypted, authenticated connection is not available). If the DNS
-          client has enabled strict privacy profile for DoT, the client can
-          process the DNS response with Error Page URI EDNS0 option. Note that
-          the strict and opportunistic privacy profiles as defined in <xref
-          target="RFC8310"></xref> only applies to DoT protocol, there has
-          been no such distinction made for DoH protocol.</t>
-
           <t>If the DNS response contains more than one Error Page URI EDNS0
           option, the DNS client MUST discard all Error Page URI EDNS0 options
           in the DNS response.</t>
@@ -430,24 +401,65 @@
           URI EDNS0 option, any other resource records in the answer MUST be
           ignored by clients supporting this specification.</t>
 
-          <t>If the DNS client determines that the encrypted DNS server does
-          not offer DNS filtering service, it MUST reject the Error Page URI
-          EDNS0 option. For example, the DNS client knows whether the
-          pre-configured encrypted DNS resolver performs DNS-based content
-          filtering or not.</t>
-
           <t>The DNS client MUST reject the error page URI if the scheme is
           not "https".</t>
         </list></t>
 
-      <t>A DNS resolver or forwarder MUST NOT propagate a received Error Page
-      URI EDNS0 option because an attacker can insert a bogus URI. Because DNS
-      forwarders (or DNS proxies) are supposed to propagate unknown EDNS0
-      options (Sections 4.1 and 4.4.1 of <xref target="RFC5625"></xref>), the
-      Error Page URI EDNS0 option may get propagated. To detect this scenario,
-      the domain name in the Error Page URI MUST match the domain name of the
-      encrypted DNS resolver. If the match is not successful, the client MUST
-      NOT process the DNS response with Error Page URI EDNS0 option.</t>
+      <section title="Mitigating EDNS0 Forgery">
+        <t>The Error Page URI EDNS0 option is susceptible to forgery. An
+        attacker (e.g., a man in the middle (MITM)) could insert an extended
+        Error Page URI EDNS0 option into the DNS response causing a client to
+        attempt to visit that URI. For instance, the attacker can be located
+        between the stub resolver and DNS recursive server or between the DNS
+        proxy and the upstream resolver. To mitigate that attack, the
+        following measures are enforced:</t>
+
+        <t><list style="symbols">
+            <t>The DNS client MUST NOT process the DNS response with Error
+            Page URI EDNS0 option unless DNS messages exchanged are
+            cryptographically protected using encrypted DNS.</t>
+
+            <t>If a DNS client has enabled opportunistic privacy profile
+            (Section 5 of <xref target="RFC8310"></xref>) for DoT, the DNS
+            client will either fallback to an encrypted connection without
+            authenticating the DNS server provided by the local network or
+            fallback to clear text DNS, and cannot exchange encrypted DNS
+            messages. Both of these fallback mechanisms adversely impacts
+            security and privacy. If the DNS client has enabled opportunistic
+            privacy profile for DoT, the DNS client MUST ignore Error Page URI
+            EDNS0 option in responses, but SHOULD process other parts of the
+            response.</t>
+
+            <t>If a DNS client has enabled strict privacy profile (Section 5
+            of <xref target="RFC8310"></xref>) for DoT, the DNS client
+            requires an encrypted connection and successful authentication of
+            the DNS server; this mitigates both passive eavesdropping and
+            client redirection (at the expense of providing no DNS service if
+            an encrypted, authenticated connection is not available). If the
+            DNS client has enabled strict privacy profile for DoT, the client
+            can process the DNS response with Error Page URI EDNS0 option.
+            Note that the strict and opportunistic privacy profiles as defined
+            in <xref target="RFC8310"></xref> only applies to DoT protocol,
+            there has been no such distinction made for DoH protocol.</t>
+
+            <t>If the DNS client determines that the encrypted DNS server does
+            not offer DNS filtering service, it MUST reject the Error Page URI
+            EDNS0 option. For example, the DNS client can learn whether the
+            encrypted DNS resolver performs DNS-based content filtering or not
+            by retrieving resolver information using the method defined in
+            <xref target="I-D.reddy-add-resolver-info"></xref>.</t>
+
+            <t>DNS forwarders (or DNS proxies) are supposed to propagate
+            unknown EDNS0 options (Sections 4.1 and 4.4.1 of <xref
+            target="RFC5625"></xref>), the Error Page URI EDNS0 option may get
+            propagated by a DNS server that has not implemented this
+            specification. To detect this scenario, the DNS client MUST verify
+            the domain name in the Error Page URI matches the domain name of
+            the encrypted DNS resolver. If this match fails, the DNS client
+	    MUST ignore Error Page URI EDNS0 option in the response, but
+	    SHOULD process other parts of the response.</t>
+	</list></t>
+      </section>
     </section>
 
     <section title="Error Page">
@@ -598,6 +610,8 @@
       <?rfc include='reference.RFC.8910'?>
 
       <?rfc include='reference.I-D.ietf-dprive-dnsoquic'?>
+
+      <?rfc include='reference.I-D.reddy-add-resolver-info'?>
 
       <reference anchor="Chrome-Install-Cert"
                  target="support.securly.com/hc/en-us/articles/206081828-How-to-manually-install-the-Securly-SSL-certificate-in-Chrome">
