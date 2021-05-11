@@ -360,6 +360,7 @@
       denied.</t>
 
       <t>The FQDN is encoded using base64url <xref target="RFC4648"></xref>
+      (to mimic encoding of <xref target="RFC8484">Section 4.1.1 of</xref>)
       and then provided as the variable value for "target-domain" to expand
       the URI Template into an URI reference in the HTTP GET request. Padding
       characters for base64url MUST NOT be included.</t>
