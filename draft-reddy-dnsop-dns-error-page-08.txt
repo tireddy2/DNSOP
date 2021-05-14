@@ -5,12 +5,12 @@
 DNSOP WG                                                        T. Reddy
 Internet-Draft                                                    McAfee
 Intended status: Standards Track                                 N. Cook
-Expires: November 11, 2021                                  Open-Xchange
+Expires: November 14, 2021                                  Open-Xchange
                                                                  D. Wing
                                                                   Citrix
                                                             M. Boucadair
                                                                   Orange
-                                                            May 10, 2021
+                                                            May 13, 2021
 
 
                       DNS Access Denied Error Page
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 11, 2021.
+   This Internet-Draft will expire on November 14, 2021.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Reddy, et al.           Expires November 11, 2021               [Page 1]
+Reddy, et al.           Expires November 14, 2021               [Page 1]
 
 Internet-Draft        DNS Access Denied Error Page              May 2021
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Reddy, et al.           Expires November 11, 2021               [Page 2]
+Reddy, et al.           Expires November 14, 2021               [Page 2]
 
 Internet-Draft        DNS Access Denied Error Page              May 2021
 
@@ -165,7 +165,7 @@ Internet-Draft        DNS Access Denied Error Page              May 2021
 
 
 
-Reddy, et al.           Expires November 11, 2021               [Page 3]
+Reddy, et al.           Expires November 14, 2021               [Page 3]
 
 Internet-Draft        DNS Access Denied Error Page              May 2021
 
@@ -221,7 +221,7 @@ Internet-Draft        DNS Access Denied Error Page              May 2021
 
 
 
-Reddy, et al.           Expires November 11, 2021               [Page 4]
+Reddy, et al.           Expires November 14, 2021               [Page 4]
 
 Internet-Draft        DNS Access Denied Error Page              May 2021
 
@@ -277,7 +277,7 @@ Internet-Draft        DNS Access Denied Error Page              May 2021
 
 
 
-Reddy, et al.           Expires November 11, 2021               [Page 5]
+Reddy, et al.           Expires November 14, 2021               [Page 5]
 
 Internet-Draft        DNS Access Denied Error Page              May 2021
 
@@ -333,7 +333,7 @@ Internet-Draft        DNS Access Denied Error Page              May 2021
 
 
 
-Reddy, et al.           Expires November 11, 2021               [Page 6]
+Reddy, et al.           Expires November 14, 2021               [Page 6]
 
 Internet-Draft        DNS Access Denied Error Page              May 2021
 
@@ -356,10 +356,9 @@ Internet-Draft        DNS Access Denied Error Page              May 2021
    with a defined variable "target-domain" whose value is set to the
    FQDN to which access is denied.
 
-   The FQDN is encoded using base64url [RFC4648] and then provided as
-   the variable value for "target-domain" to expand the URI Template
-   into an URI reference in the HTTP GET request.  Padding characters
-   for base64url MUST NOT be included.
+   The FQDN is provided as the variable value for "target-domain" to
+   expand the URI Template into an URI reference in the HTTP GET
+   request.
 
    An example is illustrated below:
 
@@ -367,10 +366,10 @@ Internet-Draft        DNS Access Denied Error Page              May 2021
       page{?target-domain}" for the HTTPS server returning the error
       page and access to the target domain "example.com" is blocked by
       the encrypted DNS server, the variable "target-domain" has the
-      value "example.com" base64url encoded into an HTTP GET request.
-      In the above example, the expansion of the above URI Template is
+      value "example.com" sent in an HTTP GET request.  In the above
+      example, the expansion of the above URI Template is
       "https://resolver.example.net/block-page?target-
-      domain=ZXhhbXBsZS5jb20".
+      domain=example.com".
 
    HTTP/2 [RFC7540] is the minimum RECOMMENDED HTTP version to use to
    retrieve the error page.  The HTTPS client retrieving the error page
@@ -389,7 +388,8 @@ Internet-Draft        DNS Access Denied Error Page              May 2021
 
 
 
-Reddy, et al.           Expires November 11, 2021               [Page 7]
+
+Reddy, et al.           Expires November 14, 2021               [Page 7]
 
 Internet-Draft        DNS Access Denied Error Page              May 2021
 
@@ -445,7 +445,7 @@ Internet-Draft        DNS Access Denied Error Page              May 2021
 
 
 
-Reddy, et al.           Expires November 11, 2021               [Page 8]
+Reddy, et al.           Expires November 14, 2021               [Page 8]
 
 Internet-Draft        DNS Access Denied Error Page              May 2021
 
@@ -501,7 +501,7 @@ Internet-Draft        DNS Access Denied Error Page              May 2021
 
 
 
-Reddy, et al.           Expires November 11, 2021               [Page 9]
+Reddy, et al.           Expires November 14, 2021               [Page 9]
 
 Internet-Draft        DNS Access Denied Error Page              May 2021
 
@@ -557,7 +557,7 @@ Internet-Draft        DNS Access Denied Error Page              May 2021
 
 
 
-Reddy, et al.           Expires November 11, 2021              [Page 10]
+Reddy, et al.           Expires November 14, 2021              [Page 10]
 
 Internet-Draft        DNS Access Denied Error Page              May 2021
 
@@ -613,7 +613,7 @@ Internet-Draft        DNS Access Denied Error Page              May 2021
 
 
 
-Reddy, et al.           Expires November 11, 2021              [Page 11]
+Reddy, et al.           Expires November 14, 2021              [Page 11]
 
 Internet-Draft        DNS Access Denied Error Page              May 2021
 
@@ -669,7 +669,7 @@ Internet-Draft        DNS Access Denied Error Page              May 2021
 
 
 
-Reddy, et al.           Expires November 11, 2021              [Page 12]
+Reddy, et al.           Expires November 14, 2021              [Page 12]
 
 Internet-Draft        DNS Access Denied Error Page              May 2021
 
@@ -725,7 +725,7 @@ Internet-Draft        DNS Access Denied Error Page              May 2021
 
 
 
-Reddy, et al.           Expires November 11, 2021              [Page 13]
+Reddy, et al.           Expires November 14, 2021              [Page 13]
 
 Internet-Draft        DNS Access Denied Error Page              May 2021
 
@@ -781,4 +781,4 @@ Authors' Addresses
 
 
 
-Reddy, et al.           Expires November 11, 2021              [Page 14]
+Reddy, et al.           Expires November 14, 2021              [Page 14]

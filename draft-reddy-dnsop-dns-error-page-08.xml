@@ -359,21 +359,19 @@
       "target-domain" whose value is set to the FQDN to which access is
       denied.</t>
 
-      <t>The FQDN is encoded using base64url <xref target="RFC4648"></xref>
-      (to mimic encoding of <xref target="RFC8484">Section 4.1.1 of</xref>)
-      and then provided as the variable value for "target-domain" to expand
-      the URI Template into an URI reference in the HTTP GET request. Padding
-      characters for base64url MUST NOT be included.</t>
+      <t>The FQDN is provided as the variable value for "target-domain" to
+      expand the URI Template into an URI reference in the HTTP GET request.
+      </t>
 
       <t>An example is illustrated below:<list style="empty">
           <t>If the URI Template is
           "https://resolver.example.net/block-page{?target-domain}" for the
           HTTPS server returning the error page and access to the target
           domain "example.com" is blocked by the encrypted DNS server, the
-          variable "target-domain" has the value "example.com" base64url
-          encoded into an HTTP GET request. In the above example, the
-          expansion of the above URI Template is
-          "https://resolver.example.net/block-page?target-domain=ZXhhbXBsZS5jb20".</t>
+          variable "target-domain" has the value "example.com" sent in an HTTP
+          GET request. In the above example, the expansion of the above URI
+          Template is
+          "https://resolver.example.net/block-page?target-domain=example.com".</t>
         </list></t>
 
       <t>HTTP/2 <xref target="RFC7540"></xref> is the minimum RECOMMENDED HTTP
@@ -450,17 +448,16 @@
             by retrieving resolver information using the method defined in
             <xref target="I-D.reddy-add-resolver-info"></xref>.</t>
 
-            <t>DNS forwarders (or DNS proxies) are supposed to
-            propagate unknown EDNS0 options (Sections 4.1 and 4.4.1 of
-            <xref target="RFC5625"></xref>), which means the Error
-            Page URI EDNS0 option may get propagated by such a DNS
-            server.  To detect this scenario, the DNS client MUST
-            verify the domain name in the Error Page URI matches the
-            domain name of the encrypted DNS resolver. If this match
-            fails, the DNS client MUST ignore Error Page URI EDNS0
-            option in the response, but SHOULD process other parts of
-            the response.</t>
-	</list></t>
+            <t>DNS forwarders (or DNS proxies) are supposed to propagate
+            unknown EDNS0 options (Sections 4.1 and 4.4.1 of <xref
+            target="RFC5625"></xref>), which means the Error Page URI EDNS0
+            option may get propagated by such a DNS server. To detect this
+            scenario, the DNS client MUST verify the domain name in the Error
+            Page URI matches the domain name of the encrypted DNS resolver. If
+            this match fails, the DNS client MUST ignore Error Page URI EDNS0
+            option in the response, but SHOULD process other parts of the
+            response.</t>
+          </list></t>
       </section>
     </section>
 
